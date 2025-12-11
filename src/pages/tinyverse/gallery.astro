@@ -1,44 +1,79 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { Container } from '../../components/common/Container';
+import Layout from "../../layouts/Layout.astro";
+import { Container } from "../../components/common/Container";
+import { getCollection, type CollectionEntry } from "astro:content";
 
-const builds = [
-  { title: "The Castle", type: "Fort" },
-  { title: "The Mountain", type: "Climb" },
-  { title: "The Lounger", type: "Chill" },
-  { title: "The Tunnel", type: "Active" },
-  { title: "The Stage", type: "Creative" },
-  { title: "The Rocket", type: "Imaginative" },
-];
+const builds = await getCollection("tinyVerse");
+
+interface BuildItem {
+  title: string;
+  category: string;
+  image?: { url: string; alternativeText?: string | null } | null;
+}
+
+// Fallback if no builds found (though seeding should ensure they exist)
+const displayBuilds: BuildItem[] =
+  builds.length > 0
+    ? builds.map((b: CollectionEntry<"tinyVerse">) => b.data)
+    : [
+        { title: "The Castle", category: "Fort" },
+        { title: "The Mountain", category: "Climb" },
+        { title: "The Lounger", category: "Chill" },
+        { title: "The Tunnel", category: "Active" },
+        { title: "The Stage", category: "Creative" },
+        { title: "The Rocket", category: "Imaginative" },
+      ];
 ---
 
 <Layout title="Gallery - TinyVerse">
   <div class="py-20 bg-background min-h-screen">
     <Container>
       <div class="text-center mb-16">
-        <h1 class="text-4xl md:text-5xl font-bold font-heading text-primary mb-6">Build Inspiration</h1>
-        <p class="text-xl text-text-muted">See what the Tiny Explorer community is creating.</p>
+        <h1
+          class="text-4xl md:text-5xl font-bold font-heading text-primary mb-6"
+        >
+          Build Inspiration
+        </h1>
+        <p class="text-xl text-text-muted">
+          See what the Tiny Explorer community is creating.
+        </p>
       </div>
 
       <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-        {builds.map((build, i) => (
-          <div class="break-inside-avoid bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all">
-            <div class={`w-full bg-gray-200 ${i % 2 === 0 ? 'aspect-[3/4]' : 'aspect-square'} relative`}>
-               <div class="absolute inset-0 flex items-center justify-center text-text-muted opacity-50 font-medium">
-                  {build.title} photo
-               </div>
+        {
+          displayBuilds.map((build, i) => (
+            <div class="break-inside-avoid bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all">
+              <div
+                class={`w-full bg-gray-200 ${i % 2 === 0 ? "aspect-[3/4]" : "aspect-square"} relative`}
+              >
+                {build.image?.url ? (
+                  <img
+                    src={build.image.url}
+                    alt={build.title}
+                    class="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div class="absolute inset-0 flex items-center justify-center text-text-muted opacity-50 font-medium">
+                    {build.title} photo
+                  </div>
+                )}
+              </div>
+              <div class="p-4">
+                <h3 class="font-bold font-heading text-lg">{build.title}</h3>
+                <span class="text-sm text-primary uppercase tracking-wider">
+                  {build.category}
+                </span>
+              </div>
             </div>
-            <div class="p-4">
-              <h3 class="font-bold font-heading text-lg">{build.title}</h3>
-              <span class="text-sm text-primary uppercase tracking-wider">{build.type}</span>
-            </div>
-          </div>
-        ))}
+          ))
+        }
       </div>
-      
+
       <div class="mt-16 text-center">
         <p class="text-lg text-text-muted mb-4">Have a build to share?</p>
-        <a href="#" class="text-primary font-bold hover:underline">Tag us @TinyExplorer on Instagram!</a>
+        <a href="#" class="text-primary font-bold hover:underline"
+          >Tag us @TinyExplorer on Instagram!</a
+        >
       </div>
     </Container>
   </div>

@@ -119,9 +119,60 @@ const homepage = defineCollection({
     }),
 });
 
+const tinyVersePage = defineCollection({
+    loader: strapiLoader({
+        contentType: 'tiny-verse-page',
+        queryParams: {
+            populate: '*',
+        },
+        isSingleType: true,
+    }),
+    schema: z.object({
+        hero: z.object({
+            title: z.string(),
+            subtitle: z.string().optional().nullable(),
+        }).optional().nullable(),
+        intro: z.object({
+            title: z.string(),
+            content: z.array(z.any()), // Blocks
+        }).optional().nullable(),
+        materials: z.object({
+            title: z.string(),
+            subtitle: z.string().optional().nullable(),
+            features: z.array(z.object({
+                title: z.string(),
+                description: z.string().optional().nullable(),
+                icon: z.string().optional().nullable(),
+            })).optional().nullable(),
+        }).optional().nullable(),
+        seo: z.object({
+            metaTitle: z.string(),
+            metaDescription: z.string(),
+        }).optional().nullable(),
+    }),
+});
+
+const tinyVerse = defineCollection({
+    loader: strapiLoader({
+        contentType: 'tiny-verse',
+        queryParams: {
+            populate: '*'
+        }
+    }),
+    schema: z.object({
+        title: z.string(),
+        category: z.string(),
+        image: z.object({
+            url: z.string(),
+            alternativeText: z.string().optional().nullable(),
+        }).optional().nullable(),
+    }),
+});
+
 export const collections = {
     blog,
     about,
     homepage,
+    tinyVersePage,
+    tinyVerse,
 };
-
