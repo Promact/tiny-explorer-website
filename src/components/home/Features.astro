@@ -1,59 +1,86 @@
 ---
-import { Container } from '../common/Container';
-import { Layers, ShieldCheck, Sparkles, Heart } from 'lucide-react';
+import { Container } from "../common/Container";
+import { Layers, ShieldCheck, Sparkles, Heart } from "lucide-react";
 
-const features = [
-  {
-    icon: Layers,
-    title: 'Modular Design',
-    description: 'Build it high, flip it low, shape it into anything you can imagine. From secret forts to ninja training zones.',
-    color: 'text-blue-500',
-    bgColor: 'bg-blue-50'
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Durable & Safe',
-    description: 'Crafted with care using premium, non-toxic materials. Every stitch is made for safe tumbles and years of play.',
-    color: 'text-green-500',
-    bgColor: 'bg-green-50'
-  },
-  {
-    icon: Sparkles,
-    title: 'Easy-to-Clean',
-    description: 'Spills happen! Our fabrics are easy-to-clean, ready for whatever snack-time (or slime-time) brings.',
-    color: 'text-orange-500',
-    bgColor: 'bg-orange-50'
-  },
-  {
-    icon: Heart,
-    title: 'Comfort & Support',
-    description: 'Perfect for quiet moments too. Whether it’s story time or nap time, our sofas offer the right support.',
-    color: 'text-red-500',
-    bgColor: 'bg-red-50'
-  }
-];
+interface FeatureItem {
+  icon: string | null;
+  title: string;
+  description: string | null;
+}
+
+interface Props {
+  title: string;
+  subtitle?: string | null;
+  features: FeatureItem[] | null;
+}
+
+const { title, subtitle, features } = Astro.props;
+
+// Map Strapi icon names or titles to Lucide icons
+const getIcon = (iconName: string | null, featureTitle: string) => {
+  // Basic mapping based on keywords or exact matches
+  const key = (iconName || featureTitle).toLowerCase();
+
+  if (key.includes("module") || key.includes("layer") || key.includes("🧩"))
+    return Layers;
+  if (key.includes("safe") || key.includes("shield") || key.includes("durable"))
+    return ShieldCheck;
+  if (key.includes("clean") || key.includes("sparkle") || key.includes("☁️"))
+    return Sparkles;
+  if (key.includes("soft") || key.includes("comfort") || key.includes("heart"))
+    return Heart;
+
+  return Sparkles; // Default
+};
+
+// Map colors based on index or random for visual variety
+const getColorStyles = (index: number) => {
+  const styles = [
+    { color: "text-blue-500", bgColor: "bg-blue-50" },
+    { color: "text-green-500", bgColor: "bg-green-50" },
+    { color: "text-orange-500", bgColor: "bg-orange-50" },
+    { color: "text-red-500", bgColor: "bg-red-50" },
+  ];
+  return styles[index % styles.length];
+};
 ---
 
 <section class="py-20 bg-white">
   <Container>
     <div class="text-center max-w-3xl mx-auto mb-16">
-      <h2 class="text-4xl font-bold font-heading text-primary mb-6">What is a Play Sofa?</h2>
-      <p class="text-xl text-text-muted leading-relaxed">
-        Tiny Explorer's Play Sofa is more than just a seat—it's a launchpad for imagination!
-        Designed to be soft, safe, and endlessly versatile, our modular play sofas can transform into forts, slides, rocket ships, and anything else your little explorer dreams up.
-      </p>
+      <h2 class="text-4xl font-bold font-heading text-primary mb-6">{title}</h2>
+      {
+        subtitle && (
+          <p class="text-xl text-text-muted leading-relaxed">{subtitle}</p>
+        )
+      }
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      {features.map((feature) => (
-        <div class="flex flex-col items-center text-center p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300 border border-gray-100">
-          <div class={`p-4 rounded-full mb-4 ${feature.bgColor} ${feature.color}`}>
-            <feature.icon size={32} />
-          </div>
-          <h3 class="text-xl font-bold font-heading mb-3 text-text-main">{feature.title}</h3>
-          <p class="text-text-muted leading-relaxed">{feature.description}</p>
+    {
+      features && (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, index) => {
+            const IconComponent = getIcon(feature.icon, feature.title);
+            const style = getColorStyles(index);
+
+            return (
+              <div class="flex flex-col items-center text-center p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300 border border-gray-100">
+                <div
+                  class={`p-4 rounded-full mb-4 ${style.bgColor} ${style.color}`}
+                >
+                  <IconComponent size={32} />
+                </div>
+                <h3 class="text-xl font-bold font-heading mb-3 text-text-main">
+                  {feature.title}
+                </h3>
+                <p class="text-text-muted leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            );
+          })}
         </div>
-      ))}
-    </div>
+      )
+    }
   </Container>
 </section>

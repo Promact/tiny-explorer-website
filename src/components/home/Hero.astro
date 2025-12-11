@@ -1,40 +1,84 @@
 ---
-import { Image } from 'astro:assets';
-import { Container } from '../common/Container';
-import { Button } from '../common/Button';
-import heroBg from '../../assets/hero-bg.png';
+import { Image } from "astro:assets";
+import { Container } from "../common/Container";
+import { Button } from "../common/Button";
+import heroBg from "../../assets/hero-bg.png";
 
+interface Props {
+  title: string;
+  subtitle?: string | null;
+  ctaText?: string | null;
+  ctaLink?: string | null;
+  backgroundImage?: {
+    url: string;
+    alternativeText?: string | null;
+  } | null;
+}
+
+const {
+  title,
+  subtitle,
+  ctaText = "Shop Play Sofa",
+  ctaLink = "/shop",
+  backgroundImage,
+} = Astro.props;
 ---
 
 <section class="relative min-h-[90vh] flex items-center overflow-hidden">
   {/* Background Image with Overlay */}
   <div class="absolute inset-0 z-0">
-    <Image 
-      src={heroBg} 
-      alt="Kids playing on a modular sofa" 
-      class="w-full h-full object-cover"
-      quality="mid"
-      loading="eager"
-    />
-    <div class="absolute inset-0 bg-black/10"></div> {/* Dark overlay for text readability */}
+    {
+      backgroundImage?.url ? (
+        <img
+          src={backgroundImage.url}
+          alt={backgroundImage.alternativeText || "Hero background"}
+          class="w-full h-full object-cover"
+        />
+      ) : (
+        <Image
+          src={heroBg}
+          alt="Kids playing on a modular sofa"
+          class="w-full h-full object-cover"
+          quality="mid"
+          loading="eager"
+        />
+      )
+    }
+    <div class="absolute inset-0 bg-black/10"></div>
+    {/* Dark overlay for text readability */}
   </div>
 
   <Container className="relative z-10 grid grid-cols-1 lg:grid-cols-2">
-    <div class="space-y-8 max-w-2xl text-white"> {/* or text-primary-dark depending on image contrast */}
-      <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold font-heading leading-tight drop-shadow-md">
-        Unlocking the World, <br/>
-        <span class="text-white">One Tiny Adventure at a Time</span>
+    <div class="space-y-8 max-w-2xl text-white">
+      {/* or text-primary-dark depending on image contrast */}
+      <h1
+        class="text-5xl md:text-6xl lg:text-7xl font-bold font-heading leading-tight drop-shadow-md"
+      >
+        {title}
       </h1>
-      
-      <p class="text-xl md:text-2xl font-light leading-relaxed max-w-xl drop-shadow-sm text-gray-100">
-        Sparking imagination and endless unplugged fun with our versatile, durable play sofas—made for screen-free adventures!
-      </p>
+
+      {
+        subtitle && (
+          <p class="text-xl md:text-2xl font-light leading-relaxed max-w-xl drop-shadow-sm text-gray-100">
+            {subtitle}
+          </p>
+        )
+      }
 
       <div class="flex gap-4 pt-4">
-        <Button variant="primary" size="lg" className="shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-          Shop Play Sofa
+        <Button
+          formAction={ctaLink || "/shop"}
+          variant="primary"
+          size="lg"
+          className="shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+        >
+          {ctaText}
         </Button>
-        <Button variant="secondary" size="lg" className="shadow-lg bg-white/90 hover:bg-white text-primary backdrop-blur-sm">
+        <Button
+          variant="secondary"
+          size="lg"
+          className="shadow-lg bg-white/90 hover:bg-white text-primary backdrop-blur-sm"
+        >
           Watch Video
         </Button>
       </div>
@@ -43,8 +87,15 @@ import heroBg from '../../assets/hero-bg.png';
 
   {/* Decorative Wave/Curve at the bottom */}
   <div class="absolute bottom-0 left-0 right-0 z-20">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="w-full h-auto text-background fill-current">
-      <path fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,122.7C960,117,1056,171,1152,197.3C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1440 320"
+      class="w-full h-auto text-background fill-current"
+    >
+      <path
+        fill-opacity="1"
+        d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,122.7C960,117,1056,171,1152,197.3C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+      ></path>
     </svg>
   </div>
 </section>
