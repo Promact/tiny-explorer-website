@@ -1,0 +1,98 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Container } from "../../components/common/Container";
+import { ProductCard } from "../../components/shop/ProductCard";
+import { medusa } from "../../lib/medusa";
+
+interface Product {
+  id: string;
+  title: string;
+  price: number;
+  category: string;
+  slug: string;
+  image?: string;
+}
+
+let products: Product[] = [];
+try {
+  const { products: fetchedProducts } = await medusa.store.product.list({
+    fields: "+variants,+variants.prices,+collection",
+  });
+
+  products = fetchedProducts.map((p) => {
+    // get lowest price from variants
+    // Simply taking the first variant's first price for now.
+    // In production, we should pass region_id to filter prices.
+    const variants = p.variants as any[];
+    const priceAmount = variants?.[0]?.prices?.[0]?.amount || 0;
+
+    return {
+      id: p.id,
+      title: p.title,
+      // Medusa amounts are in lowest unit (e.g. cents/paise).
+      // Assuming 100 divisor for now.
+      price: priceAmount / 100,
+      category: p.collection?.title || "Shop",
+      slug: p.handle,
+      image: p.thumbnail ?? undefined,
+    };
+  });
+} catch (error) {
+  console.error("Failed to fetch products from Medusa:", error);
+}
+---
+
+<Layout title="Shop - Tiny Explorer">
+  <div class="bg-secondary/30 min-h-screen pb-20">
+    {/* Page Header */}
+    <div class="bg-white border-b border-primary/10 py-12 mb-12">
+      <Container>
+        <h1
+          class="text-4xl md:text-5xl font-bold font-heading text-primary mb-4"
+        >
+          Shop Collection
+        </h1>
+        <p class="text-lg text-text-muted max-w-2xl">
+          Discover our range of open-ended play furniture and toys designed to
+          spark imagination.
+        </p>
+      </Container>
+    </div>
+
+    <Container>
+      {/* Filters (Visual Only for Phase 1) */}
+      <div class="flex flex-wrap gap-4 mb-8 overflow-x-auto pb-4">
+        {
+          ["All", "Play Sofa", "Covers", "Liners", "Decor", "Toys"].map(
+            (cat, i) => (
+              <button
+                class={`px-6 py-2 rounded-full border transition-colors whitespace-nowrap ${i === 0 ? "bg-primary text-white border-primary" : "bg-white text-text-muted border-gray-200 hover:border-primary hover:text-primary"}`}
+              >
+                {cat}
+              </button>
+            ),
+          )
+        }
+      </div>
+
+      {/* Product Grid */}
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+      >
+        {
+          products.map((product) => (
+            <ProductCard
+              id={product.id}
+              title={product.title}
+              price={product.price}
+              category={product.category}
+              slug={product.slug}
+              image={product.image}
+              client:idle
+            />
+          ))
+        }
+      </div>
+    </Container>
+  </div>
+</Layout>

@@ -1,0 +1,75 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Container } from '../../components/common/Container';
+---
+
+<Layout title="Care & Safety - Tiny Explorer">
+  <div class="py-20 bg-white min-h-screen">
+    <Container className="max-w-4xl">
+      <div class="text-center mb-16">
+        <h1 class="text-4xl font-bold font-heading text-primary mb-6">Care & Safety</h1>
+        <p class="text-xl text-text-muted">Keep your Cosmos Play Sofa fresh, safe, and ready for adventure.</p>
+      </div>
+
+      <div class="space-y-12">
+        {/* Care Section */}
+        <section>
+          <div class="bg-secondary/20 rounded-3xl p-8 md:p-12">
+             <h2 class="text-3xl font-bold font-heading text-text-main mb-8 flex items-center gap-3">
+               <span class="bg-primary text-white p-2 rounded-lg">🧼</span> Product Care
+             </h2>
+             
+             <div class="space-y-8">
+               <div>
+                 <h3 class="text-xl font-bold mb-2">Washing the Covers</h3>
+                 <p class="text-text-muted leading-relaxed">
+                   Our microsuede covers are machine washable! Unzip and remove the covers. Wash on <strong>cold</strong> with mild detergent on a gentle cycle. Hang dry or tumble dry on <strong>low</strong> heat. Do not wash the foam itself.
+                 </p>
+               </div>
+
+               <div>
+                 <h3 class="text-xl font-bold mb-2">Spot Cleaning</h3>
+                 <p class="text-text-muted leading-relaxed">
+                   For small spills, dampen a cloth with warm water and a little soap. Blot (don't rub) the area gently.
+                 </p>
+               </div>
+
+               <div>
+                 <h3 class="text-xl font-bold mb-2">Foam Care</h3>
+                 <p class="text-text-muted leading-relaxed">
+                   Foam loves air! If you store your sofa for a long time, make sure it's not compressed. Do not wash the foam in a machine. If foam gets wet, air dry it thoroughly.
+                 </p>
+               </div>
+             </div>
+          </div>
+        </section>
+
+        {/* Safety Section */}
+        <section>
+          <div class="bg-blue-50 rounded-3xl p-8 md:p-12">
+             <h2 class="text-3xl font-bold font-heading text-text-main mb-8 flex items-center gap-3">
+               <span class="bg-blue-500 text-white p-2 rounded-lg">🛡️</span> Safety First
+             </h2>
+             
+             <div class="space-y-6">
+                <ul class="space-y-4 list-disc list-inside text-text-muted leading-relaxed">
+                   <li><strong>Age Recommendation:</strong> The Cosmos Play Sofa is designed for children of all ages, but we recommend it for ages 1+ who can sit unassisted.</li>
+                   <li><strong>Supervision:</strong> Always supervise play, especially with younger children or when building high structures.</li>
+                   <li><strong>Placement:</strong> Place the sofa on a flat surface. Avoid placing near open flames, heaters, or sharp objects.</li>
+                   <li><strong>Zippers:</strong> We use high-quality zippers with "garages" (little pockets) to tuck the zipper heads away, preventing scratches and keeping them out of curiosity's way.</li>
+                </ul>
+             </div>
+          </div>
+        </section>
+
+        {/* Warranty */}
+        <section class="text-center pt-8 border-t border-gray-100">
+           <h3 class="text-2xl font-bold font-heading mb-4">Warranty</h3>
+           <p class="text-text-muted max-w-2xl mx-auto">
+             We stand by our quality. Tiny Explorer products come with a <strong>one-year limited warranty</strong> on covers and foam seams. If you have any issues, reach out to us at <a href="mailto:hello@tinyexplorer.in" class="text-primary font-bold">hello@tinyexplorer.in</a>.
+           </p>
+        </section>
+      </div>
+    </Container>
+  </div>
+</Layout>

@@ -1,0 +1,36 @@
+---
+import { Container } from '../common/Container';
+import { Home, School, Tent, Smile, Building, PartyPopper } from 'lucide-react';
+import { Button } from '../common/Button';
+
+const audiences = [
+  { icon: Home, label: "Children's Rooms" },
+  { icon: School, label: "Preschools & Daycares" },
+  { icon: Tent, label: "Play Zones" },
+  { icon: PartyPopper, label: "Parties & Events" },
+  { icon: Smile, label: "Therapy Centres" },
+  { icon: Building, label: "Co-working Spaces" }
+];
+---
+
+<section class="py-20 bg-secondary/30">
+  <Container>
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold font-heading text-primary mb-4">Who are they for?</h2>
+      <p class="text-lg text-text-muted">Perfect spaces for growing minds everywhere.</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-12">
+      {audiences.map((item) => (
+        <div class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+          <item.icon size={40} className="text-primary mb-4" strokeWidth={1.5} />
+          <span class="font-medium text-text-main text-center">{item.label}</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="text-center">
+      <Button variant="outline" size="lg">Learn More About Uses</Button>
+    </div>
+  </Container>
+</section>

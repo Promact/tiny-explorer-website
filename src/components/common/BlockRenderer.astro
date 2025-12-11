@@ -1,0 +1,75 @@
+---
+// Simple Strapi Blocks Renderer (Paragraphs, Headings, Lists)
+
+interface Props {
+    blocks: any[];
+}
+
+const { blocks } = Astro.props;
+---
+
+{
+    blocks.map((block) => {
+        if (block.type === "paragraph") {
+            return (
+                <p>
+                    {block.children.map((child: any) =>
+                        child.bold ? (
+                            <strong>{child.text}</strong>
+                        ) : child.italic ? (
+                            <em>{child.text}</em>
+                        ) : child.underline ? (
+                            <u>{child.text}</u>
+                        ) : child.strikethrough ? (
+                            <s>{child.text}</s>
+                        ) : child.code ? (
+                            <code>{child.text}</code>
+                        ) : (
+                            child.text
+                        ),
+                    )}
+                </p>
+            );
+        }
+
+        if (block.type === "heading") {
+            const Tag = `h${block.level}` as any;
+            return (
+                <Tag class="text-primary font-heading mt-6 mb-4">
+                    {block.children.map((child: any) => child.text)}
+                </Tag>
+            );
+        }
+
+        if (block.type === "list") {
+            const Tag = block.format === "ordered" ? "ol" : "ul";
+            return (
+                <Tag
+                    class={
+                        block.format === "ordered"
+                            ? "list-decimal pl-5"
+                            : "list-disc pl-5"
+                    }
+                >
+                    {block.children.map((item: any) => (
+                        <li>{item.children.map((child: any) => child.text)}</li>
+                    ))}
+                </Tag>
+            );
+        }
+
+        if (block.type === "image") {
+            return (
+                <img
+                    src={block.image.url}
+                    alt={block.image.alternativeText}
+                    width={block.image.width}
+                    height={block.image.height}
+                    class="my-4 rounded-lg"
+                />
+            );
+        }
+
+        return null;
+    })
+}

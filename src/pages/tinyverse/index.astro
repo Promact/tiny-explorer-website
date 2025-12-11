@@ -1,0 +1,106 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Container } from '../../components/common/Container';
+import { Button } from '../../components/common/Button';
+import { Image } from 'astro:assets';
+
+const materials = [
+  {
+    title: "CertiPUR-US® Foam",
+    desc: "Supportive enough for forts, soft enough for naps. No harmful chemicals, heavy metals, or ozone depleters."
+  },
+  {
+    title: "Soft Microsuede Covers",
+    desc: "Velvety soft, machine washable, and durable. Friction-fit to keep builds steady."
+  },
+  {
+    title: "Premium Zippers",
+    desc: "YKK zippers tucked away in zipper garages to protect little fingers and walls."
+  }
+];
+---
+
+<Layout title="TinyVerse - What is a Play Sofa?">
+  <div class="bg-secondary/20 min-h-screen">
+    {/* Hero Section */}
+    <div class="bg-primary text-white py-20">
+      <Container>
+        <div class="max-w-3xl mx-auto text-center space-y-6">
+          <h1 class="text-4xl md:text-6xl font-bold font-heading">Welcome to the TinyVerse</h1>
+          <p class="text-xl md:text-2xl font-light opacity-90">
+            One Sofa. Infinite Possibilities.
+          </p>
+        </div>
+      </Container>
+    </div>
+
+    {/* What is it section */}
+    <div class="py-20">
+      <Container>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div class="space-y-6">
+            <h2 class="text-3xl md:text-4xl font-bold font-heading text-primary">Less Screen Time, More Dream Time</h2>
+            <p class="text-lg text-text-muted leading-relaxed">
+              The Cosmos Play Sofa isn't just furniture—it's an engine for imagination. It replaces single-use toys with an open-ended tool that grows with your child. 
+            </p>
+            <p class="text-lg text-text-muted leading-relaxed">
+              From a toddler practicing gross motor skills to a tween chilling with a book, the TinyVerse adapts to every stage of childhood.
+            </p>
+            <div class="pt-4">
+              <Button size="lg">Shop the Cosmos</Button>
+            </div>
+          </div>
+          <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 relative">
+             {/* Abstract shape illustration placeholder */}
+             <div class="aspect-square bg-secondary/30 rounded-2xl flex items-center justify-center text-primary font-bold">
+                Image: Kids playing on sofa
+             </div>
+          </div>
+        </div>
+      </Container>
+    </div>
+
+    {/* Materials Section */}
+    <div class="py-20 bg-white">
+      <Container>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold font-heading text-primary mb-4">What's Inside Matters</h2>
+          <p class="text-text-muted max-w-2xl mx-auto">We utilize only the best materials because your kids deserve nothing less.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {materials.map((item) => (
+            <div class="p-8 rounded-2xl bg-secondary/10 hover:bg-secondary/30 transition-colors">
+              <h3 class="text-xl font-bold font-heading text-text-main mb-3">{item.title}</h3>
+              <p class="text-text-muted leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </div>
+
+    {/* Navigation to other TinyVerse pages */}
+    <div class="py-20">
+      <Container>
+        <h2 class="text-3xl font-bold font-heading text-center mb-12">Explore More</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+           <a href="/tinyverse/gallery" class="group block overflow-hidden rounded-3xl relative aspect-[16/9] bg-gray-100">
+             <div class="absolute inset-0 bg-primary/20 group-hover:bg-primary/10 transition-colors z-10"></div>
+             <div class="absolute bottom-0 left-0 p-8 z-20">
+               <h3 class="text-3xl font-bold text-text-main mb-2">Inspiration Gallery</h3>
+               <p class="text-text-main font-medium group-hover:translate-x-2 transition-transform">See what others are building &rarr;</p>
+             </div>
+           </a>
+           
+           <a href="/tinyverse/care" class="group block overflow-hidden rounded-3xl relative aspect-[16/9] bg-gray-100">
+             <div class="absolute inset-0 bg-green-900/10 group-hover:bg-green-900/5 transition-colors z-10"></div>
+             <div class="absolute bottom-0 left-0 p-8 z-20">
+               <h3 class="text-3xl font-bold text-text-main mb-2">Care & Safety</h3>
+               <p class="text-text-main font-medium group-hover:translate-x-2 transition-transform">Keep it fresh & safe &rarr;</p>
+             </div>
+           </a>
+        </div>
+      </Container>
+    </div>
+  </div>
+</Layout>

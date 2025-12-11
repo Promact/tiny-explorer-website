@@ -1,0 +1,75 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Container } from "../components/common/Container";
+import { getCollection } from "astro:content";
+import BlockRenderer from "../components/common/BlockRenderer.astro";
+
+// Fetch About Page content from Strapi
+const aboutPages = await getCollection("about");
+const aboutPage = aboutPages[0]?.data;
+
+if (!aboutPage) {
+  throw new Error(
+    "About Page content not found. Please ensure Strapi is running and seeded.",
+  );
+}
+---
+
+<Layout title={aboutPage.seo?.metaTitle || "About Us - Tiny Explorer"}>
+  <div class="py-20 bg-secondary/30 min-h-screen">
+    <Container className="max-w-4xl">
+      <div class="text-center mb-16">
+        <h1
+          class="text-4xl md:text-5xl font-bold font-heading text-primary mb-6"
+        >
+          {aboutPage.hero?.title || "About Tiny Explorer"}
+        </h1>
+        {
+          aboutPage.hero?.subtitle && (
+            <p class="text-xl text-text-muted italic">
+              {aboutPage.hero.subtitle}
+            </p>
+          )
+        }
+      </div>
+
+      <div
+        class="prose prose-lg prose-brown mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-primary/10"
+      >
+        {
+          aboutPage.story &&
+            aboutPage.story.map((section: any) => (
+              <div class="mb-10 last:mb-0">
+                {section.title && (
+                  <h3 class="text-primary font-heading text-2xl mb-4">
+                    {section.title}
+                  </h3>
+                )}
+                <BlockRenderer blocks={section.content} />
+              </div>
+            ))
+        }
+      </div>
+
+      {/* Brand Values */}
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16 text-center"
+      >
+        {
+          [
+            "Lovingly Made in India 🇮🇳",
+            "Safe for Tiny Hands & Big Adventures 🛡️",
+            "Built to Last, Loved for Generations ♻️",
+            "Designed to Grow with Curious Minds 🌱",
+            "Encourages Imagination, Not Instructions 🚀",
+            "Sprinkled with Pure Childhood Joy ✨",
+          ].map((value) => (
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-50 flex items-center justify-center font-medium text-text-main">
+              {value}
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </div>
+</Layout>

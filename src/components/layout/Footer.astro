@@ -1,0 +1,117 @@
+---
+import { Container } from "../common/Container";
+---
+
+<footer class="bg-secondary pt-16 pb-8 border-t border-primary/20 mt-auto">
+  <Container className="">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+      {/* Brand Column */}
+      <div class="space-y-4">
+        <h3 class="text-2xl font-bold font-heading text-primary">
+          Tiny Explorer
+        </h3>
+        <p class="text-text-muted leading-relaxed">
+          Unlocking the world, one tiny adventure at a time. Premium play sofas
+          and open-ended toys made for imagination.
+        </p>
+      </div>
+
+      {/* Shop Column */}
+      <div class="space-y-4">
+        <h4 class="font-bold text-lg">Shop</h4>
+        <ul class="space-y-2">
+          <li>
+            <a
+              href="/shop/play-sofas"
+              class="text-text-muted hover:text-primary transition-colors"
+              >Play Sofas</a>
+          </li>
+          <li>
+            <a
+              href="/shop/covers"
+              class="text-text-muted hover:text-primary transition-colors"
+              >Covers</a>
+          </li>
+          <li>
+            <a
+              href="/shop/liners"
+              class="text-text-muted hover:text-primary transition-colors"
+              >Waterproof Liners</a>
+          </li>
+          <li>
+            <a
+              href="/shop/decor"
+              class="text-text-muted hover:text-primary transition-colors"
+              >Decor & Toys</a>
+          </li>
+        </ul>
+      </div>
+
+      {/* Explore Column */}
+      <div class="space-y-4">
+        <h4 class="font-bold text-lg">Explore</h4>
+        <ul class="space-y-2">
+          <li>
+            <a
+              href="/about"
+              class="text-text-muted hover:text-primary transition-colors"
+              >About Us</a>
+          </li>
+          <li>
+            <a
+              href="/tinyverse"
+              class="text-text-muted hover:text-primary transition-colors"
+              >TinyVerse</a>
+          </li>
+          <li>
+            <a
+              href="/blog"
+              class="text-text-muted hover:text-primary transition-colors"
+              >Blog</a>
+          </li>
+          <li>
+            <a
+              href="/contact"
+              class="text-text-muted hover:text-primary transition-colors"
+              >Contact</a>
+          </li>
+        </ul>
+      </div>
+
+      {/* Newsletter Column */}
+      <div class="space-y-4">
+        <h4 class="font-bold text-lg">Stay in the Loop</h4>
+        <p class="text-text-muted">
+          Join our community for play ideas, new launches, and tiny surprises.
+        </p>
+        <form class="flex gap-2">
+          <input
+            type="email"
+            placeholder="Your email"
+            class="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+          />
+          <button
+            class="bg-primary text-white px-6 py-2 rounded-full hover:bg-primary-dark transition-colors font-medium"
+          >
+            Join
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div
+      class="pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center text-sm text-text-muted"
+    >
+      <p>
+        &copy; {new Date().getFullYear()} Tiny Explorer. All rights reserved.
+      </p>
+      <div class="flex gap-6 mt-4 md:mt-0">
+        <a href="/refund-policy" class="hover:text-primary">Refund Policy</a>
+        <a href="/privacy-policy" class="hover:text-primary">Privacy Policy</a>
+        <a href="/terms-of-service" class="hover:text-primary"
+          >Terms of Service</a
+        >
+      </div>
+    </div>
+  </Container>
+</footer>

@@ -1,0 +1,160 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Container } from '../components/common/Container';
+import { Button } from '../components/common/Button';
+
+const benefits = [
+  {
+    title: "Earn Commissions",
+    description: "Earn a healthy margin on every sale you refer to us. We value your partnership and ensuring it's mutually beneficial.",
+    icon: "💰"
+  },
+  {
+    title: "Premium Products",
+    description: "Recommend high-quality, aesthetic play sofas that parents love and that complement your beautiful interior designs.",
+    icon: "✨"
+  },
+  {
+    title: "Exclusive Support",
+    description: "Get access to a dedicated partner support team to help you with product information, custom requests, and order tracking.",
+    icon: "🤝"
+  }
+];
+
+const audience = [
+  {
+    title: "Interior Designers",
+    description: "Integrate our modular play sofas into your kids' room projects to create versatile and stylish spaces.",
+    image: "/assets/hero-bg.png" // Placeholder, reusing existing asset
+  },
+  {
+    title: "Architects",
+    description: "Design play areas that are both functional and beautiful, adding value to your residential projects.",
+    image: "/assets/hero-bg.png" // Placeholder
+  },
+  {
+    title: "Influencers",
+    description: "Share the joy of open-ended play with your audience and get rewarded for spreading the word.",
+    image: "/assets/hero-bg.png" // Placeholder
+  }
+];
+---
+
+<Layout title="Partner with Tiny Explorer">
+  <!-- Hero Section -->
+  <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+    <div class="absolute inset-0 bg-secondary/30 -z-10"></div>
+    <Container>
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl lg:text-5xl font-bold font-outfit text-text-main mb-6">
+          Become a <span class="text-primary">Tiny Explorer</span> Partner
+        </h1>
+        <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+          Empowering Architects, Interior Designers, and Influencers to create magical, imaginative spaces for children while earning rewards.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button size="lg" client:load onClick={() => document.getElementById('partner-form')?.scrollIntoView({ behavior: 'smooth' })}>
+            Apply Now
+          </Button>
+          <Button variant="outline" size="lg" client:load onClick={() => document.getElementById('benefits')?.scrollIntoView({ behavior: 'smooth' })}>
+            Learn More
+          </Button>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Benefits Section -->
+  <section id="benefits" class="py-20 bg-white">
+    <Container>
+      <div class="text-center mb-16">
+        <h2 class="text-3xl lg:text-4xl font-bold font-outfit text-text-main mb-4">Why Partner With Us?</h2>
+        <p class="text-lg text-gray-600">Join our community and enjoy exclusive perks.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        {benefits.map(benefit => (
+          <div class="p-8 rounded-2xl bg-secondary/10 hover:bg-secondary/20 transition-colors text-center">
+            <div class="text-4xl mb-4">{benefit.icon}</div>
+            <h3 class="text-xl font-bold font-outfit text-text-main mb-3">{benefit.title}</h3>
+            <p class="text-gray-600">{benefit.description}</p>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- Audience Section -->
+  <section class="py-20 bg-gray-50">
+    <Container>
+       <div class="text-center mb-16">
+        <h2 class="text-3xl lg:text-4xl font-bold font-outfit text-text-main mb-4">Who Should Join?</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        {audience.map(item => (
+          <div class="group relative overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow">
+            <div class="aspect-w-16 aspect-h-9 h-48 bg-gray-200 overflow-hidden">
+               <!-- Using a div with background color as fallback/placeholder if image fails or for design preference -->
+               <div class="w-full h-full bg-secondary/20 flex items-center justify-center text-4xl">
+                  Example
+               </div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold font-outfit text-text-main mb-2">{item.title}</h3>
+              <p class="text-gray-600">{item.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- CTA / Form Section -->
+  <section id="partner-form" class="py-20 bg-white">
+    <Container>
+      <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-gray-100">
+        <div class="text-center mb-10">
+          <h2 class="text-3xl font-bold font-outfit text-text-main mb-4">Ready to get started?</h2>
+          <p class="text-gray-600">Fill out the form below and we'll get back to you within 24 hours.</p>
+        </div>
+
+        <form class="space-y-6" onsubmit="event.preventDefault(); alert('Thanks for your interest! This is a demo form.');">
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+              <input type="text" id="firstName" name="firstName" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="John" required />
+            </div>
+            <div>
+              <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+              <input type="text" id="lastName" name="lastName" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="Doe" required />
+            </div>
+          </div>
+
+          <div>
+             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+             <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="john@example.com" required />
+          </div>
+
+          <div>
+            <label for="type" class="block text-sm font-medium text-gray-700 mb-1">I am a...</label>
+            <select id="type" name="type" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+              <option value="interior_designer">Interior Designer</option>
+              <option value="architect">Architect</option>
+              <option value="influencer">Influencer</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message (Optional)</label>
+            <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="Tell us a bit about yourself..."></textarea>
+          </div>
+
+          <div class="pt-4">
+             <Button fullWidth size="lg" type="submit">Submit Application</Button>
+          </div>
+        </form>
+      </div>
+    </Container>
+  </section>
+</Layout>

@@ -1,0 +1,106 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { Container } from "../components/common/Container";
+
+// Fetch posts from the 'blog' collection (Strapi)
+let posts: CollectionEntry<"blog">[] = [];
+let error = null;
+
+try {
+    posts = await getCollection("blog");
+} catch (e) {
+    console.error("Failed to fetch blog posts from Strapi", e);
+    error = e;
+}
+---
+
+<Layout title="Strapi Blog Test - Tiny Explorer">
+    <div class="py-20 bg-background min-h-screen">
+        <Container>
+            <div class="text-center mb-16">
+                <h1
+                    class="text-4xl md:text-5xl font-bold font-heading text-primary mb-6"
+                >
+                    Strapi Blog Test
+                </h1>
+                <p class="text-xl text-text-muted">
+                    Fetching content from Strapi CMS.
+                </p>
+            </div>
+
+            {
+                error && (
+                    <div
+                        class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative mb-8"
+                        role="alert"
+                    >
+                        <strong class="font-bold">Error:</strong>
+                        <span class="block sm:inline">
+                            {" "}
+                            {(error as Error).message}
+                        </span>
+                        <p class="mt-2 text-sm">
+                            Make sure STRAPI_URL and STRAPI_TOKEN are set in
+                            your .env file.
+                        </p>
+                    </div>
+                )
+            }
+
+            {
+                posts.length === 0 && !error ? (
+                    <p class="text-center text-gray-500">
+                        No posts found or loader not configured correctly (or
+                        Strapi is empty).
+                    </p>
+                ) : (
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                        {posts.map((post) => (
+                            <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group cursor-pointer">
+                                {post.data.cover && (
+                                    <div class="aspect-video bg-gray-100 relative overflow-hidden">
+                                        <img
+                                            src={post.data.cover.url}
+                                            alt={
+                                                post.data.cover
+                                                    .alternativeText ||
+                                                post.data.title
+                                            }
+                                            class="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                )}
+                                <div class="p-8 flex flex-col flex-grow">
+                                    <div class="flex items-center gap-4 text-sm text-text-muted mb-4">
+                                        {post.data.category && (
+                                            <span class="text-primary font-bold uppercase tracking-wide">
+                                                {post.data.category.name}
+                                            </span>
+                                        )}
+                                        {post.data.publishedAt && (
+                                            <>
+                                                <span>•</span>
+                                                <span>
+                                                    {new Date(
+                                                        post.data.publishedAt,
+                                                    ).toLocaleDateString()}
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+                                    <h2 class="text-2xl font-bold font-heading text-text-main mb-3 group-hover:text-primary transition-colors">
+                                        {post.data.title}
+                                    </h2>
+                                    <p class="text-text-muted leading-relaxed mb-6 flex-grow">
+                                        {post.data.description}
+                                    </p>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                )
+            }
+        </Container>
+    </div>
+</Layout>
