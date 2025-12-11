@@ -1,7 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { Container } from '../components/common/Container';
-import { Button } from '../components/common/Button';
+import Layout from "../layouts/Layout.astro";
+import { Container } from "../components/common/Container";
+import { Button } from "../components/common/Button";
 ---
 
 <Layout title="Contact Us - Tiny Explorer">
@@ -11,19 +11,32 @@ import { Button } from '../components/common/Button';
         {/* Contact Info */}
         <div class="space-y-8">
           <div>
-            <h1 class="text-4xl font-bold font-heading text-primary mb-4">Get in Touch</h1>
+            <h1 class="text-4xl font-bold font-heading text-primary mb-4">
+              Get in Touch
+            </h1>
             <p class="text-lg text-text-muted">
-              Have a question about our play sofas? Need help with an order? 
-              Or just want to share a picture of your little explorer's latest creation? 
-              We'd love to hear from you!
+              Have a question about our play sofas? Need help with an order? Or
+              just want to share a picture of your little explorer's latest
+              creation? We'd love to hear from you!
             </p>
           </div>
 
           <div class="space-y-4">
             <div class="flex items-start gap-4">
               <div class="bg-secondary p-3 rounded-full text-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                  ></path>
                 </svg>
               </div>
               <div>
@@ -31,10 +44,20 @@ import { Button } from '../components/common/Button';
                 <p class="text-text-muted">hello@tinyexplorer.in</p>
               </div>
             </div>
-             <div class="flex items-start gap-4">
+            <div class="flex items-start gap-4">
               <div class="bg-secondary p-3 rounded-full text-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
               <div>
@@ -47,21 +70,116 @@ import { Button } from '../components/common/Button';
 
         {/* Contact Form */}
         <div class="bg-secondary/20 p-8 rounded-3xl border border-primary/10">
-          <form class="space-y-6">
+          <form class="space-y-6" id="contact-form">
             <div>
-              <label for="name" class="block text-sm font-medium text-text-main mb-2">Name</label>
-              <input type="text" id="name" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Your Name" />
+              <label
+                for="name"
+                class="block text-sm font-medium text-text-main mb-2"
+                >Name</label
+              >
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                placeholder="Your Name"
+              />
             </div>
             <div>
-              <label for="email" class="block text-sm font-medium text-text-main mb-2">Email</label>
-              <input type="email" id="email" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="your@email.com" />
+              <label
+                for="email"
+                class="block text-sm font-medium text-text-main mb-2"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                placeholder="your@email.com"
+              />
             </div>
-             <div>
-              <label for="message" class="block text-sm font-medium text-text-main mb-2">Message</label>
-              <textarea id="message" rows="4" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="How can we help?"></textarea>
+            <div>
+              <label
+                for="message"
+                class="block text-sm font-medium text-text-main mb-2"
+                >Message</label
+              >
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows="4"
+                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                placeholder="How can we help?"></textarea>
             </div>
-            <Button fullWidth size="lg">Send Message</Button>
+            <Button fullWidth size="lg" type="submit">Send Message</Button>
+            <div
+              id="form-status"
+              class="hidden text-center text-sm font-bold mt-4"
+            >
+            </div>
           </form>
+
+          <script>
+            const form = document.getElementById(
+              "contact-form",
+            ) as HTMLFormElement;
+            const status = document.getElementById("form-status");
+
+            if (form) {
+              form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+
+                if (status) {
+                  status.textContent = "Sending...";
+                  status.classList.remove(
+                    "hidden",
+                    "text-green-600",
+                    "text-red-600",
+                  );
+                  status.classList.add("text-text-muted");
+                }
+
+                try {
+                  const response = await fetch(
+                    "http://localhost:1337/api/contact-submissions",
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ data }),
+                    },
+                  );
+
+                  if (response.ok) {
+                    if (status) {
+                      status.textContent =
+                        "Message sent successfully! We will get back to you soon.";
+                      status.classList.remove("text-text-muted");
+                      status.classList.add("text-green-600");
+                    }
+                    form.reset();
+                  } else {
+                    throw new Error("Failed to send message");
+                  }
+                } catch (error) {
+                  console.error(error);
+                  if (status) {
+                    status.textContent =
+                      "Oops! Something went wrong. Please try again later.";
+                    status.classList.remove("text-text-muted");
+                    status.classList.add("text-red-600");
+                  }
+                }
+              });
+            }
+          </script>
         </div>
       </div>
     </Container>

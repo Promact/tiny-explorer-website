@@ -1,72 +1,91 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { Container } from '../../components/common/Container';
-import { Image } from 'astro:assets';
+import Layout from "../../layouts/Layout.astro";
+import { Container } from "../../components/common/Container";
+import { getCollection } from "astro:content";
 
-const posts = [
-  {
-    title: "5 Ways to spark imagination with a Play Sofa",
-    excerpt: "From deep sea diving to mountain climbing, discover how open-ended play builds creative minds.",
-    date: "Dec 10, 2025",
-    category: "Play Ideas",
-    slug: "5-ways-to-spark-imagination"
-  },
-  {
-    title: "Why we chose open-ended toys for our kids",
-    excerpt: "A personal look at our journey into mindful parenting and the benefits of less structured play.",
-    date: "Nov 28, 2025",
-    category: "Parenting",
-    slug: "why-open-ended-toys"
-  },
-  {
-    title: "How to clean your Cosmos Play Sofa",
-    excerpt: "Simple tips and tricks to keep your play sofa looking fresh, even after the messiest adventures.",
-    date: "Nov 15, 2025",
-    category: "Care Guide",
-    slug: "how-to-clean-sofa"
-  },
-  {
-    title: "Designing a Montessori-inspired playroom",
-    excerpt: "Create a space that encourages independence and exploration with these design principles.",
-    date: "Oct 20, 2025",
-    category: "Design",
-    slug: "montessori-playroom"
-  }
-];
+const posts = await getCollection("blog");
+const sortedPosts = posts.sort(
+  (a, b) =>
+    new Date(b.data.publishedAt || 0).getTime() -
+    new Date(a.data.publishedAt || 0).getTime(),
+);
 ---
 
 <Layout title="Blog - Tiny Explorer">
   <div class="py-20 bg-background min-h-screen">
     <Container>
       <div class="text-center mb-16">
-        <h1 class="text-4xl md:text-5xl font-bold font-heading text-primary mb-6">Tiny Tales & Tips</h1>
-        <p class="text-xl text-text-muted">Stories, play ideas, and parenting hacks from our world to yours.</p>
+        <h1
+          class="text-4xl md:text-5xl font-bold font-heading text-primary mb-6"
+        >
+          Tiny Explorer Blog
+        </h1>
+        <p class="text-xl text-text-muted">
+          Stories, tips, and inspiration for creative families.
+        </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-        {posts.map((post) => (
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group cursor-pointer">
-            <div class="aspect-video bg-gray-100 relative overflow-hidden">
-               <div class="w-full h-full flex items-center justify-center bg-secondary/20 text-text-muted group-hover:bg-secondary/30 transition-colors">
-                  <span class="font-medium">Image for {post.category}</span>
-               </div>
-            </div>
-            <div class="p-8 flex flex-col flex-grow">
-              <div class="flex items-center gap-4 text-sm text-text-muted mb-4">
-                <span class="text-primary font-bold uppercase tracking-wide">{post.category}</span>
-                <span>•</span>
-                <span>{post.date}</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {
+          sortedPosts.map((post) => (
+            <a
+              href={`/blog/${post.data.slug}`}
+              class="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all h-full"
+            >
+              <div class="aspect-video bg-gray-200 relative overflow-hidden">
+                {post.data.cover?.url ? (
+                  <img
+                    src={post.data.cover.url}
+                    alt={post.data.cover.alternativeText || post.data.title}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div class="absolute inset-0 flex items-center justify-center text-text-muted opacity-50 font-medium bg-secondary/10">
+                    Tiny Explorer
+                  </div>
+                )}
               </div>
-              <h2 class="text-2xl font-bold font-heading text-text-main mb-3 group-hover:text-primary transition-colors">
-                {post.title}
-              </h2>
-              <p class="text-text-muted leading-relaxed mb-6 flex-grow">
-                {post.excerpt}
-              </p>
-              <div class="text-primary font-medium group-hover:underline">Read More &rarr;</div>
+
+              <div class="p-6 flex flex-col flex-grow">
+                <div class="flex items-center gap-2 text-sm text-primary font-medium mb-3">
+                  {post.data.category?.name && (
+                    <span class="bg-secondary/10 px-2 py-1 rounded-md">
+                      {post.data.category.name}
+                    </span>
+                  )}
+                  {post.data.publishedAt && (
+                    <span class="text-text-muted">
+                      • {new Date(post.data.publishedAt).toLocaleDateString()}
+                    </span>
+                  )}
+                </div>
+
+                <h2 class="text-xl font-bold font-heading text-text-main mb-2 group-hover:text-primary transition-colors">
+                  {post.data.title}
+                </h2>
+
+                <p class="text-text-muted line-clamp-3 mb-4 flex-grow">
+                  {post.data.description}
+                </p>
+
+                <div class="text-primary font-bold text-sm mt-auto flex items-center">
+                  Read Article{" "}
+                  <span class="ml-1 group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
+                </div>
+              </div>
+            </a>
+          ))
+        }
+
+        {
+          sortedPosts.length === 0 && (
+            <div class="col-span-full text-center py-20 text-text-muted">
+              <p>No articles found. Check back soon!</p>
             </div>
-          </article>
-        ))}
+          )
+        }
       </div>
     </Container>
   </div>

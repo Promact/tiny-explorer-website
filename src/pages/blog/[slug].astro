@@ -1,0 +1,119 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Container } from "../../components/common/Container";
+import { getCollection } from "astro:content";
+import BlockRenderer from "../../components/common/BlockRenderer.astro";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("blog");
+    return posts.map((post) => ({
+        params: { slug: post.data.slug },
+        props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+const { title, description, cover, author, category, publishedAt, blocks } =
+    post.data;
+---
+
+<Layout title={`${title} - Tiny Explorer Blog`} description={description}>
+    <article class="min-h-screen pb-20">
+        {/* Header */}
+        <div class="bg-secondary/10 py-20">
+            <Container>
+                <div class="max-w-4xl mx-auto text-center space-y-6">
+                    <div
+                        class="flex items-center justify-center gap-4 text-sm font-medium text-primary"
+                    >
+                        {
+                            category?.name && (
+                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">
+                                    {category.name}
+                                </span>
+                            )
+                        }
+                        {
+                            publishedAt && (
+                                <span>
+                                    {new Date(publishedAt).toLocaleDateString(
+                                        undefined,
+                                        { dateStyle: "long" },
+                                    )}
+                                </span>
+                            )
+                        }
+                    </div>
+
+                    <h1
+                        class="text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-text-main leading-tight"
+                    >
+                        {title}
+                    </h1>
+
+                    {
+                        description && (
+                            <p class="text-xl text-text-muted max-w-2xl mx-auto leading-relaxed">
+                                {description}
+                            </p>
+                        )
+                    }
+
+                    {
+                        author?.name && (
+                            <div class="pt-4 flex items-center justify-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                                    {author.name[0]}
+                                </div>
+                                <div class="text-left">
+                                    <p class="font-bold text-text-main text-sm">
+                                        {author.name}
+                                    </p>
+                                    <p class="text-xs text-text-muted">
+                                        Author
+                                    </p>
+                                </div>
+                            </div>
+                        )
+                    }
+                </div>
+            </Container>
+        </div>
+
+        {/* Featured Image */}
+        {
+            cover?.url && (
+                <div class="w-full max-w-5xl mx-auto -mt-12 md:-mt-20 px-4 relative z-10">
+                    <img
+                        src={cover.url}
+                        alt={cover.alternativeText || title}
+                        class="w-full aspect-video object-cover rounded-3xl shadow-xl"
+                    />
+                </div>
+            )
+        }
+
+        {/* Content */}
+        <div class="py-16 md:py-24">
+            <Container>
+                <div
+                    class="max-w-3xl mx-auto prose prose-lg prose-headings:font-heading prose-headings:font-bold prose-a:text-primary prose-img:rounded-2xl"
+                >
+                    <BlockRenderer blocks={blocks || []} />
+                </div>
+            </Container>
+        </div>
+
+        {/* Back Link */}
+        <div class="border-t border-gray-100 py-12 text-center">
+            <Container>
+                <a
+                    href="/blog"
+                    class="inline-flex items-center text-primary font-bold hover:underline"
+                >
+                    ← Back to all articles
+                </a>
+            </Container>
+        </div>
+    </article>
+</Layout>
