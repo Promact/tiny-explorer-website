@@ -85,6 +85,30 @@ const homepage = defineCollection({
                 description: z.string().optional().nullable(),
             })).optional().nullable(),
         }).optional().nullable(),
+        audience: z.object({
+            title: z.string(),
+            subtitle: z.string().optional().nullable(),
+            audiences: z.array(z.object({
+                icon: z.string().optional().nullable(),
+                label: z.string(),
+            })).optional().nullable(),
+        }).optional().nullable(),
+        useCases: z.object({
+            title: z.string(),
+            subtitle: z.string().optional().nullable(),
+            activities: z.array(z.object({
+                icon: z.string().optional().nullable(),
+                label: z.string(),
+            })).optional().nullable(),
+            ctaText: z.string().optional().nullable(),
+            ctaLink: z.string().optional().nullable(),
+            image: z.object({
+                url: z.string(),
+                alternativeText: z.string().optional().nullable(),
+                width: z.number().optional(),
+                height: z.number().optional(),
+            }).optional().nullable(),
+        }).optional().nullable(),
         seo: z.object({
             metaTitle: z.string(),
             metaDescription: z.string(),

@@ -1,16 +1,48 @@
 ---
-import { Image } from 'astro:assets';
-import { Container } from '../common/Container';
-import { Button } from '../common/Button';
-import fortImage from '../../assets/fort-build.png';
-import { ArrowRight, Castle, Ticket, BookOpen, Rocket } from 'lucide-react';
+import { Image } from "astro:assets";
+import { Container } from "../common/Container";
+import { Button } from "../common/Button";
+import fortImage from "../../assets/fort-build.png";
+import { ArrowRight, Castle, Ticket, BookOpen, Rocket } from "lucide-react";
 
-const activities = [
-  { icon: Castle, label: "Build Epic Forts" },
-  { icon: Rocket, label: "Launch Rocket Ships" },
-  { icon: BookOpen, label: "Cozy Reading Nooks" },
-  { icon: Ticket, label: "Obstacle Courses" },
-];
+interface ActivityItem {
+  icon: string | null;
+  label: string;
+}
+
+interface FeatureImage {
+  url: string;
+  alternativeText?: string | null;
+}
+
+interface Props {
+  title: string;
+  subtitle?: string | null;
+  activities: ActivityItem[] | null;
+  ctaText?: string | null;
+  ctaLink?: string | null;
+  image?: FeatureImage | null;
+}
+
+const {
+  title,
+  subtitle,
+  activities,
+  ctaText = "Explore More Combinations",
+  ctaLink = "/tinyverse",
+  image,
+} = Astro.props;
+
+const getIcon = (iconName: string | null, label: string) => {
+  const key = (iconName || label).toLowerCase();
+
+  if (key.includes("castle") || key.includes("fort")) return Castle;
+  if (key.includes("rocket") || key.includes("launch")) return Rocket;
+  if (key.includes("book") || key.includes("reading")) return BookOpen;
+  if (key.includes("ticket") || key.includes("obstacle")) return Ticket;
+
+  return Castle; // Default
+};
 ---
 
 <section class="py-20 overflow-hidden">
@@ -19,29 +51,41 @@ const activities = [
       {/* Content Side */}
       <div class="flex-1 space-y-8">
         <div class="space-y-4">
-          <h2 class="text-4xl lg:text-5xl font-bold font-heading text-primary leading-tight">
-            What can I do <br/> with them?
+          <h2
+            class="text-4xl lg:text-5xl font-bold font-heading text-primary leading-tight"
+          >
+            {title}
           </h2>
-          <p class="text-xl text-text-muted leading-relaxed">
-            Thanks to their squishy superpowers and modular magic, the possibilities are endless. 
-            <strong>Build, bounce, read, climb, imagine</strong>—there's no wrong way to play!
-          </p>
+          {
+            subtitle && (
+              <p class="text-xl text-text-muted leading-relaxed">{subtitle}</p>
+            )
+          }
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
-          {activities.map((activity) => (
-            <div class="flex items-center gap-3 text-lg font-medium text-text-main">
-              <activity.icon className="text-primary" />
-              <span>{activity.label}</span>
+        {
+          activities && (
+            <div class="grid grid-cols-2 gap-4">
+              {activities.map((activity) => {
+                const IconComponent = getIcon(activity.icon, activity.label);
+                return (
+                  <div class="flex items-center gap-3 text-lg font-medium text-text-main">
+                    <IconComponent className="text-primary" />
+                    <span>{activity.label}</span>
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
+          )
+        }
 
         <div class="pt-4">
-          <a href="/tinyverse">
+          <a href={ctaLink || "/tinyverse"}>
             <Button variant="outline" size="lg" className="group">
-              Explore More Combinations
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              {ctaText}
+              <ArrowRight
+                className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
+              />
             </Button>
           </a>
         </div>
@@ -49,17 +93,34 @@ const activities = [
 
       {/* Image Side */}
       <div class="flex-1 relative">
-        <div class="absolute -inset-4 bg-secondary/50 rounded-3xl -z-10 rotate-3 transform"></div>
-        <Image 
-          src={fortImage} 
-          alt="Kids building a fort" 
-          class="rounded-2xl shadow-xl w-full h-auto object-cover aspect-[4/3]" 
-        />
+        <div
+          class="absolute -inset-4 bg-secondary/50 rounded-3xl -z-10 rotate-3 transform"
+        >
+        </div>
+        {
+          image?.url ? (
+            <img
+              src={image.url}
+              alt={image.alternativeText || "Kids building a fort"}
+              class="rounded-2xl shadow-xl w-full h-auto object-cover aspect-[4/3]"
+            />
+          ) : (
+            <Image
+              src={fortImage}
+              alt="Kids building a fort"
+              class="rounded-2xl shadow-xl w-full h-auto object-cover aspect-[4/3]"
+            />
+          )
+        }
         {/* Decorative elements */}
-        <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-lg animate-bounce duration-[3000ms]">
+        <div
+          class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-lg animate-bounce duration-[3000ms]"
+        >
           <span class="text-3xl">🏰</span>
         </div>
-        <div class="absolute -top-6 -right-6 bg-white p-4 rounded-xl shadow-lg animate-pulse">
+        <div
+          class="absolute -top-6 -right-6 bg-white p-4 rounded-xl shadow-lg animate-pulse"
+        >
           <span class="text-3xl">🚀</span>
         </div>
       </div>

@@ -29,6 +29,17 @@ if (!homeData) {
     subtitle={homeData?.features?.subtitle}
     features={homeData?.features?.features || []}
   />
-  <UseCases />
-  <Audience />
+  <UseCases
+    title={homeData?.useCases?.title || "What can I do with them?"}
+    subtitle={homeData?.useCases?.subtitle}
+    activities={homeData?.useCases?.activities || []}
+    ctaText={homeData?.useCases?.ctaText}
+    ctaLink={homeData?.useCases?.ctaLink}
+    image={homeData?.useCases?.image}
+  />
+  <Audience
+    title={homeData?.audience?.title || "Who are they for?"}
+    subtitle={homeData?.audience?.subtitle}
+    audiences={homeData?.audience?.audiences || []}
+  />
 </Layout>
