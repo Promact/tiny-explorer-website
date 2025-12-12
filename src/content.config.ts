@@ -154,7 +154,7 @@ const tinyVersePage = defineCollection({
 
 const tinyVerse = defineCollection({
     loader: strapiLoader({
-        contentType: 'tiny-verse',
+        contentType: 'tiny-verses',
         queryParams: {
             populate: '*'
         }
