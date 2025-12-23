@@ -24,11 +24,11 @@ importers:
         specifier: ^3.6.0
         version: 3.6.0
       '@medusajs/js-sdk':
-        specifier: ^2.12.1
-        version: 2.12.1
+        specifier: ^2.12.3
+        version: 2.12.3
       '@medusajs/types':
-        specifier: ^2.12.1
-        version: 2.12.1(vite@6.4.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
+        specifier: ^2.12.3
+        version: 2.12.3(vite@6.4.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
       '@tailwindcss/vite':
         specifier: ^4.1.17
         version: 4.1.17(vite@6.4.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
@@ -41,6 +41,9 @@ importers:
       astro:
         specifier: ^5.16.4
         version: 5.16.4(@netlify/blobs@10.4.3)(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(typescript@5.9.3)(yaml@2.8.2)
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       lucide-react:
         specifier: ^0.556.0
         version: 0.556.0(react@19.2.1)
@@ -50,12 +53,19 @@ importers:
       react-dom:
         specifier: ^19.2.1
         version: 19.2.1(react@19.2.1)
+      swiper:
+        specifier: ^12.0.3
+        version: 12.0.3
       tailwindcss:
         specifier: ^4.1.17
         version: 4.1.17
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+    devDependencies:
+      '@types/lodash':
+        specifier: ^4.17.21
+        version: 4.17.21
 
 packages:
 
@@ -740,12 +750,12 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@medusajs/js-sdk@2.12.1':
-    resolution: {integrity: sha512-YR6/Bak86pksfIgRvW5jkVEWLKG5HMzHh3GtspdIpJt/I7mXVPfex0GixJ5J9gzf2TcpDpA8A3XRlGe5/j6JZA==}
+  '@medusajs/js-sdk@2.12.3':
+    resolution: {integrity: sha512-8Tmmywg/VToTTwyhInSZMO0t0MuYgoak+e1o8xIXsH/Hp+7kkoXKRalib3/t9pnNC/L9s9vI9Slj+P1v9z0RxA==}
     engines: {node: '>=20'}
 
-  '@medusajs/types@2.12.1':
-    resolution: {integrity: sha512-IkdIQX+VqM2aiTm16DDge3Tzo61fkXRyv722Id9s5fPUcSIXJrMrKXlt3DJYIREMDKpMaOnt9SOg7BXSTVTMRA==}
+  '@medusajs/types@2.12.3':
+    resolution: {integrity: sha512-GkvgiDFP8XDugO8btcti34h4PmlSDwedU3uIWNg2HmxO56fqAUsGx+EUEndEGvtXERH75rNHhIofylxH2TW8tQ==}
     engines: {node: '>=20'}
     peerDependencies:
       ioredis: ^5.4.1
@@ -1306,6 +1316,9 @@ packages:
 
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
+
+  '@types/lodash@4.17.21':
+    resolution: {integrity: sha512-FOvQ0YPD5NOfPgMzJihoT+Za5pdkDJWcbpuj1DjaKZIr/gxodQjY/uWEFlTNqW2ugXHUiL8lRQgw63dzKHZdeQ==}
 
   '@types/mdast@4.0.4':
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
@@ -3483,6 +3496,10 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
+  swiper@12.0.3:
+    resolution: {integrity: sha512-BHd6U1VPEIksrXlyXjMmRWO0onmdNPaTAFduzqR3pgjvi7KfmUCAm/0cj49u2D7B0zNjMw02TSeXfinC1hDCXg==}
+    engines: {node: '>= 4.7.0'}
+
   system-architecture@0.1.0:
     resolution: {integrity: sha512-ulAk51I9UVUyJgxlv9M6lFot2WP3e7t8Kz9+IS6D4rVba1tR9kON+Ey69f+1R4Q8cd45Lod6a4IcJIxnzGc/zA==}
     engines: {node: '>=18'}
@@ -4669,12 +4686,12 @@ snapshots:
       - encoding
       - supports-color
 
-  '@medusajs/js-sdk@2.12.1':
+  '@medusajs/js-sdk@2.12.3':
     dependencies:
       fetch-event-stream: 0.1.6
       qs: 6.14.0
 
-  '@medusajs/types@2.12.1(vite@6.4.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))':
+  '@medusajs/types@2.12.3(vite@6.4.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))':
     dependencies:
       bignumber.js: 9.3.1
     optionalDependencies:
@@ -5377,6 +5394,8 @@ snapshots:
   '@types/hast@3.0.4':
     dependencies:
       '@types/unist': 3.0.3
+
+  '@types/lodash@4.17.21': {}
 
   '@types/mdast@4.0.4':
     dependencies:
@@ -8030,6 +8049,8 @@ snapshots:
       csso: 5.0.5
       picocolors: 1.1.1
       sax: 1.4.3
+
+  swiper@12.0.3: {}
 
   system-architecture@0.1.0: {}
 

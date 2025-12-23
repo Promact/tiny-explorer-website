@@ -16,22 +16,22 @@ interface Product {
 let products: Product[] = [];
 try {
   const { products: fetchedProducts } = await medusa.store.product.list({
-    fields: "+variants,+variants.prices,+collection",
+    fields:
+      "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,+product_description.*",
   });
 
   products = fetchedProducts.map((p) => {
     // get lowest price from variants
-    // Simply taking the first variant's first price for now.
-    // In production, we should pass region_id to filter prices.
-    const variants = p.variants as any[];
-    const priceAmount = variants?.[0]?.prices?.[0]?.amount || 0;
+    const prices = p.variants
+      ?.map((v) => v.calculated_price?.calculated_amount)
+      ?.filter((item) => typeof item === "number");
+
+    const minPrice = prices && prices?.length > 0 ? Math.min(...prices) : 0;
 
     return {
       id: p.id,
       title: p.title,
-      // Medusa amounts are in lowest unit (e.g. cents/paise).
-      // Assuming 100 divisor for now.
-      price: priceAmount / 100,
+      price: minPrice,
       category: p.collection?.title || "Shop",
       slug: p.handle,
       image: p.thumbnail ?? undefined,
@@ -70,7 +70,7 @@ try {
               >
                 {cat}
               </button>
-            ),
+            )
           )
         }
       </div>
