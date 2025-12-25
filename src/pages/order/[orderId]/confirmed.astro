@@ -1,0 +1,182 @@
+---
+export const prerender = false;
+
+import { Container } from "@/components/common/Container";
+import { Table, TableBody } from "@/components/ui/table";
+import Layout from "@/layouts/Layout.astro";
+import { paymentInfoMap } from "@/lib/constants";
+import { retrieveOrder } from "@/lib/data/order";
+import { convertToLocale } from "@/lib/util/money";
+import CartTotals from "@/modules/cart/CartTotal";
+import Item from "@/modules/cart/Item";
+
+const { orderId } = Astro.params;
+
+const order = await retrieveOrder(orderId as string);
+---
+
+<Layout title={`Order: orderId`}>
+  <Container>
+    <div>
+      <div class="py-6 min-h-[calc(100vh-64px)]">
+        <div
+          class="flex flex-col justify-center items-center gap-y-10 max-w-4xl h-full w-full"
+        >
+          <div class="flex flex-col gap-4 max-w-4xl h-full w-full py-10">
+            <h1 class="flex flex-col gap-y-3 text-3xl mb-4">
+              <span> Thank You!</span>
+              <span>Your order was placed successfully.</span>
+            </h1>
+
+            <!--  -->
+
+            <p class="mt-2">
+              Order date:{" "}
+              <span data-testid="order-date">
+                {new Date(order.created_at).toDateString()}
+              </span>
+            </p>
+            <p class="mt-2">
+              Order number: <span data-testid="order-id"
+                >{order.display_id}</span
+              >
+            </p>
+
+            <!--  -->
+
+            <h2 class="flex flex-row text-3xl">Summary</h2>
+            <Table>
+              <TableBody>
+                {
+                  order?.items?.map((item) => (
+                    <Item
+                      item={item}
+                      currencyCode={order?.currency_code}
+                      type="preview"
+                    />
+                  ))
+                }
+              </TableBody>
+            </Table>
+
+            <!--  -->
+
+            <CartTotals totals={order} />
+
+            <!--  -->
+
+            <h2 class="flex flex-row text-3xl">Delivery</h2>
+            <div class="flex items-start gap-x-8">
+              <div
+                class="flex flex-col w-1/3"
+                data-testid="shipping-address-summary"
+              >
+                <p class="mb-1">Shipping Address</p>
+                <p class="">
+                  {order.shipping_address?.first_name}{" "}
+                  {order.shipping_address?.last_name}
+                </p>
+                <p class="">
+                  {order.shipping_address?.address_1}{" "}
+                  {order.shipping_address?.address_2}
+                </p>
+                <p class="">
+                  {order.shipping_address?.postal_code},{" "}
+                  {order.shipping_address?.city}
+                </p>
+                <p class="">
+                  {order.shipping_address?.country_code?.toUpperCase()}
+                </p>
+              </div>
+            </div>
+
+            <!--  -->
+
+            <div
+              class="flex flex-col w-1/3"
+              data-testid="shipping-contact-summary"
+            >
+              <p class="mb-1">Contact</p>
+              <p>
+                {order.shipping_address?.phone}
+              </p>
+              <p>{order.email}</p>
+            </div>
+
+            <!--  -->
+
+            <div
+              class="flex flex-col w-1/3"
+              data-testid="shipping-method-summary"
+            >
+              <p class="mb-1">Method</p>
+              <p class="">
+                {(order as any).shipping_methods[0]?.name} (
+                {
+                  convertToLocale({
+                    amount: order.shipping_methods?.[0].total ?? 0,
+                    currency_code: order.currency_code,
+                  })
+                    .replace(/,/g, "")
+                    .replace(/\./g, ",")
+                }
+                )
+              </p>
+            </div>
+
+            <!--  -->
+
+            <h2 class="flex flex-row text-3xl">Delivery</h2>
+            <div>
+              {
+                order.payment_collections?.[0].payments?.[0] && (
+                  <div class="flex items-start gap-x-1 w-full">
+                    <div class="flex flex-col w-1/3">
+                      <p class="txt-medium-plus text-ui-fg-base mb-1">
+                        Payment method
+                      </p>
+                      <p class="" data-testid="payment-method">
+                        {paymentInfoMap[
+                          order.payment_collections?.[0].payments?.[0]
+                            .provider_id
+                        ]?.title ||
+                          order.payment_collections?.[0].payments?.[0]
+                            ?.provider_id}
+                      </p>
+                    </div>
+                    <div class="flex flex-col w-2/3">
+                      <p class="txt-medium-plus text-ui-fg-base mb-1">
+                        Payment details
+                      </p>
+                      <div class="flex gap-2 items-center">
+                        {/* <div class="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
+                          {
+                            paymentInfoMap[
+                              order.payment_collections?.[0].payments?.[0]
+                                .provider_id
+                            ]?.icon
+                          }
+                        </div> */}
+                        <p data-testid="payment-amount">
+                          {`${convertToLocale({
+                            amount:
+                              order.payment_collections?.[0].payments?.[0]
+                                .amount,
+                            currency_code: order.currency_code,
+                          })} paid at ${new Date(
+                            order.payment_collections?.[0].payments?.[0]
+                              .created_at ?? ""
+                          ).toLocaleString()}`}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Layout>

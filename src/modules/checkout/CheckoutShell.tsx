@@ -1,0 +1,33 @@
+import { retrieveCart } from "@/lib/data/cart";
+import type { StoreCart } from "@medusajs/types";
+import { useCallback, useEffect, useState } from "react";
+import CheckoutForm from "./CheckoutForm";
+import CheckoutSummary from "./CheckoutSummary";
+
+const CheckoutShell = () => {
+  const [cart, setCart] = useState<StoreCart | null>(null);
+  const [isCartLoading, setIsCartLoading] = useState(true);
+
+  const getCart = useCallback(async () => {
+    const res = await retrieveCart();
+    setCart(res);
+    setIsCartLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getCart();
+  }, []);
+
+  return (
+    <>
+      {cart && (
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_416px] gap-x-40 py-12">
+          <CheckoutForm cart={cart} setCart={setCart} />
+          <CheckoutSummary cart={cart} />
+        </div>
+      )}
+    </>
+  );
+};
+
+export default CheckoutShell;

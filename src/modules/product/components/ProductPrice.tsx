@@ -1,5 +1,5 @@
 import type { HttpTypes } from "@medusajs/types";
-import { getProductPrice } from "../../../lib/get-product-price";
+import { getProductPrice } from "@/lib/util/get-product-price";
 
 export default function ProductPrice({
   product,

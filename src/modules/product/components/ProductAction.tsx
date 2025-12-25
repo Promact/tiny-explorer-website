@@ -12,8 +12,14 @@ import type {
   StoreProductVariant,
 } from "@medusajs/types";
 import _lodash from "lodash";
-import { getProductPrice } from "../../../lib/get-product-price";
+import { getProductPrice } from "@/lib/util/get-product-price";
 import ProductPrice from "./ProductPrice";
+import { Button } from "@/components/ui/button";
+
+import { ChevronRight, Minus, Plus } from "lucide-react";
+import OptionSelect from "./OptionSelect";
+import { Spinner } from "@/components/ui/spinner";
+import { addToCart } from "@/lib/data/cart";
 
 const { isEqual } = _lodash;
 
@@ -38,6 +44,7 @@ const ProductAction = ({
     {}
   );
   const [qty, setQty] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
 
   const fetchProduct = async (pId: string) => {
     try {
@@ -140,6 +147,17 @@ const ProductAction = ({
     return false;
   }, [selectedVariant]);
 
+  const handleQtyChange = (newQty: number) => {
+    if (
+      newQty &&
+      selectedVariant &&
+      selectedVariant?.inventory_quantity &&
+      newQty <= selectedVariant?.inventory_quantity
+    ) {
+      setQty(newQty);
+    }
+  };
+
   const selectedPrice = useMemo(() => {
     if (fetchedProduct) {
       const { cheapestPrice, variantPrice } = getProductPrice({
@@ -152,15 +170,110 @@ const ProductAction = ({
     return null;
   }, [fetchedProduct, selectedVariant]);
 
+  const handleAddToCart = async () => {
+    if (!selectedVariant?.id) return null;
+
+    setIsAdding(true);
+
+    const added = await addToCart({
+      variantId: selectedVariant.id,
+      quantity: qty,
+      countryCode: "in",
+    });
+
+    console.log({ added });
+
+    const count = added.cart.items?.reduce((acc, current) => {
+      acc += current?.quantity;
+      return acc;
+    }, 0);
+
+    // window.dispatchEvent(
+    //   new CustomEvent("cart:updated", {
+    //     detail: {
+    //       count: count,
+    //     },
+    //   })
+    // );
+
+    setIsAdding(false);
+  };
+
   return (
     <>
       {fetchedProduct && (
         <ProductPrice product={fetchedProduct} variant={selectedVariant} />
       )}
 
-      <div className="flex flex-wrap gap-2 items-center">
+      <div className="flex flex-wrap gap-2 items-center mb-8">
         <div className="w-20">Quantity: </div>
-        <div className="flex items-center border-gray-200 border rounded-xl w-fit"></div>
+        <div className="flex items-center border-gray-200 border rounded-lg w-fit">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => handleQtyChange(qty - 1)}
+          >
+            <Minus />
+          </Button>
+          <span className="px-2">{qty}</span>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => handleQtyChange(qty + 1)}
+          >
+            <Plus />
+          </Button>
+        </div>
+      </div>
+
+      <div className="space-y-4 mb-8">
+        <div>
+          {(fetchedProduct?.variants?.length ?? 0) > 1 && (
+            <div className="flex flex-col gap-y-4">
+              {(fetchedProduct?.options || []).map((option) => {
+                return (
+                  <div key={option.id}>
+                    <OptionSelect
+                      option={option}
+                      current={options[option.id]}
+                      updateOption={setOptionValue}
+                      title={option.title ?? ""}
+                      data-testid="product-options"
+                      disabled={isAdding}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <Button
+          type="button"
+          disabled={
+            !inStock ||
+            !selectedVariant ||
+            isAdding ||
+            !isValidVariant ||
+            !selectedPrice
+          }
+          onClick={handleAddToCart}
+          className="w-full"
+        >
+          {isAdding ? (
+            <Spinner />
+          ) : (
+            <>
+              {!selectedVariant && !options
+                ? "Select variant"
+                : !inStock || !isValidVariant
+                ? "Out of stock"
+                : "Add to cart"}
+            </>
+          )}
+        </Button>
       </div>
     </>
   );
