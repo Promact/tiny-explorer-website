@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
+import { Toaster } from "@/components/ui/sonner";
 
 interface Props {
   title: string;
@@ -41,10 +42,13 @@ const {
   <body
     class="bg-background text-text-main antialiased min-h-screen flex flex-col"
   >
+    <script src="https://mercury.phonepe.com/web/bundle/checkout.js" defer
+    ></script>
     <Header client:load />
     <main class="flex-grow">
       <slot />
     </main>
+    <Toaster />
     <Footer />
   </body>
 </html>
