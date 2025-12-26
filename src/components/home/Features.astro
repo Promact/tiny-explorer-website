@@ -3,9 +3,9 @@ import { Container } from "../common/Container";
 import { Layers, ShieldCheck, Sparkles, Heart } from "lucide-react";
 
 interface FeatureItem {
-  icon: string | null;
+  icon?: string | null;
   title: string;
-  description: string | null;
+  description?: string | null;
 }
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 const { title, subtitle, features } = Astro.props;
 
 // Map Strapi icon names or titles to Lucide icons
-const getIcon = (iconName: string | null, featureTitle: string) => {
+const getIcon = (iconName: string | null | undefined, featureTitle: string) => {
   // Basic mapping based on keywords or exact matches
   const key = (iconName || featureTitle).toLowerCase();
 

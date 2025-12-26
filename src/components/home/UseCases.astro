@@ -6,7 +6,7 @@ import fortImage from "../../assets/fort-build.png";
 import { ArrowRight, Castle, Ticket, BookOpen, Rocket } from "lucide-react";
 
 interface ActivityItem {
-  icon: string | null;
+  icon?: string | null;
   label: string;
 }
 
@@ -33,7 +33,7 @@ const {
   image,
 } = Astro.props;
 
-const getIcon = (iconName: string | null, label: string) => {
+const getIcon = (iconName: string | null | undefined, label: string) => {
   const key = (iconName || label).toLowerCase();
 
   if (key.includes("castle") || key.includes("fort")) return Castle;

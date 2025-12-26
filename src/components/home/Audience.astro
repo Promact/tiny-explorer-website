@@ -4,7 +4,7 @@ import { Home, School, Tent, Smile, Building, PartyPopper } from "lucide-react";
 import { Button } from "../common/Button";
 
 interface AudienceItem {
-  icon: string | null;
+  icon?: string | null;
   label: string;
 }
 
@@ -16,7 +16,7 @@ interface Props {
 
 const { title, subtitle, audiences } = Astro.props;
 
-const getIcon = (iconName: string | null, label: string) => {
+const getIcon = (iconName: string | null | undefined, label: string) => {
   const key = (iconName || label).toLowerCase();
 
   if (key.includes("home")) return Home;

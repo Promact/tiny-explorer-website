@@ -66,14 +66,15 @@ const {
       }
 
       <div class="flex gap-4 pt-4">
-        <Button
-          formAction={ctaLink || "/shop"}
-          variant="primary"
-          size="lg"
-          className="shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
-        >
-          {ctaText}
-        </Button>
+        <a href={ctaLink || "/shop"}>
+          <Button
+            variant="primary"
+            size="lg"
+            className="shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+          >
+            {ctaText}
+          </Button>
+        </a>
         <Button
           variant="secondary"
           size="lg"

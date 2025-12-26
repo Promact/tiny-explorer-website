@@ -20,8 +20,8 @@ if (!homeData) {
   <Hero
     title={homeData?.hero?.title || "Tiny Explorer"}
     subtitle={homeData?.hero?.subtitle}
-    ctaText={homeData?.hero?.ctaText}
-    ctaLink={homeData?.hero?.ctaLink}
+    ctaText={homeData?.hero?.ctaText || undefined}
+    ctaLink={homeData?.hero?.ctaLink || undefined}
     backgroundImage={homeData?.hero?.backgroundImage}
   />
   <Features
@@ -33,8 +33,8 @@ if (!homeData) {
     title={homeData?.useCases?.title || "What can I do with them?"}
     subtitle={homeData?.useCases?.subtitle}
     activities={homeData?.useCases?.activities || []}
-    ctaText={homeData?.useCases?.ctaText}
-    ctaLink={homeData?.useCases?.ctaLink}
+    ctaText={homeData?.useCases?.ctaText || undefined}
+    ctaLink={homeData?.useCases?.ctaLink || undefined}
     image={homeData?.useCases?.image}
   />
   <Audience
