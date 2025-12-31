@@ -9,14 +9,22 @@ const CheckoutShell = () => {
   const [isCartLoading, setIsCartLoading] = useState(true);
 
   const getCart = useCallback(async () => {
-    const res = await retrieveCart();
-    setCart(res);
-    setIsCartLoading(false);
+    try {
+      const res = await retrieveCart();
+      setCart(res);
+    } catch {
+    } finally {
+      setIsCartLoading(false);
+    }
   }, []);
 
   useEffect(() => {
     getCart();
-  }, []);
+  }, [getCart]);
+
+  if (!isCartLoading && !cart) {
+    window.location.href = "/"; // Redirect home
+  }
 
   return (
     <>

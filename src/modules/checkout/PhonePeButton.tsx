@@ -71,7 +71,9 @@ const PhonePeButton = ({
         </div>
       )}
 
-      <Button onClick={handlePayment}>Checkout</Button>
+      {!notReady && session && (
+        <Button onClick={handlePayment}>Checkout</Button>
+      )}
     </>
   );
 };

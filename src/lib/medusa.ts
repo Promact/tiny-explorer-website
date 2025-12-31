@@ -9,6 +9,6 @@ if (import.meta.env.PUBLIC_MEDUSA_BACKEND_URL) {
 
 export const medusa = new Medusa({
   baseUrl: MEDUSA_BACKEND_URL,
-  debug: process.env.NODE_ENV === "development",
+  debug: import.meta.env.NODE_ENV === "development",
   publishableKey: pubKey,
 });

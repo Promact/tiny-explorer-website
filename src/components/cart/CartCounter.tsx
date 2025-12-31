@@ -30,7 +30,7 @@ export const CartCounter = () => {
 
   useEffect(() => {
     getAndSetCart();
-  }, []);
+  }, [getAndSetCart]);
 
   const totalItems = useMemo(() => {
     if (cart && cart.items) {

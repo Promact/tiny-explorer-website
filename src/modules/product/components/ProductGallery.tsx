@@ -38,13 +38,7 @@ const ProductGallery = ({ imgUrls }: { imgUrls: string[] }) => {
       >
         {imgUrls.map((item) => (
           <SwiperSlide key={item}>
-            {/* <div className="aspect-square"> */}
-            <img
-              src={item}
-              alt=""
-              // className="max-w-none block w-full h-full object-cover rounded-2xl"
-            />
-            {/* </div> */}
+            <img src={item} alt="" />
           </SwiperSlide>
         ))}
       </Swiper>

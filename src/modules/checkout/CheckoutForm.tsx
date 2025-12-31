@@ -40,11 +40,11 @@ const CheckoutForm = ({
       setShippingMethods(shipping);
       setPaymentMethods(payments);
     } catch {}
-  }, []);
+  }, [cart.id, cart?.region?.id]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   return (
     <>

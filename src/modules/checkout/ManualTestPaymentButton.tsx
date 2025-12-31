@@ -18,10 +18,10 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
       });
   };
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     setSubmitting(true);
 
-    onPaymentCompleted();
+    await onPaymentCompleted();
   };
 
   return (

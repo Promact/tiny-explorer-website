@@ -15,6 +15,7 @@ const CheckoutSummary = ({ cart }: { cart: StoreCart }) => {
               <TableBody>
                 {cart?.items?.map((item) => (
                   <Item
+                    key={item?.id}
                     item={item}
                     currencyCode={cart?.currency_code}
                     type="preview"

@@ -21,7 +21,7 @@ const Addresses = ({
         <div className="flex flex-row items-center justify-between mb-6">
           <div className="flex flex-row items-baseline gap-x-2">
             <h2>Address</h2>
-            {currentStep != 1 && <CircleCheck size="14px" />}
+            {currentStep !== 1 && <CircleCheck size="14px" />}
           </div>
           {currentStep > 1 && (
             <Button variant="ghost" onClick={() => setCurrentStep(1)}>
