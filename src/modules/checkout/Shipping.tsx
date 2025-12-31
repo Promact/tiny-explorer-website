@@ -12,6 +12,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { setShippingMethod } from "@/lib/data/cart";
 import { calculatePriceForShippingOption } from "@/lib/data/fulfillment";
 import { convertToLocale } from "@/lib/util/money";
+import { cartStore } from "@/nanostores/cartStore";
 import type {
   HttpTypes,
   StoreCart,
@@ -91,7 +92,6 @@ const Shipping = ({
     id: string,
     variant: "shipping" | "pickup"
   ) => {
-    console.log({ id, variant });
     setError(null);
 
     if (variant === "pickup") {
@@ -108,6 +108,10 @@ const Shipping = ({
     });
 
     await setShippingMethod({ cartId: cart.id, shippingMethodId: id })
+      .then((data) => {
+        cartStore.set(data?.cart);
+        setCart(data?.cart);
+      })
       .catch((err) => {
         setShippingMethodId(currentId);
 
@@ -166,7 +170,7 @@ const Shipping = ({
                         option.price_type === "calculated" &&
                         !isLoadingPrices &&
                         typeof calculatedPricesMap[option.id] !== "number";
-                      console.log({ isDisabled });
+
                       return (
                         <FieldLabel
                           key={option.id}

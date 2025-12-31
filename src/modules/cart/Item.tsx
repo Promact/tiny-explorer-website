@@ -7,6 +7,8 @@ import { Minus, Plus, Trash, Trash2 } from "lucide-react";
 import { convertToLocale } from "@/lib/util/money";
 import { deleteLineItem, retrieveCart, updateLineItem } from "@/lib/data/cart";
 import { useState, type Dispatch, type SetStateAction } from "react";
+import { useStore } from "@nanostores/react";
+import { cartStore } from "@/nanostores/cartStore";
 
 const Item = ({
   item,
@@ -19,7 +21,6 @@ const Item = ({
   currencyCode: string;
   setCart?: Dispatch<SetStateAction<StoreCart | null>>;
 }) => {
-  console.log({ type });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,6 +34,8 @@ const Item = ({
         });
 
         const cartRes = await retrieveCart();
+        cartStore.set(cartRes);
+
         setCart(cartRes);
       } catch (err) {
         if (err instanceof Error) {
@@ -60,6 +63,8 @@ const Item = ({
         await deleteLineItem(id);
 
         const cartRes = await retrieveCart();
+
+        cartStore.set(cartRes);
         setCart(cartRes);
       } catch {
       } finally {

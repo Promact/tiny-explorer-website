@@ -20,6 +20,8 @@ import { ChevronRight, Minus, Plus } from "lucide-react";
 import OptionSelect from "./OptionSelect";
 import { Spinner } from "@/components/ui/spinner";
 import { addToCart } from "@/lib/data/cart";
+import { useStore } from "@nanostores/react";
+import { cartStore } from "@/nanostores/cartStore";
 
 const { isEqual } = _lodash;
 
@@ -45,6 +47,8 @@ const ProductAction = ({
   );
   const [qty, setQty] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
+
+  const cart = useStore(cartStore);
 
   const fetchProduct = async (pId: string) => {
     try {
@@ -181,20 +185,7 @@ const ProductAction = ({
       countryCode: "in",
     });
 
-    console.log({ added });
-
-    const count = added.cart.items?.reduce((acc, current) => {
-      acc += current?.quantity;
-      return acc;
-    }, 0);
-
-    // window.dispatchEvent(
-    //   new CustomEvent("cart:updated", {
-    //     detail: {
-    //       count: count,
-    //     },
-    //   })
-    // );
+    cartStore.set(added?.cart);
 
     setIsAdding(false);
   };

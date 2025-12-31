@@ -180,3 +180,9 @@ const order = await retrieveOrder(orderId as string);
     </div>
   </Container>
 </Layout>
+
+<script>
+  import { cartStore } from "@/nanostores/cartStore";
+
+  cartStore.set(null);
+</script>

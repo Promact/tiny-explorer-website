@@ -20,8 +20,6 @@ const Review = ({
     cart.shipping_methods.length > 0 &&
     cart.payment_collection;
 
-  console.log({ cart, previousStepsCompleted });
-
   return (
     <>
       <div className="bg-white">

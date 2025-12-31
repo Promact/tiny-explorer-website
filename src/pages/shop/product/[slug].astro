@@ -1,8 +1,5 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import { Container } from "../../../components/common/Container";
-import { Button } from "../../../components/common/Button";
-import { AddToCart } from "../../../components/cart/AddToCart";
 import { medusa } from "../../../lib/medusa";
 import type { StoreProduct } from "@medusajs/types";
 import ProductShell from "../../../modules/product/components/ProductShell";
@@ -26,12 +23,6 @@ export async function getStaticPaths() {
 }
 
 const { product } = Astro.props;
-
-const features = (product.metadata?.features as string[]) || [
-  "Premium Quality",
-  "Sustainable Materials",
-  "Handcrafted",
-];
 ---
 
 <Layout title={`${product.title} - Tiny Explorer`}>

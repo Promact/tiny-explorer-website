@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { z } from "astro/zod";
 import { retrieveCart, setAddresses } from "@/lib/data/cart";
+import { cartStore } from "@/nanostores/cartStore";
 
 const RequiredAsterisk = () => {
   return <span className="text-destructive ml-0.5">*</span>;
@@ -195,6 +196,7 @@ const AddressForm = ({
     const res = await setAddresses(data);
     // const cart = await retrieveCart();
     setCart(res);
+    cartStore.set(res);
     setCurrentStep(2);
   };
 

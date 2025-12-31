@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Spinner } from "@/components/ui/spinner";
 import { isManual, paymentInfoMap } from "@/lib/constants";
 import { initiatePaymentSession, retrieveCart } from "@/lib/data/cart";
+import { cartStore } from "@/nanostores/cartStore";
 import type { HttpTypes, StoreCart } from "@medusajs/types";
 import { CircleCheck } from "lucide-react";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
@@ -63,6 +64,7 @@ const Payment = ({
       });
       const updatedCart = await retrieveCart();
       setCart(updatedCart);
+      cartStore.set(updatedCart);
       setCurrentStep(4);
     } catch (err) {
       if (err instanceof Error) {

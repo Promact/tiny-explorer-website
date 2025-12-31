@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { placeOrder } from "@/lib/data/cart";
+import { cartStore } from "@/nanostores/cartStore";
 import { useState } from "react";
 
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {

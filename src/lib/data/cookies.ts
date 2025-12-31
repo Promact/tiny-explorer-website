@@ -21,7 +21,6 @@ export const getCartId = async () => {
 };
 
 export const setCartId = async (cartId: string) => {
-  console.log("in set cart id: ", cartId);
   Cookie.set("_medusa_cart_id", cartId, {
     expires: 7,
     secure: true,

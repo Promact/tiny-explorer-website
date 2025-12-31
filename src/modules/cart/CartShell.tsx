@@ -10,8 +10,6 @@ const CartShell = () => {
   const [cart, setCart] = useState<StoreCart | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log({ cart });
-
   const getCart = useCallback(async () => {
     const res = await retrieveCart();
     setCart(res);

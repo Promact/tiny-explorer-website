@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useStore } from "@nanostores/react";
+import { cartStore } from "@/nanostores/cartStore";
+import { retrieveCart } from "@/lib/data/cart";
+
 // import { getCart } from '../../lib/cart';
 
 export const CartCounter = () => {
-  const [count, setCount] = useState(0);
+  const cart = useStore(cartStore);
 
   // const updateCount = async () => {
   //     const cart = await getCart();
@@ -16,6 +20,24 @@ export const CartCounter = () => {
   //     window.addEventListener('cart-updated', updateCount);
   //     return () => window.removeEventListener('cart-updated', updateCount);
   // }, []);
+
+  const getAndSetCart = useCallback(async () => {
+    const res = await retrieveCart();
+    if (res) {
+      cartStore.set(res);
+    }
+  }, []);
+
+  useEffect(() => {
+    getAndSetCart();
+  }, []);
+
+  const totalItems = useMemo(() => {
+    if (cart && cart.items) {
+      return cart?.items.reduce((acc, item) => acc + item.quantity, 0);
+    }
+    return 0;
+  }, [cart]);
 
   return (
     <a
@@ -36,9 +58,9 @@ export const CartCounter = () => {
           d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
         />
       </svg>
-      {count > 0 && (
+      {totalItems > 0 && (
         <span className="absolute top-0 right-0 inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-primary rounded-full">
-          {count}
+          {totalItems}
         </span>
       )}
     </a>

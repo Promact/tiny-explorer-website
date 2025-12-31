@@ -18,7 +18,6 @@ export function strapiLoader({
   return {
     name: "strapi-loader",
     load: async (context: LoaderContext) => {
-      return;
       const strapiUrl =
         url || import.meta.env.STRAPI_URL || "http://localhost:1337";
       const strapiToken = token || import.meta.env.STRAPI_TOKEN;
@@ -54,8 +53,6 @@ export function strapiLoader({
           if (!isSingleType) {
             endpoint += `pagination[page]=${page}&pagination[pageSize]=100`;
           }
-
-          console.log(`[strapi-loader] Fetching: ${endpoint}`);
           context.logger.info(`Fetching from URL: ${endpoint}`);
 
           const response = await fetch(endpoint, { headers });
