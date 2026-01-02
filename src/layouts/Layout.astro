@@ -1,38 +1,56 @@
 ---
-import '../styles/global.css';
-import { Header } from '../components/layout/Header';
-import Footer from '../components/layout/Footer.astro';
+import "../styles/global.css";
+import { Header } from "../components/layout/Header";
+import Footer from "../components/layout/Footer.astro";
+
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
+import { Toaster } from "@/components/ui/sonner";
+
+// import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
-	title: string;
-	description?: string;
+  title: string;
+  description?: string;
 }
 
-const { title, description = "Tiny Explorer - Premium Kids Furniture & Open Ended Toys" } = Astro.props;
+const {
+  title,
+  description = "Tiny Explorer - Premium Kids Furniture & Open Ended Toys",
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-		<title>{title}</title>
-	</head>
-	<body class="bg-background text-text-main antialiased min-h-screen flex flex-col">
+    <title>{title}</title>
+  </head>
+  <body
+    class="bg-background text-text-main antialiased min-h-screen flex flex-col"
+  >
+    <script src="https://mercury.phonepe.com/web/bundle/checkout.js" defer
+    ></script>
     <Header client:load />
-		<main class="flex-grow">
-			<slot />
-		</main>
+    <main class="flex-grow">
+      <slot />
+    </main>
+    <Toaster />
     <Footer />
-	</body>
+  </body>
 </html>
-

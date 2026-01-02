@@ -1,7 +1,14 @@
 import Medusa from "@medusajs/js-sdk";
 
+let MEDUSA_BACKEND_URL = "http://localhost:9000";
+const pubKey = import.meta.env.PUBLIC_MEDUSA_PUBLISHABLE_KEY;
+
+if (import.meta.env.PUBLIC_MEDUSA_BACKEND_URL) {
+  MEDUSA_BACKEND_URL = import.meta.env.PUBLIC_MEDUSA_BACKEND_URL;
+}
+
 export const medusa = new Medusa({
-    baseUrl: import.meta.env.PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000",
-    debug: import.meta.env.DEV,
-    publishableKey: import.meta.env.PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+  baseUrl: MEDUSA_BACKEND_URL,
+  debug: import.meta.env.NODE_ENV === "development",
+  publishableKey: pubKey,
 });

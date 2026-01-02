@@ -1,0 +1,12 @@
+---
+import { Container } from "@/components/common/Container";
+import Layout from "@/layouts/Layout.astro";
+
+import CartShell from "@/modules/cart/CartShell";
+---
+
+<Layout title="cart">
+  <Container>
+    <CartShell client:load />
+  </Container>
+</Layout>
