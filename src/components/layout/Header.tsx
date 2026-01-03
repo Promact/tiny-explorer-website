@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { Container } from '../common/Container';
-import { Button } from '../common/Button';
-import { CartCounter } from '../cart/CartCounter';
+import React, { useState } from "react";
+import { Container } from "../common/Container";
+import { CartCounter } from "../cart/CartCounter";
+import { Button } from "../ui/button";
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Shop', href: '/shop' },
-    { name: 'About Us', href: '/about' },
-    { name: 'TinyVerse', href: '/tinyverse' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Contact', href: '/contact' },
+    { name: "Shop", href: "/shop" },
+    { name: "About Us", href: "/about" },
+    { name: "TinyVerse", href: "/tinyverse" },
+    { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (
@@ -38,21 +38,41 @@ export const Header: React.FC = () => {
 
           {/* Actions */}
           <div className="hidden md:flex items-center gap-4">
-             {/* Placeholder for Search/Cart */}
+            {/* Placeholder for Search/Cart */}
             <CartCounter />
-            <Button size="sm" variant="primary">Shop Now</Button>
+            <Button asChild>
+              <a href="/shop">Shop Now</a>
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2 text-text-main"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"} />
-            </svg>
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            <CartCounter />
+            <button
+              className="md:hidden p-2 text-text-main"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d={
+                    isMenuOpen
+                      ? "M6 18L18 6M6 6l12 12"
+                      : "M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  }
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -69,7 +89,9 @@ export const Header: React.FC = () => {
                   {link.name}
                 </a>
               ))}
-               <Button className="w-full" size="md" variant="primary">Shop Now</Button>
+              <Button asChild>
+                <a href="/shop">Shop Now</a>
+              </Button>
             </div>
           </nav>
         )}

@@ -31,3 +31,15 @@ export const setCartId = async (cartId: string) => {
 export const removeCartId = async () => {
   Cookie.remove("_medusa_cart_id");
 };
+
+export const setAuthToken = async (token: string) => {
+  Cookie.set("_medusa_jwt", token, {
+    expires: 7,
+    secure: true,
+    sameSite: "Strict",
+  });
+};
+
+export const removeAuthToken = async (token: string) => {
+  Cookie.remove("_medusa_jwt");
+};

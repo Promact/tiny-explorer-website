@@ -1,8 +1,11 @@
 ---
 import { Image } from "astro:assets";
-import { Container } from "../common/Container";
-import { Button } from "../common/Button";
-import heroBg from "../../assets/hero-bg.png";
+import { Container } from "@/components/common/Container";
+import heroBg from "@/assets/hero-bg.png";
+import { Button } from "@/components/ui/button";
+import Link from "@/components/ui/link";
+
+const backgroundUrl = `url(${heroBg.src})`;
 
 interface Props {
   title: string;
@@ -22,33 +25,18 @@ const {
   ctaLink = "/shop",
   backgroundImage,
 } = Astro.props;
+
+const bgUrl = backgroundImage?.url
+  ? `url(${backgroundImage.url})`
+  : `url(${heroBg.src})`;
+const bgGradient = `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6))`;
+const finalBackgroundImage = `${bgGradient}, ${bgUrl}`;
 ---
 
-<section class="relative min-h-[90vh] flex items-center overflow-hidden">
-  {/* Background Image with Overlay */}
-  <div class="absolute inset-0 z-0">
-    {
-      backgroundImage?.url ? (
-        <img
-          src={backgroundImage.url}
-          alt={backgroundImage.alternativeText || "Hero background"}
-          class="w-full h-full object-cover"
-        />
-      ) : (
-        <Image
-          src={heroBg}
-          alt="Kids playing on a modular sofa"
-          class="w-full h-full object-cover"
-          quality="mid"
-          loading="eager"
-        />
-      )
-    }
-    <div class="absolute inset-0 bg-black/10"></div>
-    {/* Dark overlay for text readability */}
-  </div>
-
-  <Container className="relative z-10 grid grid-cols-1 lg:grid-cols-2">
+<section
+  class="hero-section relative min-h-[90vh] flex items-center overflow-hidden"
+>
+  <Container className="relative z-20 grid grid-cols-1 lg:grid-cols-2">
     <div class="space-y-8 max-w-2xl text-white">
       {/* or text-primary-dark depending on image contrast */}
       <h1
@@ -66,15 +54,9 @@ const {
       }
 
       <div class="flex gap-4 pt-4">
-        <a href={ctaLink || "/shop"}>
-          <Button
-            variant="primary"
-            size="lg"
-            className="shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
-          >
-            {ctaText}
-          </Button>
-        </a>
+        <Link href={ctaLink || "/shop"} size="lg">
+          {ctaText}
+        </Link>
         <Button
           variant="secondary"
           size="lg"
@@ -86,8 +68,7 @@ const {
     </div>
   </Container>
 
-  {/* Decorative Wave/Curve at the bottom */}
-  <div class="absolute bottom-0 left-0 right-0 z-20">
+  <div class="absolute bottom-0 left-0 right-0 z-10">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1440 320"
@@ -100,3 +81,12 @@ const {
     </svg>
   </div>
 </section>
+
+<style define:vars={{ finalBackgroundImage }}>
+  .hero-section {
+    background-image: var(--finalBackgroundImage);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+</style>

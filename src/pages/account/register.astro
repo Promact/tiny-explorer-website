@@ -1,0 +1,12 @@
+---
+import { Container } from "@/components/common/Container";
+import AuthLayout from "@/layouts/AuthLayout.astro";
+
+import RegisterForm from "@/modules/account/components/register";
+---
+
+<AuthLayout title="Register">
+  <Container>
+    <RegisterForm client:only="react" />
+  </Container>
+</AuthLayout>
