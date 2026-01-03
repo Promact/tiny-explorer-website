@@ -46,7 +46,7 @@ const CartShell = () => {
           </div>
         </>
       ) : (
-        <>
+        <div className="mb-6">
           <p className="mt-4 mb-6">
             You don't have anything in your cart. Let's change that, use the
             link below to start browsing our products.
@@ -61,7 +61,7 @@ const CartShell = () => {
               size="20px"
             />
           </a>
-        </>
+        </div>
       )}
     </>
   );
