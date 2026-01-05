@@ -6,7 +6,13 @@ import BlockRenderer from "../components/common/BlockRenderer.astro";
 
 // Fetch About Page content from Strapi
 const aboutPages = await getCollection("about");
-const aboutPage = aboutPages[0]?.data;
+
+if (!aboutPages || aboutPages.length === 0) {
+  throw new Error("About Page collection is empty");
+}
+
+const lastAboutPage = aboutPages[aboutPages.length - 1];
+const aboutPage = lastAboutPage?.data;
 
 if (!aboutPage) {
   throw new Error(

@@ -59,7 +59,23 @@ const homepage = defineCollection({
     loader: strapiLoader({
         contentType: 'home-page',
         queryParams: {
-            populate: '*', // Populate everything for single type
+            populate: {
+                hero: {
+                    populate: '*',
+                },
+                features: {
+                    populate: '*',
+                },
+                audience: {
+                    populate: '*',
+                },
+                useCases: {
+                    populate: '*',
+                },
+                seo: {
+                    populate: '*',
+                }
+            },
         },
         isSingleType: true,
     }),

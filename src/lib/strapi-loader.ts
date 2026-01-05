@@ -37,22 +37,32 @@ export function strapiLoader({
       let pageCount = 1;
 
       // Construct query string from params
-      const searchParams = new URLSearchParams();
-      Object.entries(queryParams).forEach(([key, value]) => {
-        searchParams.append(key, String(value));
-      });
+      // Construct query string manually to avoid URLSearchParams encoding brackets
+      const queryParts: string[] = [];
+      const appendParams = (params: any, prefix = "") => {
+        Object.entries(params).forEach(([key, value]) => {
+          const newKey = prefix ? `${prefix}[${key}]` : key;
+          if (typeof value === "object" && value !== null) {
+            appendParams(value, newKey);
+          } else {
+            queryParts.push(`${newKey}=${value}`);
+          }
+        });
+      };
+
+      appendParams(queryParams);
 
       try {
         do {
-          // Check if we already have query params to correctly append pagination
-          const queryStr = searchParams.toString();
-          const queryPrefix = queryStr ? `${queryStr}&` : "";
-
-          let endpoint = `${strapiUrl}/api/${contentType}?${queryPrefix}`;
+          let queryString = queryParts.join("&");
 
           if (!isSingleType) {
-            endpoint += `pagination[page]=${page}&pagination[pageSize]=100`;
+            const pagination = `pagination[page]=${page}&pagination[pageSize]=100`;
+            queryString = queryString ? `${queryString}&${pagination}` : pagination;
           }
+
+          const endpoint = `${strapiUrl}/api/${contentType}?${queryString}`;
+          context.logger.info(`Fetching from URL: ${endpoint}`);
           context.logger.info(`Fetching from URL: ${endpoint}`);
 
           const response = await fetch(endpoint, { headers });

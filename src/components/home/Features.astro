@@ -64,7 +64,7 @@ const getColorStyles = (index: number) => {
             const style = getColorStyles(index);
 
             return (
-              <div class="flex flex-col items-center text-center p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300 border border-gray-100">
+              <div class="flex flex-col items-center text-center p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300 border border-gray-100 h-full">
                 <div
                   class={`p-4 rounded-full mb-4 ${style.bgColor} ${style.color}`}
                 >
@@ -73,9 +73,18 @@ const getColorStyles = (index: number) => {
                 <h3 class="text-xl font-bold font-heading mb-3 text-text-main">
                   {feature.title}
                 </h3>
-                <p class="text-text-muted leading-relaxed">
+                <p class="text-text-muted leading-relaxed mb-4 flex-grow">
                   {feature.description}
                 </p>
+                {/* Media Placeholder matching Spec */}
+                <div class="w-full aspect-video bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-400 font-mono border border-dashed border-gray-200 mt-auto">
+                  {feature.title.includes("Modular") &&
+                    "Carousel: Forts/Builds"}
+                  {feature.title.includes("Durable") &&
+                    "Photo/Video: Materials"}
+                  {feature.title.includes("Clean") && "Video: Cleaning Demo"}
+                  {feature.title.includes("Comfort") && "Image: Cozy Moments"}
+                </div>
               </div>
             );
           })}

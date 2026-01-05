@@ -6,7 +6,13 @@ import { getCollection } from "astro:content";
 import BlockRenderer from "../../components/common/BlockRenderer.astro";
 
 const pageCollection = await getCollection("tinyVersePage");
-const pageData = pageCollection[0]?.data;
+
+if (!pageCollection || pageCollection.length === 0) {
+  console.error("TinyVerse Page collection is empty");
+}
+
+const lastPage = pageCollection[pageCollection.length - 1];
+const pageData = lastPage?.data;
 
 if (!pageData) {
   console.error("TinyVerse Page data not found");

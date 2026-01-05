@@ -7,7 +7,16 @@ import Audience from "../components/home/Audience.astro";
 import { getCollection } from "astro:content";
 
 const homepageCollection = await getCollection("homepage");
-const homeData = homepageCollection[0]?.data;
+if (!homepageCollection) {
+  console.error("Homepage collection not found");
+}
+if (homepageCollection.length === 0) {
+  console.error("Homepage collection is empty");
+}
+
+const lastElement = homepageCollection[homepageCollection.length - 1];
+const homeData = lastElement?.data;
+console.log(homeData?.features);
 
 if (!homeData) {
   console.error("Home page data not found in Astro content collection");
