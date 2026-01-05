@@ -19,8 +19,12 @@ export const Header: React.FC = () => {
       <Container>
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="text-2xl font-bold font-heading text-primary">
-            Tiny Explorer
+          <a href="/" className="flex items-center">
+            <img 
+              src="/logo.png" 
+              alt="Tiny Explorer" 
+              className="h-12 w-auto object-contain" 
+            />
           </a>
 
           {/* Desktop Navigation */}
