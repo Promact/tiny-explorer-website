@@ -1,0 +1,68 @@
+---
+import { Container } from "../common/Container";
+import { Button } from "../common/Button";
+
+interface CTAButton {
+    label: string;
+    href: string;
+    variant?: string | null;
+    isExternal?: boolean | null;
+}
+
+interface Props {
+    title: string;
+    subtitle?: string | null;
+    buttons?: CTAButton[] | null;
+}
+
+const { title, subtitle, buttons } = Astro.props;
+---
+
+<section class="py-24 bg-primary text-white relative overflow-hidden">
+    {/* Decorative background elements */}
+    <div
+        class="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2"
+    >
+    </div>
+    <div
+        class="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full translate-x-1/3 translate-y-1/3"
+    >
+    </div>
+
+    <Container className="relative z-10 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold font-heading mb-6">
+            {title}
+        </h2>
+        {
+            subtitle && (
+                <p class="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto mb-10 font-light">
+                    {subtitle}
+                </p>
+            )
+        }
+
+        {
+            buttons && (
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    {buttons.map((btn) => (
+                        <Button
+                            href={btn.href}
+                            variant={
+                                btn.variant === "secondary"
+                                    ? "secondary"
+                                    : "primary"
+                            }
+                            className={
+                                btn.variant === "secondary"
+                                    ? "bg-white text-primary hover:bg-gray-100"
+                                    : "bg-secondary text-text-main hover:bg-secondary/90"
+                            }
+                        >
+                            {btn.label}
+                        </Button>
+                    ))}
+                </div>
+            )
+        }
+    </Container>
+</section>

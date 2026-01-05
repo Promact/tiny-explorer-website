@@ -4,6 +4,26 @@ import { Container } from "../common/Container";
 
 <footer class="bg-secondary pt-16 pb-8 border-t border-primary/20 mt-auto">
   <Container className="">
+    {/* Brand Values / Made in India Section */}
+    <div
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-16 pb-12 border-b border-primary/10 text-center"
+    >
+      {
+        [
+          "🇮🇳 Lovingly Made in India",
+          "🛡️ Safe for Tiny Hands",
+          "♻️ Built to Last",
+          "🌱 Grows with Minds",
+          "🚀 Imagination First",
+          "✨ Pure Childhood Joy",
+        ].map((val) => (
+          <div class="text-sm font-medium text-text-muted hover:text-primary transition-colors cursor-default">
+            {val}
+          </div>
+        ))
+      }
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
       {/* Brand Column */}
       <div class="space-y-4">
@@ -24,25 +44,29 @@ import { Container } from "../common/Container";
             <a
               href="/shop/play-sofas"
               class="text-text-muted hover:text-primary transition-colors"
-              >Play Sofas</a>
+              >Play Sofas</a
+            >
           </li>
           <li>
             <a
               href="/shop/covers"
               class="text-text-muted hover:text-primary transition-colors"
-              >Covers</a>
+              >Covers</a
+            >
           </li>
           <li>
             <a
               href="/shop/liners"
               class="text-text-muted hover:text-primary transition-colors"
-              >Waterproof Liners</a>
+              >Waterproof Liners</a
+            >
           </li>
           <li>
             <a
               href="/shop/decor"
               class="text-text-muted hover:text-primary transition-colors"
-              >Decor & Toys</a>
+              >Decor & Toys</a
+            >
           </li>
         </ul>
       </div>
@@ -55,25 +79,29 @@ import { Container } from "../common/Container";
             <a
               href="/about"
               class="text-text-muted hover:text-primary transition-colors"
-              >About Us</a>
+              >About Us</a
+            >
           </li>
           <li>
             <a
               href="/tinyverse"
               class="text-text-muted hover:text-primary transition-colors"
-              >TinyVerse</a>
+              >TinyVerse</a
+            >
           </li>
           <li>
             <a
               href="/blog"
               class="text-text-muted hover:text-primary transition-colors"
-              >Blog</a>
+              >Blog</a
+            >
           </li>
           <li>
             <a
               href="/contact"
               class="text-text-muted hover:text-primary transition-colors"
-              >Contact</a>
+              >Contact</a
+            >
           </li>
         </ul>
       </div>

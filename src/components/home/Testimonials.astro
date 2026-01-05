@@ -1,0 +1,59 @@
+---
+import { Container } from "../common/Container";
+import { Star } from "lucide-react";
+
+interface Testimonial {
+    author: string;
+    text: string;
+    rating?: number | null;
+    avatar?: any;
+}
+
+interface Props {
+    title: string;
+    testimonials?: Testimonial[] | null;
+}
+
+const { title, testimonials } = Astro.props;
+---
+
+<section class="py-20 bg-secondary/20">
+    <Container>
+        <div class="text-center mb-16">
+            <h2
+                class="text-3xl md:text-4xl font-bold font-heading text-primary"
+            >
+                {title}
+            </h2>
+        </div>
+
+        {
+            testimonials && (
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {testimonials.map((testimonial) => (
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col h-full">
+                            <div class="flex mb-4 text-yellow-400">
+                                {Array.from({
+                                    length: testimonial.rating || 5,
+                                }).map(() => (
+                                    <Star size={20} fill="currentColor" />
+                                ))}
+                            </div>
+                            <blockquote class="text-text-muted text-lg leading-relaxed mb-6 flex-grow italic">
+                                "{testimonial.text}"
+                            </blockquote>
+                            <div class="flex items-center gap-4 mt-auto">
+                                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                    {testimonial.author.charAt(0)}
+                                </div>
+                                <div class="font-bold text-text-main">
+                                    {testimonial.author}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )
+        }
+    </Container>
+</section>

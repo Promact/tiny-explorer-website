@@ -66,10 +66,34 @@ const homepage = defineCollection({
                 features: {
                     populate: '*',
                 },
+                useCases: {
+                    populate: '*',
+                },
                 audience: {
                     populate: '*',
                 },
-                useCases: {
+                testimonials: {
+                    populate: {
+                        testimonials: {
+                            populate: '*',
+                        }
+                    }
+                },
+                cta: {
+                    populate: {
+                        buttons: {
+                            populate: '*',
+                        }
+                    }
+                },
+                learnMore: {
+                    populate: {
+                        cards: {
+                            populate: '*',
+                        }
+                    }
+                },
+                blog: {
                     populate: '*',
                 },
                 seo: {
@@ -124,6 +148,39 @@ const homepage = defineCollection({
                 width: z.number().optional(),
                 height: z.number().optional(),
             }).optional().nullable(),
+        }).optional().nullable(),
+        testimonials: z.object({
+            title: z.string(),
+            testimonials: z.array(z.object({
+                author: z.string(),
+                text: z.string(),
+                rating: z.number().optional().nullable(),
+                avatar: z.any().optional().nullable()
+            })).optional().nullable()
+        }).optional().nullable(),
+        cta: z.object({
+            title: z.string(),
+            subtitle: z.string().optional().nullable(),
+            buttons: z.array(z.object({
+                label: z.string(),
+                href: z.string(),
+                variant: z.string().optional().nullable(),
+                isExternal: z.boolean().optional().nullable()
+            })).optional().nullable()
+        }).optional().nullable(),
+        learnMore: z.object({
+            title: z.string(),
+            cards: z.array(z.object({
+                title: z.string(),
+                description: z.string().optional().nullable(),
+                link: z.string(),
+                image: z.any().optional().nullable()
+            })).optional().nullable()
+        }).optional().nullable(),
+        blog: z.object({
+            title: z.string(),
+            subtitle: z.string().optional().nullable(),
+            limit: z.number().optional().nullable()
         }).optional().nullable(),
         seo: z.object({
             metaTitle: z.string(),
