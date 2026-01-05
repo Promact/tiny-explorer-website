@@ -1,0 +1,73 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Container } from "../../components/common/Container";
+
+// Content derived from "Durable & Safe Materials" in Spec or generic placeholder if missing
+---
+
+<Layout title="Safety - Tiny Explorer">
+    <div class="bg-secondary/20 min-h-screen py-20">
+        <Container>
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <h1
+                    class="text-4xl md:text-5xl font-bold font-heading text-primary mb-6"
+                >
+                    Safety First, Adventure Always
+                </h1>
+                <p class="text-xl text-text-muted">
+                    Our products are crafted with care using premium, non-toxic,
+                    child-safe materials.
+                </p>
+            </div>
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20"
+            >
+                <div class="bg-white p-8 rounded-3xl shadow-sm">
+                    <h2
+                        class="text-2xl font-bold font-heading text-primary mb-4"
+                    >
+                        🛡️ Durable & Safe Materials
+                    </h2>
+                    <p class="text-text-muted leading-relaxed mb-4">
+                        Every stitch and surface is made for safe tumbles and
+                        years of play.
+                    </p>
+                    <ul class="space-y-2 text-text-muted">
+                        <li>• CertiPUR-US® Certified Foam</li>
+                        <li>• Low VOCs (Volatile Organic Compounds)</li>
+                        <li>• No Mercury, Lead, or Heavy Metals</li>
+                        <li>• Made without ozone depleters</li>
+                    </ul>
+                </div>
+                <div
+                    class="aspect-video bg-gray-200 rounded-3xl flex items-center justify-center text-gray-500"
+                >
+                    Image: Material Safety Testing
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div
+                    class="order-2 md:order-1 aspect-video bg-gray-200 rounded-3xl flex items-center justify-center text-gray-500"
+                >
+                    Image: Zippers and Stitching
+                </div>
+                <div
+                    class="order-1 md:order-2 bg-white p-8 rounded-3xl shadow-sm"
+                >
+                    <h2
+                        class="text-2xl font-bold font-heading text-primary mb-4"
+                    >
+                        Hidden Zippers
+                    </h2>
+                    <p class="text-text-muted leading-relaxed">
+                        We use premium YKK zippers that are tucked away in
+                        "zipper garages" to protect little fingers, walls, and
+                        floors from scratches.
+                    </p>
+                </div>
+            </div>
+        </Container>
+    </div>
+</Layout>

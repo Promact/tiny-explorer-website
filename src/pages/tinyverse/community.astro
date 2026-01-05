@@ -1,0 +1,55 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Container } from "../../components/common/Container";
+---
+
+<Layout title="Community - Tiny Explorer">
+    <div class="bg-secondary/20 min-h-screen py-20">
+        <Container>
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <h1
+                    class="text-4xl md:text-5xl font-bold font-heading text-primary mb-6"
+                >
+                    The Tiny Explorer Community
+                </h1>
+                <p class="text-xl text-text-muted">
+                    Join thousands of parents and little explorers sharing their
+                    builds, adventures, and stories.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Placeholder for Instagram/Social Feed */}
+                <div
+                    class="aspect-square bg-white rounded-2xl shadow-sm flex items-center justify-center text-text-muted"
+                >
+                    Social Post Placeholder
+                </div>
+                <div
+                    class="aspect-square bg-white rounded-2xl shadow-sm flex items-center justify-center text-text-muted"
+                >
+                    Social Post Placeholder
+                </div>
+                <div
+                    class="aspect-square bg-white rounded-2xl shadow-sm flex items-center justify-center text-text-muted"
+                >
+                    Social Post Placeholder
+                </div>
+            </div>
+
+            <div class="mt-16 text-center">
+                <h2 class="text-2xl font-bold font-heading text-primary mb-4">
+                    Share Your Adventure
+                </h2>
+                <p class="text-text-muted mb-8">
+                    Tag us @TinyExplorer or use #MyTinyExplorer to be featured!
+                </p>
+                <button
+                    class="bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-primary/90 transition-colors"
+                >
+                    Follow Us on Instagram
+                </button>
+            </div>
+        </Container>
+    </div>
+</Layout>

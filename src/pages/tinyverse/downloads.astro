@@ -1,0 +1,87 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Container } from "../../components/common/Container";
+import { Button } from "../../components/common/Button";
+---
+
+<Layout title="Downloads - Tiny Explorer">
+    <div class="bg-secondary/20 min-h-screen py-20">
+        <Container>
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <h1
+                    class="text-4xl md:text-5xl font-bold font-heading text-primary mb-6"
+                >
+                    Downloads
+                </h1>
+                <p class="text-xl text-text-muted">
+                    Activity sheets, build guides, and more fun stuff!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div
+                    class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center"
+                >
+                    <div
+                        class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-2xl mb-6"
+                    >
+                        📄
+                    </div>
+                    <h3
+                        class="text-xl font-bold font-heading text-text-main mb-2"
+                    >
+                        Build Guide
+                    </h3>
+                    <p class="text-text-muted mb-6">
+                        Get inspired with over 20+ build configurations.
+                    </p>
+                    <Button variant="outline" className="w-full"
+                        >Download PDF</Button
+                    >
+                </div>
+
+                <div
+                    class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center"
+                >
+                    <div
+                        class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-2xl mb-6"
+                    >
+                        🎨
+                    </div>
+                    <h3
+                        class="text-xl font-bold font-heading text-text-main mb-2"
+                    >
+                        Coloring Sheets
+                    </h3>
+                    <p class="text-text-muted mb-6">
+                        Printable coloring pages for your little artists.
+                    </p>
+                    <Button variant="outline" className="w-full"
+                        >Download PDF</Button
+                    >
+                </div>
+
+                <div
+                    class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center"
+                >
+                    <div
+                        class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-2xl mb-6"
+                    >
+                        ✨
+                    </div>
+                    <h3
+                        class="text-xl font-bold font-heading text-text-main mb-2"
+                    >
+                        Activities
+                    </h3>
+                    <p class="text-text-muted mb-6">
+                        Fun games and challenges for the cosmos sofa.
+                    </p>
+                    <Button variant="outline" className="w-full"
+                        >Download PDF</Button
+                    >
+                </div>
+            </div>
+        </Container>
+    </div>
+</Layout>
