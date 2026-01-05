@@ -1,7 +1,9 @@
 import { z } from "astro/zod";
 import { medusa } from "../medusa";
 import type { FetchError } from "@medusajs/js-sdk";
-import { setAuthToken } from "./cookies";
+import { getAuthHeaders, setAuthToken } from "./cookies";
+import type { HttpTypes } from "@medusajs/types";
+import type { AstroCookies } from "astro";
 
 export const signupSchema = z.object({
   firstName: z.string().nonempty("First name is required."),
@@ -40,15 +42,11 @@ export async function signup(data: z.infer<typeof signupSchema>) {
       password: password,
     });
 
-    console.log({ token });
-
     const { customer } = await medusa.store.customer.create({
       first_name: data.firstName,
       last_name: data.lastName,
       email: data.email,
     });
-
-    console.log(customer);
   } catch (error) {
     throw error;
   }
@@ -67,4 +65,25 @@ export async function login(data: z.infer<typeof signinSchema>) {
   } catch (error) {
     throw error;
   }
+}
+
+export async function retrieveCustomer(astroCookie?: AstroCookies) {
+  let headers = {};
+
+  headers = {
+    ...(await getAuthHeaders(astroCookie)),
+  };
+
+  return await medusa.client
+    .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
+      method: "GET",
+      query: {
+        fields: "*orders",
+      },
+      headers,
+    })
+    .then(({ customer }) => customer)
+    .catch((e) => {
+      throw e;
+    });
 }

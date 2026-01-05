@@ -1,0 +1,34 @@
+---
+export const prerender = false;
+
+import { Container } from "@/components/common/Container";
+import { Button } from "@/components/ui/button";
+import Layout from "@/layouts/Layout.astro";
+
+import DashboardProfile from "@/modules/account/components/dashboard";
+---
+
+<Layout title="Dashboard">
+  <Container>
+    <div class="my-4">
+      <h1 class="text-4xl">Coming soon</h1>
+    </div>
+
+    <Button id="logout" variant="destructive">Logout</Button>
+
+    <div>
+      <DashboardProfile client:only="react" />
+    </div>
+  </Container>
+</Layout>
+
+<script>
+  import { removeAuthToken } from "@/lib/data/cookies";
+
+  const logoutBtn = document.getElementById("logout");
+
+  logoutBtn?.addEventListener("click", async () => {
+    await removeAuthToken();
+    window.location.href = "/";
+  });
+</script>

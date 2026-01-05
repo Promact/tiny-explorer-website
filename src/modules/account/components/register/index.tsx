@@ -26,6 +26,7 @@ const RegisterForm = () => {
   const onSubmit = async (data: z.infer<typeof signupSchema>) => {
     try {
       const res = await signup(data);
+      window.location.href = "/account/login";
     } catch (error) {
       console.log({ error });
     }
@@ -42,7 +43,7 @@ const RegisterForm = () => {
           shopping experience.
         </p>
         <form
-          className="w-full flex flex-col gap-y-5"
+          className="w-full flex flex-col gap-y-5 mb-4"
           onSubmit={handleSubmit(onSubmit)}
           method="post"
         >
@@ -150,10 +151,30 @@ const RegisterForm = () => {
               </Field>
             )}
           />
+
+          <p className="text-sm text-center">
+            By creating an account, you agree to Store's{" "}
+            <a href="/privacy-policy" className="text-primary underline">
+              Privacy Policy
+            </a>{" "}
+            and{" "}
+            <a href="/terms-of-use" className="text-primary underline">
+              Terms of Use
+            </a>
+            .
+          </p>
+
           <Button type="submit" className="full-w">
             Submit
           </Button>
         </form>
+        <p className="text-sm">
+          Already a member?{" "}
+          <a href="/account/login" className="text-primary underline">
+            Sign in
+          </a>
+          .
+        </p>
       </div>
     </div>
   );

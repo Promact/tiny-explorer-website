@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container } from "../common/Container";
 import { CartCounter } from "../cart/CartCounter";
 import { Button } from "../ui/button";
+import { User } from "lucide-react";
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,6 +41,9 @@ export const Header: React.FC = () => {
           <div className="hidden md:flex items-center gap-4">
             {/* Placeholder for Search/Cart */}
             <CartCounter />
+            <a href="/account/dashboard">
+              <User />
+            </a>
             <Button asChild>
               <a href="/shop">Shop Now</a>
             </Button>
@@ -48,6 +52,9 @@ export const Header: React.FC = () => {
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2">
             <CartCounter />
+            <a href="/account/dashboard">
+              <User />
+            </a>
             <button
               className="md:hidden p-2 text-text-main"
               onClick={() => setIsMenuOpen(!isMenuOpen)}

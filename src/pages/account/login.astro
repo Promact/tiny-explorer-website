@@ -1,10 +1,12 @@
 ---
+export const prerender = false;
+
 import { Container } from "@/components/common/Container";
 import AuthLayout from "@/layouts/AuthLayout.astro";
 import LoginForm from "@/modules/account/components/login";
 ---
 
-<AuthLayout title="Register">
+<AuthLayout title="Login">
   <Container>
     <LoginForm client:only="react" />
   </Container>

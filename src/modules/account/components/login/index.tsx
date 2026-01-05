@@ -23,6 +23,7 @@ const LoginForm = () => {
   const onSubmit = async (data: z.infer<typeof signinSchema>) => {
     try {
       const res = await login(data);
+      window.location.href = "/";
     } catch (error) {
       console.log(error);
     }
@@ -36,7 +37,7 @@ const LoginForm = () => {
           Sign in to access an enhanced shopping experience.
         </p>
         <form
-          className="w-full flex flex-col gap-y-5"
+          className="w-full flex flex-col gap-y-5 mb-4"
           onSubmit={handleSubmit(onSubmit)}
           method="post"
         >
@@ -93,6 +94,13 @@ const LoginForm = () => {
             Submit
           </Button>
         </form>
+        <p className="text-sm">
+          Not a member?{" "}
+          <a href="/account/register" className="text-primary underline">
+            Join us
+          </a>
+          .
+        </p>
       </div>
     </div>
   );

@@ -1,17 +1,29 @@
+import type { AstroCookies } from "astro";
 import Cookie from "js-cookie";
 
-export const getAuthHeaders = async (): Promise<
+export const getAuthHeaders = async (
+  astroCookie?: AstroCookies
+): Promise<
   | {
       authorization: string;
     }
   | {}
 > => {
-  const token = Cookie.get("_medusa_jwt");
-
-  if (token && token != undefined) {
-    return { authorization: `Bearer ${token}` as string };
+  if (astroCookie) {
+    const token = astroCookie.get("_medusa_jwt")?.value;
+    if (token && token != undefined) {
+      return { authorization: `Bearer ${token}` as string };
+    } else {
+      return {};
+    }
   } else {
-    return {};
+    const token = Cookie.get("_medusa_jwt");
+
+    if (token && token != undefined) {
+      return { authorization: `Bearer ${token}` as string };
+    } else {
+      return {};
+    }
   }
 };
 
@@ -40,6 +52,6 @@ export const setAuthToken = async (token: string) => {
   });
 };
 
-export const removeAuthToken = async (token: string) => {
+export const removeAuthToken = async () => {
   Cookie.remove("_medusa_jwt");
 };
