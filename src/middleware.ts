@@ -2,7 +2,7 @@ import { defineMiddleware } from "astro:middleware";
 
 import { jwtVerify } from "jose";
 
-const protectedPathRegex = /^\/account\/dashboard($|\/.*)/;
+const protectedPathRegex = /^\/account($|\/.*)/;
 const publicPathRegex = /^\/(?:shop\/product|shop|checkout|cart|)($|\/.*)/;
 const authPathRegex = /^\/account\/(login|register)$/;
 

@@ -1,0 +1,133 @@
+---
+import {
+  Box,
+  ChevronLeft,
+  ChevronRight,
+  LogOut,
+  MapPinHouse,
+  User,
+} from "lucide-react";
+
+const currentPath = Astro.url.pathname;
+---
+
+<div>
+  <!-- Small Screen -->
+  <div class="sm:hidden">
+    {
+      currentPath !== "/account" ? (
+        <a href="/account" class="flex items-center gap-x-2 text-sm py-2">
+          <ChevronLeft />
+          <span>Account</span>
+        </a>
+      ) : (
+        <div>
+          <ul>
+            <li>
+              <a
+                href="/account/profile"
+                class="flex items-center justify-between py-4 border-b border-gray-200 px-8"
+              >
+                <div class="flex items-center gap-x-2">
+                  <User />
+                  <span>Profile</span>
+                </div>
+                <ChevronRight />
+              </a>
+            </li>
+            <li>
+              <a
+                href="/account/addresses"
+                class="flex items-center justify-between py-4 border-b border-gray-200 px-8"
+              >
+                <div class="flex items-center gap-x-2">
+                  <MapPinHouse />
+                  <span>Addresses</span>
+                </div>
+                <ChevronRight />
+              </a>
+            </li>
+            <li>
+              <a
+                href="/account/orders"
+                class="flex items-center justify-between py-4 border-b border-gray-200 px-8"
+              >
+                <div class="flex items-center gap-x-2">
+                  <Box />
+                  <span>Orders</span>
+                </div>
+                <ChevronRight />
+              </a>
+            </li>
+            <li>
+              <div
+                class="flex items-center justify-between py-4 border-b border-gray-200 px-8 cursor-pointer"
+                id="logout"
+              >
+                <div class="flex items-center gap-x-2">
+                  <LogOut />
+                  <span>Log out</span>
+                </div>
+                <ChevronRight />
+              </div>
+            </li>
+          </ul>
+        </div>
+      )
+    }
+  </div>
+
+  <!-- Desktop Screen -->
+  <div class="hidden sm:block">
+    <div>
+      <div class="pb-4">
+        <h3 class="text-base-semi">Account</h3>
+      </div>
+      <div>
+        <ul class="flex mb-0 justify-start items-start flex-col gap-y-4">
+          <li>
+            <a
+              href="/account"
+              class:list={{ "font-bold": currentPath === "/account" }}
+              >Overview</a
+            >
+          </li>
+          <li>
+            <a
+              href="/account/profile"
+              class:list={{ "font-bold": currentPath === "/account/profile" }}
+              >Profile</a
+            >
+          </li>
+          <li>
+            <a
+              href="/account/addresses"
+              class:list={{ "font-bold": currentPath === "/account/addresses" }}
+              >Address</a
+            >
+          </li>
+          <li>
+            <div class="cursor-pointer" id="logout-desktop">Logout</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { removeAuthToken } from "@/lib/data/cookies";
+
+  const logoutBtn = document.getElementById("logout");
+  const logoutBtnDesktop = document.getElementById("logout-desktop");
+
+  logoutBtn?.addEventListener("click", async () => {
+    await removeAuthToken();
+    window.location.href = "/";
+  });
+
+  logoutBtnDesktop?.addEventListener("click", async () => {
+    await removeAuthToken();
+    window.location.href = "/";
+  });
+</script>

@@ -1,0 +1,65 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import { Header } from "@/components/layout/Header";
+import { Toaster } from "@/components/ui/sonner";
+import AccountNav from "@/modules/account/components/nav/AccountNav.astro";
+
+import "../styles/global.css";
+import { Container } from "@/components/common/Container";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Tiny Explorer - Premium Kids Furniture & Open Ended Toys",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{title}</title>
+  </head>
+  <body
+    class="bg-background text-text-main antialiased min-h-screen flex flex-col"
+  >
+    <script src="https://mercury.phonepe.com/web/bundle/checkout.js" defer
+    ></script>
+    <Header client:load />
+    <main class="flex-grow">
+      <Container>
+        <div class="sm:py-12">
+          <div class="h-full max-w-5xl mx-auto flex flex-col">
+            <div class="grid grid-cols-1 sm:grid-cols-[240px_1fr] py-12">
+              <div>
+                <AccountNav />
+              </div>
+              <div>
+                <slot />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </main>
+    <Toaster />
+    <Footer />
+  </body>
+</html>

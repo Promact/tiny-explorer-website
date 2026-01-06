@@ -15,6 +15,7 @@ export const signupSchema = z.object({
   phone: z.string(),
   password: z
     .string()
+    .trim()
     .nonempty("Password is required")
     .min(8, "Password of minimum length 8 is required"),
 });

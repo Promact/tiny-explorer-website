@@ -5,12 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-import { Eye, EyeOff } from "lucide-react";
+import { CircleAlert, Eye, EyeOff } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { login, signinSchema } from "@/lib/data/customer";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const [errorMsg, setErrorMsg] = useState("");
 
   const { control, handleSubmit } = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
@@ -25,7 +28,12 @@ const LoginForm = () => {
       const res = await login(data);
       window.location.href = "/";
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        setErrorMsg(error?.message || "Something went wrong");
+        console.log(error);
+      } else {
+        setErrorMsg("Something went wrong");
+      }
     }
   };
 
@@ -53,6 +61,7 @@ const LoginForm = () => {
                   id="email"
                   aria-invalid={fieldState.invalid}
                   placeholder="Email"
+                  className="bg-white"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -73,13 +82,14 @@ const LoginForm = () => {
                     id="password"
                     aria-invalid={fieldState.invalid}
                     placeholder="Password"
+                    className="bg-white"
                   />
                   <Button
                     type="button"
                     size="icon-sm"
                     variant="ghost"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-2 top-0.5"
+                    className="absolute right-0.5 top-0.5 bg-white"
                   >
                     {showPassword ? <Eye /> : <EyeOff />}
                   </Button>
@@ -90,6 +100,12 @@ const LoginForm = () => {
               </Field>
             )}
           />
+          {errorMsg && (
+            <Alert variant="destructive">
+              <CircleAlert />
+              <AlertTitle>{errorMsg}</AlertTitle>
+            </Alert>
+          )}
           <Button type="submit" className="full-w">
             Submit
           </Button>

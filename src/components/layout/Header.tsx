@@ -41,7 +41,7 @@ export const Header: React.FC = () => {
           <div className="hidden md:flex items-center gap-4">
             {/* Placeholder for Search/Cart */}
             <CartCounter />
-            <a href="/account/dashboard">
+            <a href="/account">
               <User />
             </a>
             <Button asChild>

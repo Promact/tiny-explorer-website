@@ -5,12 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-import { Eye, EyeOff } from "lucide-react";
+import { CircleAlert, Eye, EyeOff } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signinSchema, signup, signupSchema } from "@/lib/data/customer";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const [errorMsg, setErrorMsg] = useState("");
 
   const { control, handleSubmit } = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -28,7 +31,12 @@ const RegisterForm = () => {
       const res = await signup(data);
       window.location.href = "/account/login";
     } catch (error) {
-      console.log({ error });
+      if (error instanceof Error) {
+        setErrorMsg(error?.message || "Something went wrong");
+        console.log(error);
+      } else {
+        setErrorMsg("Something went wrong");
+      }
     }
   };
 
@@ -58,6 +66,7 @@ const RegisterForm = () => {
                   id="firstName"
                   aria-invalid={fieldState.invalid}
                   placeholder="First Name"
+                  className="bg-white"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -76,6 +85,7 @@ const RegisterForm = () => {
                   id="lastName"
                   aria-invalid={fieldState.invalid}
                   placeholder="Last Name"
+                  className="bg-white"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -95,6 +105,7 @@ const RegisterForm = () => {
                   id="email"
                   aria-invalid={fieldState.invalid}
                   placeholder="Email"
+                  className="bg-white"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -114,6 +125,7 @@ const RegisterForm = () => {
                   id="phone"
                   aria-invalid={fieldState.invalid}
                   placeholder="Phone"
+                  className="bg-white"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -134,13 +146,14 @@ const RegisterForm = () => {
                     id="password"
                     aria-invalid={fieldState.invalid}
                     placeholder="Password"
+                    className="bg-white"
                   />
                   <Button
                     type="button"
                     size="icon-sm"
                     variant="ghost"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-2 top-0.5"
+                    className="absolute right-0.5 top-0.5 bg-white"
                   >
                     {showPassword ? <Eye /> : <EyeOff />}
                   </Button>
@@ -163,6 +176,13 @@ const RegisterForm = () => {
             </a>
             .
           </p>
+
+          {errorMsg && (
+            <Alert variant="destructive">
+              <CircleAlert />
+              <AlertTitle>{errorMsg}</AlertTitle>
+            </Alert>
+          )}
 
           <Button type="submit" className="full-w">
             Submit
