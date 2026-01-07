@@ -70,7 +70,7 @@ const ProductShell = ({
 					<BuyBox
 						product={fetchedProduct || product}
 						selectedVariant={selectedVariant}
-						isValidVariant={isValidVariant}
+						isValidVariant={isValidVariant ?? false}
 						inStock={inStock}
 						qty={qty}
 						handleQtyChange={handleQtyChange}
