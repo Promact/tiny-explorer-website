@@ -8,7 +8,7 @@ import Items from "./Items";
 
 const CartShell = () => {
 	const [cart, setCart] = useState<StoreCart | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
+	const [_isLoading, setIsLoading] = useState(true);
 
 	const getCart = useCallback(async () => {
 		const res = await retrieveCart();
@@ -18,7 +18,7 @@ const CartShell = () => {
 
 	useEffect(() => {
 		getCart();
-	}, []);
+	}, [getCart]);
 
 	return (
 		<>
@@ -26,25 +26,23 @@ const CartShell = () => {
 				Cart
 			</h1>
 
-			{cart && cart?.items && cart?.items?.length > 0 ? (
-				<>
-					<div className="grid grid-cols-1 md:grid-cols-[1fr_360px] gap-x-40">
-						<div>
-							<Items cart={cart} setCart={setCart} />
-						</div>
-						<div>
-							<h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight">
-								Summary
-							</h2>
-							<div className="mb-8">
-								<CartTotals totals={cart} />
-							</div>
-							<Button asChild className="w-full mb-8">
-								<a href="/checkout">Checkout</a>
-							</Button>
-						</div>
+			{cart?.items?.length ? (
+				<div className="grid grid-cols-1 md:grid-cols-[1fr_360px] gap-x-40">
+					<div>
+						<Items cart={cart} setCart={setCart} />
 					</div>
-				</>
+					<div>
+						<h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight">
+							Summary
+						</h2>
+						<div className="mb-8">
+							<CartTotals totals={cart} />
+						</div>
+						<Button asChild className="w-full mb-8">
+							<a href="/checkout">Checkout</a>
+						</Button>
+					</div>
+				</div>
 			) : (
 				<div className="mb-6">
 					<p className="mt-4 mb-6">

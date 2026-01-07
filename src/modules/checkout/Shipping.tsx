@@ -13,7 +13,6 @@ import {
 	FieldLabel,
 	FieldTitle,
 } from "@/components/ui/field";
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Spinner } from "@/components/ui/spinner";
 import { setShippingMethod } from "@/lib/data/cart";
@@ -40,7 +39,7 @@ const Shipping = ({
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoadingPrices, setIsLoadingPrices] = useState(true);
 
-	const [showPickupOptions, setShowPickupOptions] =
+	const [_showPickupOptions, setShowPickupOptions] =
 		useState<string>(PICKUP_OPTION_OFF);
 	const [calculatedPricesMap, setCalculatedPricesMap] = useState<
 		Record<string, number>
@@ -60,7 +59,7 @@ const Shipping = ({
 		(sm) => sm.service_zone?.fulfillment_set?.type === "pickup",
 	);
 
-	const hasPickupOptions = !!_pickupMethods?.length;
+	const _hasPickupOptions = !!_pickupMethods?.length;
 
 	useEffect(() => {
 		setIsLoadingPrices(true);
@@ -75,7 +74,11 @@ const Shipping = ({
 					const pricesMap: Record<string, number> = {};
 					res
 						.filter((r) => r.status === "fulfilled")
-						.forEach((p) => (pricesMap[p.value?.id || ""] = p.value?.amount!));
+						.forEach((p) => {
+							if (p.status === "fulfilled" && p.value?.amount !== undefined) {
+								pricesMap[p.value?.id || ""] = p.value.amount;
+							}
+						});
 
 					setCalculatedPricesMap(pricesMap);
 					setIsLoadingPrices(false);
@@ -86,7 +89,7 @@ const Shipping = ({
 		if (_pickupMethods?.find((m) => m.id === shippingMethodId)) {
 			setShowPickupOptions(PICKUP_OPTION_ON);
 		}
-	}, [availableShippingMethods]);
+	}, [_shippingMethods, _pickupMethods, shippingMethodId, cart.id]);
 
 	const handleSetShippingMethod = async (
 		id: string,
@@ -132,106 +135,96 @@ const Shipping = ({
 
 	useEffect(() => {
 		setError(null);
-	}, [currentStep]);
+	}, []);
 
 	return (
-		<>
-			<div className="bg-white">
-				<div className="flex flex-row items-center justify-between mb-6">
-					<div className="flex flex-row items-baseline gap-x-2">
-						<h2>Delivery</h2>
-						{currentStep > 2 && <CircleCheck size="14px" />}
-					</div>
-					{currentStep > 2 && (
-						<Button variant="ghost" onClick={handleEdit}>
-							Edit
-						</Button>
-					)}
+		<div className="bg-white">
+			<div className="flex flex-row items-center justify-between mb-6">
+				<div className="flex flex-row items-baseline gap-x-2">
+					<h2>Delivery</h2>
+					{currentStep > 2 && <CircleCheck size="14px" />}
 				</div>
-				{currentStep == 2 && (
-					<>
-						<div className="grid">
-							<div className="flex flex-col">
-								<span className="font-medium">Shipping method</span>
-								<span className="mb-4">
-									How would you like you order delivered
-								</span>
-							</div>
-							<div data-testid="delivery-options-container">
-								<div className="pb-8 md:pt-0 pt-2">
-									<RadioGroup
-										value={shippingMethodId}
-										onValueChange={(v) =>
-											handleSetShippingMethod(v, "shipping")
-										}
-									>
-										{_shippingMethods?.map((option) => {
-											const isDisabled =
-												option.price_type === "calculated" &&
-												!isLoadingPrices &&
-												typeof calculatedPricesMap[option.id] !== "number";
-
-											return (
-												<FieldLabel
-													key={option.id}
-													htmlFor={option.id}
-													className="cursor-pointer"
-												>
-													<Field orientation="horizontal">
-														<RadioGroupItem
-															value={option.id}
-															data-testid="delivery-option-radio"
-															disabled={isDisabled}
-															id={option.id}
-														/>
-														<FieldContent>
-															<FieldTitle>{option?.name}</FieldTitle>
-															<FieldDescription>
-																{option.price_type === "flat" ? (
-																	convertToLocale({
-																		amount: option.amount!,
-																		currency_code: cart?.currency_code,
-																	})
-																) : calculatedPricesMap[option.id] ? (
-																	convertToLocale({
-																		amount: calculatedPricesMap[option.id],
-																		currency_code: cart?.currency_code,
-																	})
-																) : isLoadingPrices ? (
-																	<Spinner />
-																) : (
-																	"-"
-																)}
-															</FieldDescription>
-														</FieldContent>
-													</Field>
-												</FieldLabel>
-											);
-										})}
-									</RadioGroup>
-								</div>
-							</div>
-						</div>
-
-						<div>
-							{error && (
-								<div className="pt-2 text-destructive text-sm">{error}</div>
-							)}
-
-							<Button onClick={handleSubmit}>
-								{isLoading ? (
-									<>
-										<Spinner />
-									</>
-								) : (
-									<>Continue to payment</>
-								)}
-							</Button>
-						</div>
-					</>
+				{currentStep > 2 && (
+					<Button variant="ghost" onClick={handleEdit}>
+						Edit
+					</Button>
 				)}
 			</div>
-		</>
+			{currentStep === 2 && (
+				<>
+					<div className="grid">
+						<div className="flex flex-col">
+							<span className="font-medium">Shipping method</span>
+							<span className="mb-4">
+								How would you like you order delivered
+							</span>
+						</div>
+						<div data-testid="delivery-options-container">
+							<div className="pb-8 md:pt-0 pt-2">
+								<RadioGroup
+									value={shippingMethodId}
+									onValueChange={(v) => handleSetShippingMethod(v, "shipping")}
+								>
+									{_shippingMethods?.map((option) => {
+										const isDisabled =
+											option.price_type === "calculated" &&
+											!isLoadingPrices &&
+											typeof calculatedPricesMap[option.id] !== "number";
+
+										return (
+											<FieldLabel
+												key={option.id}
+												htmlFor={option.id}
+												className="cursor-pointer"
+											>
+												<Field orientation="horizontal">
+													<RadioGroupItem
+														value={option.id}
+														data-testid="delivery-option-radio"
+														disabled={isDisabled}
+														id={option.id}
+													/>
+													<FieldContent>
+														<FieldTitle>{option?.name}</FieldTitle>
+														<FieldDescription>
+															{option.price_type === "flat" ? (
+																convertToLocale({
+																	amount: option.amount ?? 0,
+																	currency_code: cart?.currency_code,
+																})
+															) : calculatedPricesMap[option.id] ? (
+																convertToLocale({
+																	amount: calculatedPricesMap[option.id],
+																	currency_code: cart?.currency_code,
+																})
+															) : isLoadingPrices ? (
+																<Spinner />
+															) : (
+																"-"
+															)}
+														</FieldDescription>
+													</FieldContent>
+												</Field>
+											</FieldLabel>
+										);
+									})}
+								</RadioGroup>
+							</div>
+						</div>
+					</div>
+
+					<div>
+						{error && (
+							<div className="pt-2 text-destructive text-sm">{error}</div>
+						)}
+
+						<Button onClick={handleSubmit}>
+							{isLoading ? <Spinner /> : <>Continue to payment</>}
+						</Button>
+					</div>
+				</>
+			)}
+		</div>
 	);
 };
 

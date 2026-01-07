@@ -1,4 +1,3 @@
-import type { HttpTypes, StoreCart } from "@medusajs/types";
 import type { Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import { isManual, isPhonepe } from "@/lib/constants";
@@ -7,14 +6,10 @@ import PhonePeButton from "./PhonePeButton";
 
 const PaymentButton = ({
 	cart,
-	currentStep,
 	setCurrentStep,
-	setCart,
 }: {
 	cart: HttpTypes.StoreCart;
-	currentStep: number;
 	setCurrentStep: Dispatch<SetStateAction<number>>;
-	setCart: Dispatch<SetStateAction<StoreCart | null>>;
 }) => {
 	const notReady =
 		!cart ||
@@ -31,23 +26,14 @@ const PaymentButton = ({
 
 	switch (true) {
 		case isManual(paymentSession?.provider_id):
-			return (
-				<>
-					<ManualTestPaymentButton notReady={notReady} />
-				</>
-			);
+			return <ManualTestPaymentButton notReady={notReady} />;
 		case isPhonepe(paymentSession?.provider_id):
 			return (
-				<>
-					<PhonePeButton
-						session={paymentSession}
-						notReady={notReady}
-						cart={cart}
-						currentStep={currentStep}
-						setCart={setCart}
-						setCurrentStep={setCurrentStep}
-					/>
-				</>
+				<PhonePeButton
+					session={paymentSession}
+					notReady={notReady}
+					setCurrentStep={setCurrentStep}
+				/>
 			);
 		default:
 			return <Button disabled>Select a payment method</Button>;

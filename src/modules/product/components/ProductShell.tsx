@@ -6,9 +6,12 @@ import ProductGallery from "./ProductGallery";
 import ProductInfo from "./ProductInfo";
 
 export interface ProductPageContent {
+	// biome-ignore lint/suspicious/noExplicitAny: CMS data structure is flexible
 	shippingInfo: any;
+	// biome-ignore lint/suspicious/noExplicitAny: CMS data structure is flexible
 	returnPolicy: any;
 	secureTransactionText: string;
+	// biome-ignore lint/suspicious/noExplicitAny: CMS mixed content
 	trustBadges: any[];
 	sidebarPromoTitle: string;
 	sidebarPromoText: string;
@@ -37,7 +40,8 @@ const ProductShell = ({
 	const images =
 		Array.isArray(selectedVariant?.metadata?.images) &&
 		selectedVariant?.metadata?.images?.length > 0
-			? selectedVariant?.metadata?.images?.map((item: any) => item?.url)
+			? // biome-ignore lint/suspicious/noExplicitAny: Metadata image items
+				selectedVariant?.metadata?.images?.map((item: any) => item?.url)
 			: product?.images?.map((item) => item?.url);
 
 	return (

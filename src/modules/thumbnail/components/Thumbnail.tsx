@@ -9,6 +9,7 @@ const Thumbnail = ({
 }: {
 	thumbnail?: string | null;
 	// TODO: Fix image typings
+	// biome-ignore lint/suspicious/noExplicitAny: Medusa types
 	images?: any[] | null;
 	size?: "small" | "medium" | "large" | "full" | "square";
 	isFeatured?: boolean;

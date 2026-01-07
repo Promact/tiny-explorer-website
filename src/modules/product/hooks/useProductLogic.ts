@@ -9,8 +9,9 @@ import { cartStore } from "@/nanostores/cartStore";
 const { isEqual } = _lodash;
 
 const optionsAsKeymap = (
-	variantOptions: any, // HttpTypes.StoreProductVariant["options"]
+	variantOptions: HttpTypes.StoreProductVariant["options"],
 ) => {
+	// biome-ignore lint/suspicious/noExplicitAny: Medusa types
 	return variantOptions?.reduce((acc: Record<string, string>, varopt: any) => {
 		acc[varopt.option_id] = varopt.value;
 		return acc;
@@ -32,20 +33,23 @@ export const useProductLogic = (initialProduct: StoreProduct) => {
 	// Since [slug].astro fetches everything, we might not need to refetch.
 	// But strictly adhering to original logic:
 
-	const fetchProduct = async (pId: string) => {
-		try {
-			const res = await medusa.store.product.list({
-				fields:
-					"*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,+product_description.*",
-				id: [pId],
-			});
+	const fetchProduct = useMemo(
+		() => async (pId: string) => {
+			try {
+				const res = await medusa.store.product.list({
+					fields:
+						"*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,+product_description.*",
+					id: [pId],
+				});
 
-			if (res.products?.length > 0) {
-				const item = res.products[0];
-				setProduct(item);
-			}
-		} catch {}
-	};
+				if (res.products?.length > 0) {
+					const item = res.products[0];
+					setProduct(item);
+				}
+			} catch {}
+		},
+		[],
+	);
 
 	useEffect(() => {
 		if (initialProduct?.id) {
@@ -56,7 +60,7 @@ export const useProductLogic = (initialProduct: StoreProduct) => {
 				setProduct(initialProduct);
 			}
 		}
-	}, [initialProduct?.id]);
+	}, [initialProduct, initialProduct?.id, fetchProduct]);
 
 	// Initialize options
 	useEffect(() => {
@@ -66,7 +70,7 @@ export const useProductLogic = (initialProduct: StoreProduct) => {
 				setOptions(variantOptions ?? {});
 			}
 		}
-	}, [product?.variants]);
+	}, [product?.variants, options]);
 
 	// Determine selected variant
 	const derivedSelectedVariant = useMemo(() => {

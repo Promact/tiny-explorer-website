@@ -1,4 +1,4 @@
-import type { HttpTypes, StoreCart } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -8,22 +8,16 @@ import { placeOrder } from "@/lib/data/cart";
 const PhonePeButton = ({
 	session,
 	notReady,
-	cart,
-	currentStep,
 	setCurrentStep,
-	setCart,
 }: {
 	session: HttpTypes.StorePaymentSession;
 	notReady: boolean;
-	cart: HttpTypes.StoreCart;
-	currentStep: number;
 	setCurrentStep: Dispatch<SetStateAction<number>>;
-	setCart: Dispatch<SetStateAction<StoreCart | null>>;
 }) => {
 	const [startPayment, setStartPayment] = useState(false);
 
 	const phonepeCallback = async (response: unknown) => {
-		if (response == "CONCLUDED") {
+		if (response === "CONCLUDED") {
 			const res = await placeOrder();
 
 			if (res?.payment_collection) {

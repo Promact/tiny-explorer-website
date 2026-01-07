@@ -1,7 +1,7 @@
 import type { HttpTypes, StoreCart } from "@medusajs/types";
-import { useStore } from "@nanostores/react";
+
 import clsx from "clsx";
-import { Minus, Plus, Trash, Trash2 } from "lucide-react";
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
@@ -22,13 +22,13 @@ const Item = ({
 	setCart?: Dispatch<SetStateAction<StoreCart | null>>;
 }) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
+	const [_error, setError] = useState<string | null>(null);
 
 	const changeQuantity = async (quantity: number) => {
 		if (setCart) {
 			try {
 				setIsLoading(true);
-				const res = await updateLineItem({
+				await updateLineItem({
 					lineId: item?.id,
 					quantity: quantity,
 				});
@@ -74,100 +74,98 @@ const Item = ({
 	};
 
 	return (
-		<>
-			<TableRow>
-				<TableCell className="pl-0">
-					<a
-						href=""
-						className={clsx("flex", {
-							"w-16": type === "preview",
-							"w-12 sm:w-24": type === "full",
-						})}
-					>
-						<Thumbnail
-							thumbnail={
-								item?.variant?.metadata?.thumbnail &&
-								typeof item?.variant?.metadata?.thumbnail === "string"
-									? item?.variant?.metadata?.thumbnail
-									: item.thumbnail
-							}
-							images={
-								item.variant?.metadata?.images &&
-								Array.isArray(item.variant?.metadata?.images)
-									? item.variant?.metadata?.images
-									: item.variant?.product?.images
-							}
-							size="square"
-						/>
-					</a>
-				</TableCell>
-				<TableCell>
-					<p className="text-primary font-bold text-base">
-						{item?.product_title}
+		<TableRow>
+			<TableCell className="pl-0">
+				<a
+					href="/"
+					className={clsx("flex", {
+						"w-16": type === "preview",
+						"w-12 sm:w-24": type === "full",
+					})}
+				>
+					<Thumbnail
+						thumbnail={
+							item?.variant?.metadata?.thumbnail &&
+							typeof item?.variant?.metadata?.thumbnail === "string"
+								? item?.variant?.metadata?.thumbnail
+								: item.thumbnail
+						}
+						images={
+							item.variant?.metadata?.images &&
+							Array.isArray(item.variant?.metadata?.images)
+								? item.variant?.metadata?.images
+								: item.variant?.product?.images
+						}
+						size="square"
+					/>
+				</a>
+			</TableCell>
+			<TableCell>
+				<p className="text-primary font-bold text-base">
+					{item?.product_title}
+				</p>
+				{item?.variant?.title && (
+					<p className="overflow-hidden text-ellipsis">
+						Variant: {item?.variant?.title}
 					</p>
-					{item?.variant?.title && (
-						<p className="overflow-hidden text-ellipsis">
-							Variant: {item?.variant?.title}
-						</p>
-					)}
-				</TableCell>
-				{type === "full" && (
-					<TableCell>
-						<div className="flex flex-wrap gap-2 items-center">
+				)}
+			</TableCell>
+			{type === "full" && (
+				<TableCell>
+					<div className="flex flex-wrap gap-2 items-center">
+						<Button
+							size="icon-sm"
+							className="cursor-pointer"
+							onClick={() => handledelete(item?.id)}
+							disabled={isLoading}
+						>
+							<Trash2 />
+						</Button>
+						<div className="flex items-center border-gray-200 border rounded-lg w-fit">
 							<Button
+								variant="ghost"
 								size="icon-sm"
 								className="cursor-pointer"
-								onClick={() => handledelete(item?.id)}
+								onClick={() => changeQuantity(item?.quantity - 1)}
+								disabled={item?.quantity === 1 || isLoading}
+							>
+								<Minus />
+							</Button>
+							<span className="px-2">{item?.quantity}</span>
+							<Button
+								variant="ghost"
+								size="icon-sm"
+								className="cursor-pointer"
+								onClick={() => changeQuantity(item?.quantity + 1)}
 								disabled={isLoading}
 							>
-								<Trash2 />
+								<Plus />
 							</Button>
-							<div className="flex items-center border-gray-200 border rounded-lg w-fit">
-								<Button
-									variant="ghost"
-									size="icon-sm"
-									className="cursor-pointer"
-									onClick={() => changeQuantity(item?.quantity - 1)}
-									disabled={item?.quantity === 1 || isLoading}
-								>
-									<Minus />
-								</Button>
-								<span className="px-2">{item?.quantity}</span>
-								<Button
-									variant="ghost"
-									size="icon-sm"
-									className="cursor-pointer"
-									onClick={() => changeQuantity(item?.quantity + 1)}
-									disabled={isLoading}
-								>
-									<Plus />
-								</Button>
-							</div>
 						</div>
-					</TableCell>
-				)}
-				{type === "full" && (
-					<TableCell>
-						<span className="text-primary">
-							{item?.total &&
-								convertToLocale({
-									amount: item?.total / item.quantity,
-									currency_code: currencyCode,
-								})}
-						</span>
-					</TableCell>
-				)}
-				<TableCell className="pr-0 text-right">
+					</div>
+				</TableCell>
+			)}
+			{type === "full" && (
+				<TableCell>
 					<span className="text-primary">
 						{item?.total &&
 							convertToLocale({
-								amount: item?.total,
+								amount: item?.total / item.quantity,
 								currency_code: currencyCode,
 							})}
 					</span>
 				</TableCell>
-			</TableRow>
-		</>
+			)}
+			<TableCell className="pr-0 text-right">
+				<span className="text-primary">
+					{item?.total &&
+						convertToLocale({
+							amount: item?.total,
+							currency_code: currencyCode,
+						})}
+				</span>
+			</TableCell>
+		</TableRow>
 	);
 };
 

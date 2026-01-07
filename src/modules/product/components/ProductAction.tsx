@@ -5,7 +5,6 @@ import type {
 } from "@medusajs/types";
 import { useStore } from "@nanostores/react";
 import _lodash from "lodash";
-import { ChevronRight, Minus, Plus } from "lucide-react";
 import {
 	type Dispatch,
 	type SetStateAction,
@@ -27,6 +26,7 @@ const { isEqual } = _lodash;
 const optionsAsKeymap = (
 	variantOptions: HttpTypes.StoreProductVariant["options"],
 ) => {
+	// biome-ignore lint/suspicious/noExplicitAny: Medusa types
 	return variantOptions?.reduce((acc: Record<string, string>, varopt: any) => {
 		acc[varopt.option_id] = varopt.value;
 		return acc;
@@ -47,9 +47,10 @@ const ProductAction = ({
 	const [qty, setQty] = useState(1);
 	const [isAdding, setIsAdding] = useState(false);
 
-	const cart = useStore(cartStore);
+	const _cart = useStore(cartStore);
 
-	const fetchProduct = async (pId: string) => {
+	// biome-ignore lint/correctness/useExhaustiveDependencies: fetchProduct definition
+	const fetchProduct = useCallback(async (pId: string) => {
 		try {
 			const res = await medusa.store.product.list({
 				fields:
@@ -62,23 +63,22 @@ const ProductAction = ({
 				setFetchedProduct(item);
 			}
 		} catch {}
-	};
+	}, []);
 
 	useEffect(() => {
 		if (productId) {
 			fetchProduct(productId);
 		}
-	}, [productId]);
+	}, [productId, fetchProduct]);
 
 	useEffect(() => {
-		if (Object.keys(options).length == 0) {
+		if (Object.keys(options).length === 0) {
 			if (fetchedProduct?.variants?.length === 1) {
 				const variantOptions = optionsAsKeymap(
 					fetchedProduct?.variants[0].options,
 				);
 				setOptions(variantOptions ?? {});
 			} else if (
-				fetchedProduct &&
 				fetchedProduct?.variants &&
 				fetchedProduct?.variants?.length > 0
 			) {
@@ -88,7 +88,7 @@ const ProductAction = ({
 				setOptions(variantOptions ?? {});
 			}
 		}
-	}, [fetchedProduct?.variants]);
+	}, [fetchedProduct, options]);
 
 	const selectedVariant = useMemo(() => {
 		if (!fetchedProduct?.variants || fetchedProduct?.variants?.length === 0) {
@@ -107,7 +107,7 @@ const ProductAction = ({
 		if (selectedVariant) {
 			setSelectedVariant(selectedVariant);
 		}
-	}, [selectedVariant]);
+	}, [selectedVariant, setSelectedVariant]);
 
 	// update the options when a variant is selected
 	const setOptionValue = (optionId: string, value: string) => {
@@ -254,14 +254,12 @@ const ProductAction = ({
 				>
 					{isAdding ? (
 						<Spinner />
+					) : !selectedVariant && !options ? (
+						"Select variant"
+					) : !inStock || !isValidVariant ? (
+						"Out of stock"
 					) : (
-						<>
-							{!selectedVariant && !options
-								? "Select variant"
-								: !inStock || !isValidVariant
-									? "Out of stock"
-									: "Add to cart"}
-						</>
+						"Add to cart"
 					)}
 				</Button>
 			</div>

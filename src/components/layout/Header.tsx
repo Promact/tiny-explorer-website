@@ -54,6 +54,7 @@ export const Header: React.FC = () => {
 					<div className="md:hidden flex items-center gap-2">
 						<CartCounter />
 						<button
+							type="button"
 							className="md:hidden p-2 text-text-main"
 							onClick={() => setIsMenuOpen(!isMenuOpen)}
 							aria-label="Toggle menu"
@@ -66,6 +67,7 @@ export const Header: React.FC = () => {
 								stroke="currentColor"
 								className="w-6 h-6"
 							>
+								<title>Menu</title>
 								<path
 									strokeLinecap="round"
 									strokeLinejoin="round"

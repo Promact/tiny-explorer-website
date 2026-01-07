@@ -2,6 +2,7 @@ import type { HttpTypes } from "@medusajs/types";
 import { getPercentageDiff } from "./get-percentage-diff";
 import { convertToLocale } from "./money";
 
+// biome-ignore lint/suspicious/noExplicitAny: generic variant handling
 export const getPricesForVariant = (variant: any) => {
 	if (!variant?.calculated_price?.calculated_amount) {
 		return null;
@@ -43,8 +44,11 @@ export function getProductPrice({
 			return null;
 		}
 
+		// biome-ignore lint/suspicious/noExplicitAny: complex sorting
 		const cheapestVariant: any = product.variants
+			// biome-ignore lint/suspicious/noExplicitAny: complex sorting
 			.filter((v: any) => !!v.calculated_price)
+			// biome-ignore lint/suspicious/noExplicitAny: complex sorting
 			.sort((a: any, b: any) => {
 				return (
 					a.calculated_price.calculated_amount -
@@ -60,6 +64,7 @@ export function getProductPrice({
 			return null;
 		}
 
+		// biome-ignore lint/suspicious/noExplicitAny: finding variant
 		const variant: any = product.variants?.find(
 			(v) => v.id === variantId || v.sku === variantId,
 		);

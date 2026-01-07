@@ -21,7 +21,7 @@ const LoginForm = () => {
 
 	const onSubmit = async (data: z.infer<typeof signinSchema>) => {
 		try {
-			const res = await login(data);
+			const _res = await login(data);
 		} catch (error) {
 			console.log(error);
 		}

@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { retrieveCart } from "@/lib/data/cart";
 import { cartStore } from "@/nanostores/cartStore";
 
@@ -33,7 +33,7 @@ export const CartCounter = () => {
 	}, [getAndSetCart]);
 
 	const totalItems = useMemo(() => {
-		if (cart && cart.items) {
+		if (cart?.items) {
 			return cart?.items.reduce((acc, item) => acc + item.quantity, 0);
 		}
 		return 0;
@@ -52,6 +52,7 @@ export const CartCounter = () => {
 				stroke="currentColor"
 				className="w-6 h-6"
 			>
+				<title>Shopping Cart</title>
 				<path
 					strokeLinecap="round"
 					strokeLinejoin="round"

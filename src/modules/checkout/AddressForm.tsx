@@ -15,7 +15,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { retrieveCart, setAddresses } from "@/lib/data/cart";
 import { cartStore } from "@/nanostores/cartStore";
 
 const RequiredAsterisk = () => {
@@ -109,7 +108,6 @@ const formSchema = z
 const AddressForm = ({
 	cart,
 	setCart,
-	currentStep,
 	setCurrentStep,
 }: {
 	cart: HttpTypes.StoreCart;
@@ -146,26 +144,27 @@ const AddressForm = ({
 	const watchSameAddress = form.watch("checkForSameAddress");
 	const watchCountry = form.watch("countryCode");
 
-	const setFormAddress = (
-		address?: HttpTypes.StoreCartAddress,
-		email?: string,
-	) => {
-		if (address) {
-			form.setValue("firstName", address?.first_name || "");
-			form.setValue("lastName", address?.last_name || "");
-			form.setValue("address1", address?.address_1 || "");
-			form.setValue("company", address?.company || "");
-			form.setValue("postalCode", address?.postal_code || "");
-			form.setValue("city", address?.city || "");
-			form.setValue("countryCode", address?.country_code || "");
-			form.setValue("province", address?.province || "");
-			form.setValue("phone", address?.phone || "");
-		}
+	// biome-ignore lint/correctness/useExhaustiveDependencies: form stable
+	const setFormAddress = useCallback(
+		(address?: HttpTypes.StoreCartAddress, email?: string) => {
+			if (address) {
+				form.setValue("firstName", address?.first_name || "");
+				form.setValue("lastName", address?.last_name || "");
+				form.setValue("address1", address?.address_1 || "");
+				form.setValue("company", address?.company || "");
+				form.setValue("postalCode", address?.postal_code || "");
+				form.setValue("city", address?.city || "");
+				form.setValue("countryCode", address?.country_code || "");
+				form.setValue("province", address?.province || "");
+				form.setValue("phone", address?.phone || "");
+			}
 
-		if (email) {
-			form.setValue("email", email);
-		}
-	};
+			if (email) {
+				form.setValue("email", email);
+			}
+		},
+		[form],
+	);
 
 	const countryOptions = useMemo(() => {
 		if (!cart.region) {
@@ -183,13 +182,13 @@ const AddressForm = ({
 		if (watchCountry === "" && cart?.shipping_address?.country_code) {
 			form.setValue("countryCode", cart?.shipping_address?.country_code);
 		}
-	}, [watchCountry]);
+	}, [watchCountry, cart?.shipping_address?.country_code, form.setValue]);
 
 	useEffect(() => {
-		if (cart && cart.shipping_address) {
+		if (cart?.shipping_address) {
 			setFormAddress(cart?.shipping_address, cart?.email);
 		}
-	}, [cart]);
+	}, [cart, setFormAddress]);
 
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
 		const res = await setAddresses(data);
@@ -200,442 +199,419 @@ const AddressForm = ({
 	};
 
 	return (
-		<>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
-				<h2 className="mb-4">Shipping Address</h2>
-				<div className="grid grid-cols-2 gap-4 mb-4">
-					<Controller
-						control={form.control}
-						name="firstName"
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor="shipping-firstName">
-									First Name <RequiredAsterisk />
-								</FieldLabel>
-								<Input
-									{...field}
-									id="shipping-firstName"
-									aria-invalid={fieldState.invalid}
-									placeholder="First Name"
-								/>
-								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
-								)}
-							</Field>
-						)}
-					/>
-					<Controller
-						control={form.control}
-						name="lastName"
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor="shipping-lastName">
-									Last Name <RequiredAsterisk />
-								</FieldLabel>
-								<Input
-									{...field}
-									id="shipping-lastName"
-									aria-invalid={fieldState.invalid}
-									placeholder="Last Name"
-								/>
-								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
-								)}
-							</Field>
-						)}
-					/>
-					<Controller
-						control={form.control}
-						name="address1"
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor="shipping-address1">
-									Address <RequiredAsterisk />
-								</FieldLabel>
-								<Input
-									{...field}
-									id="shipping-address1"
-									aria-invalid={fieldState.invalid}
-									placeholder="Address"
-								/>
-								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
-								)}
-							</Field>
-						)}
-					/>
-					<Controller
-						control={form.control}
-						name="company"
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor="shipping-company">Company</FieldLabel>
-								<Input
-									{...field}
-									id="shipping-company"
-									aria-invalid={fieldState.invalid}
-									placeholder="Company"
-								/>
-								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
-								)}
-							</Field>
-						)}
-					/>
-					<Controller
-						control={form.control}
-						name="postalCode"
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor="shipping-postalCode">
-									Postal Code <RequiredAsterisk />
-								</FieldLabel>
-								<Input
-									{...field}
-									id="shipping-postalCode"
-									aria-invalid={fieldState.invalid}
-									placeholder="Postal Code"
-								/>
-								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
-								)}
-							</Field>
-						)}
-					/>
-					<Controller
-						control={form.control}
-						name="city"
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor="shipping-city">
-									City <RequiredAsterisk />
-								</FieldLabel>
-								<Input
-									{...field}
-									id="shipping-city"
-									aria-invalid={fieldState.invalid}
-									placeholder="City"
-								/>
-								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
-								)}
-							</Field>
-						)}
-					/>
-					<Controller
-						control={form.control}
-						name="countryCode"
-						render={({ field, fieldState }) => (
-							<Field orientation="responsive" data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor="shipping-country">
-									Country <RequiredAsterisk />
-								</FieldLabel>
-								<Select
-									name={field.name}
-									value={field.value}
-									onValueChange={field.onChange}
+		<form onSubmit={form.handleSubmit(onSubmit)}>
+			<h2 className="mb-4">Shipping Address</h2>
+			<div className="grid grid-cols-2 gap-4 mb-4">
+				<Controller
+					control={form.control}
+					name="firstName"
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor="shipping-firstName">
+								First Name <RequiredAsterisk />
+							</FieldLabel>
+							<Input
+								{...field}
+								id="shipping-firstName"
+								aria-invalid={fieldState.invalid}
+								placeholder="First Name"
+							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+						</Field>
+					)}
+				/>
+				<Controller
+					control={form.control}
+					name="lastName"
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor="shipping-lastName">
+								Last Name <RequiredAsterisk />
+							</FieldLabel>
+							<Input
+								{...field}
+								id="shipping-lastName"
+								aria-invalid={fieldState.invalid}
+								placeholder="Last Name"
+							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+						</Field>
+					)}
+				/>
+				<Controller
+					control={form.control}
+					name="address1"
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor="shipping-address1">
+								Address <RequiredAsterisk />
+							</FieldLabel>
+							<Input
+								{...field}
+								id="shipping-address1"
+								aria-invalid={fieldState.invalid}
+								placeholder="Address"
+							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+						</Field>
+					)}
+				/>
+				<Controller
+					control={form.control}
+					name="company"
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor="shipping-company">Company</FieldLabel>
+							<Input
+								{...field}
+								id="shipping-company"
+								aria-invalid={fieldState.invalid}
+								placeholder="Company"
+							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+						</Field>
+					)}
+				/>
+				<Controller
+					control={form.control}
+					name="postalCode"
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor="shipping-postalCode">
+								Postal Code <RequiredAsterisk />
+							</FieldLabel>
+							<Input
+								{...field}
+								id="shipping-postalCode"
+								aria-invalid={fieldState.invalid}
+								placeholder="Postal Code"
+							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+						</Field>
+					)}
+				/>
+				<Controller
+					control={form.control}
+					name="city"
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor="shipping-city">
+								City <RequiredAsterisk />
+							</FieldLabel>
+							<Input
+								{...field}
+								id="shipping-city"
+								aria-invalid={fieldState.invalid}
+								placeholder="City"
+							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+						</Field>
+					)}
+				/>
+				<Controller
+					control={form.control}
+					name="countryCode"
+					render={({ field, fieldState }) => (
+						<Field orientation="responsive" data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor="shipping-country">
+								Country <RequiredAsterisk />
+							</FieldLabel>
+							<Select
+								name={field.name}
+								value={field.value}
+								onValueChange={field.onChange}
+							>
+								<SelectTrigger id="shipping-country" className="w-full">
+									<SelectValue placeholder="Select" />
+								</SelectTrigger>
+								<SelectContent position="item-aligned">
+									{countryOptions?.map((item) => (
+										<SelectItem key={item?.value} value={item?.value as string}>
+											{item?.label}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+						</Field>
+					)}
+				/>
+				<Controller
+					control={form.control}
+					name="province"
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor="shipping-province">
+								State / Province <RequiredAsterisk />
+							</FieldLabel>
+							<Input
+								{...field}
+								id="shipping-province"
+								aria-invalid={fieldState.invalid}
+								placeholder="State / Province"
+							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+						</Field>
+					)}
+				/>
+			</div>
+
+			<div className="mb-4">
+				<Controller
+					control={form.control}
+					name="checkForSameAddress"
+					render={({ field }) => (
+						<Field orientation="horizontal">
+							<Checkbox
+								id="sameAddress"
+								name={field.name}
+								checked={field.value}
+								onCheckedChange={field.onChange}
+							/>
+							<FieldLabel htmlFor="sameAddress" className="font-normal">
+								Billing address same as shipping address
+							</FieldLabel>
+						</Field>
+					)}
+				/>
+			</div>
+
+			<div className="grid grid-cols-2 gap-4 mb-8">
+				<Controller
+					control={form.control}
+					name="email"
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor="shipping-email">
+								Email <RequiredAsterisk />
+							</FieldLabel>
+							<Input
+								{...field}
+								id="shipping-email"
+								aria-invalid={fieldState.invalid}
+								placeholder="Email"
+							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+						</Field>
+					)}
+				/>
+				<Controller
+					control={form.control}
+					name="phone"
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor="shipping-phone">Phone</FieldLabel>
+							<Input
+								{...field}
+								id="shipping-phone"
+								aria-invalid={fieldState.invalid}
+								placeholder="Phone"
+							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+						</Field>
+					)}
+				/>
+			</div>
+
+			{!watchSameAddress && (
+				<>
+					<h3 className="mb-4">Billing Address</h3>
+
+					<div className="grid grid-cols-2 gap-4 mb-4">
+						<Controller
+							control={form.control}
+							name="billingFirstName"
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<FieldLabel htmlFor="billing-firstName">
+										First Name <RequiredAsterisk />
+									</FieldLabel>
+									<Input
+										{...field}
+										id="billing-firstName"
+										aria-invalid={fieldState.invalid}
+										placeholder="First Name"
+									/>
+									{fieldState.invalid && (
+										<FieldError errors={[fieldState.error]} />
+									)}
+								</Field>
+							)}
+						/>
+						<Controller
+							control={form.control}
+							name="billingLastName"
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<FieldLabel htmlFor="billing-lastName">
+										Last Name <RequiredAsterisk />
+									</FieldLabel>
+									<Input
+										{...field}
+										id="billing-lastName"
+										aria-invalid={fieldState.invalid}
+										placeholder="Last Name"
+									/>
+									{fieldState.invalid && (
+										<FieldError errors={[fieldState.error]} />
+									)}
+								</Field>
+							)}
+						/>
+						<Controller
+							control={form.control}
+							name="billingAddress1"
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<FieldLabel htmlFor="billing-address1">
+										Address <RequiredAsterisk />
+									</FieldLabel>
+									<Input
+										{...field}
+										id="billing-address1"
+										aria-invalid={fieldState.invalid}
+										placeholder="Address"
+									/>
+									{fieldState.invalid && (
+										<FieldError errors={[fieldState.error]} />
+									)}
+								</Field>
+							)}
+						/>
+						<Controller
+							control={form.control}
+							name="billingCompany"
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<FieldLabel htmlFor="billing-company">Company</FieldLabel>
+									<Input
+										{...field}
+										id="billing-company"
+										aria-invalid={fieldState.invalid}
+										placeholder="Company"
+									/>
+									{fieldState.invalid && (
+										<FieldError errors={[fieldState.error]} />
+									)}
+								</Field>
+							)}
+						/>
+						<Controller
+							control={form.control}
+							name="billingPostalCode"
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<FieldLabel htmlFor="billing-postalCode">
+										Postal Code <RequiredAsterisk />
+									</FieldLabel>
+									<Input
+										{...field}
+										id="billing-postalCode"
+										aria-invalid={fieldState.invalid}
+										placeholder="Postal Code"
+									/>
+									{fieldState.invalid && (
+										<FieldError errors={[fieldState.error]} />
+									)}
+								</Field>
+							)}
+						/>
+						<Controller
+							control={form.control}
+							name="billingCity"
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<FieldLabel htmlFor="billing-city">
+										City <RequiredAsterisk />
+									</FieldLabel>
+									<Input
+										{...field}
+										id="billing-city"
+										aria-invalid={fieldState.invalid}
+										placeholder="City"
+									/>
+									{fieldState.invalid && (
+										<FieldError errors={[fieldState.error]} />
+									)}
+								</Field>
+							)}
+						/>
+						<Controller
+							control={form.control}
+							name="billingCountryCode"
+							render={({ field, fieldState }) => (
+								<Field
+									orientation="responsive"
+									data-invalid={fieldState.invalid}
 								>
-									<SelectTrigger id="shipping-country" className="w-full">
-										<SelectValue placeholder="Select" />
-									</SelectTrigger>
-									<SelectContent position="item-aligned">
-										{countryOptions?.map((item) => (
-											<SelectItem
-												key={item?.value}
-												value={item?.value as string}
-											>
-												{item?.label}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-							</Field>
-						)}
-					/>
-					<Controller
-						control={form.control}
-						name="province"
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor="shipping-province">
-									State / Province <RequiredAsterisk />
-								</FieldLabel>
-								<Input
-									{...field}
-									id="shipping-province"
-									aria-invalid={fieldState.invalid}
-									placeholder="State / Province"
-								/>
-								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
-								)}
-							</Field>
-						)}
-					/>
-				</div>
-
-				<div className="mb-4">
-					<Controller
-						control={form.control}
-						name="checkForSameAddress"
-						render={({ field, fieldState }) => (
-							<Field orientation="horizontal">
-								<Checkbox
-									id="sameAddress"
-									name={field.name}
-									checked={field.value}
-									onCheckedChange={field.onChange}
-								/>
-								<FieldLabel htmlFor="sameAddress" className="font-normal">
-									Billing address same as shipping address
-								</FieldLabel>
-							</Field>
-						)}
-					/>
-				</div>
-
-				<div className="grid grid-cols-2 gap-4 mb-8">
-					<Controller
-						control={form.control}
-						name="email"
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor="shipping-email">
-									Email <RequiredAsterisk />
-								</FieldLabel>
-								<Input
-									{...field}
-									id="shipping-email"
-									aria-invalid={fieldState.invalid}
-									placeholder="Email"
-								/>
-								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
-								)}
-							</Field>
-						)}
-					/>
-					<Controller
-						control={form.control}
-						name="phone"
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor="shipping-phone">Phone</FieldLabel>
-								<Input
-									{...field}
-									id="shipping-phone"
-									aria-invalid={fieldState.invalid}
-									placeholder="Phone"
-								/>
-								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
-								)}
-							</Field>
-						)}
-					/>
-				</div>
-
-				{!watchSameAddress && (
-					<>
-						<h3 className="mb-4">Billing Address</h3>
-
-						<div className="grid grid-cols-2 gap-4 mb-4">
-							<Controller
-								control={form.control}
-								name="billingFirstName"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="billing-firstName">
-											First Name <RequiredAsterisk />
-										</FieldLabel>
-										<Input
-											{...field}
-											id="billing-firstName"
-											aria-invalid={fieldState.invalid}
-											placeholder="First Name"
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
-							/>
-							<Controller
-								control={form.control}
-								name="billingLastName"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="billing-lastName">
-											Last Name <RequiredAsterisk />
-										</FieldLabel>
-										<Input
-											{...field}
-											id="billing-lastName"
-											aria-invalid={fieldState.invalid}
-											placeholder="Last Name"
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
-							/>
-							<Controller
-								control={form.control}
-								name="billingAddress1"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="billing-address1">
-											Address <RequiredAsterisk />
-										</FieldLabel>
-										<Input
-											{...field}
-											id="billing-address1"
-											aria-invalid={fieldState.invalid}
-											placeholder="Address"
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
-							/>
-							<Controller
-								control={form.control}
-								name="billingCompany"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="billing-company">Company</FieldLabel>
-										<Input
-											{...field}
-											id="billing-company"
-											aria-invalid={fieldState.invalid}
-											placeholder="Company"
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
-							/>
-							<Controller
-								control={form.control}
-								name="billingPostalCode"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="billing-postalCode">
-											Postal Code <RequiredAsterisk />
-										</FieldLabel>
-										<Input
-											{...field}
-											id="billing-postalCode"
-											aria-invalid={fieldState.invalid}
-											placeholder="Postal Code"
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
-							/>
-							<Controller
-								control={form.control}
-								name="billingCity"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="billing-city">
-											City <RequiredAsterisk />
-										</FieldLabel>
-										<Input
-											{...field}
-											id="billing-city"
-											aria-invalid={fieldState.invalid}
-											placeholder="City"
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
-							/>
-							<Controller
-								control={form.control}
-								name="billingCountryCode"
-								render={({ field, fieldState }) => (
-									<Field
-										orientation="responsive"
-										data-invalid={fieldState.invalid}
+									<FieldLabel htmlFor="billing-country">
+										Country <RequiredAsterisk />
+									</FieldLabel>
+									<Select
+										name={field.name}
+										value={field.value}
+										onValueChange={field.onChange}
 									>
-										<FieldLabel htmlFor="billing-country">
-											Country <RequiredAsterisk />
-										</FieldLabel>
-										<Select
-											name={field.name}
-											value={field.value}
-											onValueChange={field.onChange}
-										>
-											<SelectTrigger id="billing-country" className="w-full">
-												<SelectValue placeholder="Select" />
-											</SelectTrigger>
-											<SelectContent position="item-aligned">
-												{countryOptions?.map((item) => (
-													<SelectItem
-														key={item?.value}
-														value={item?.value as string}
-													>
-														{item?.label}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-									</Field>
-								)}
-							/>
-							<Controller
-								control={form.control}
-								name="billingProvince"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="billing-province">
-											State / Province <RequiredAsterisk />
-										</FieldLabel>
-										<Input
-											{...field}
-											id="billing-province"
-											aria-invalid={fieldState.invalid}
-											placeholder="State / Province"
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
-							/>
-							<Controller
-								control={form.control}
-								name="billingPhone"
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="billing-phone">Phone</FieldLabel>
-										<Input
-											{...field}
-											id="billing-phone"
-											aria-invalid={fieldState.invalid}
-											placeholder="Phone"
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
-							/>
-						</div>
-					</>
-				)}
+										<SelectTrigger id="billing-country" className="w-full">
+											<SelectValue placeholder="Select" />
+										</SelectTrigger>
+										<SelectContent position="item-aligned">
+											{countryOptions?.map((item) => (
+												<SelectItem
+													key={item?.value}
+													value={item?.value as string}
+												>
+													{item?.label}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+								</Field>
+							)}
+						/>
+						<Controller
+							control={form.control}
+							name="billingProvince"
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<FieldLabel htmlFor="billing-province">
+										State / Province <RequiredAsterisk />
+									</FieldLabel>
+									<Input
+										{...field}
+										id="billing-province"
+										aria-invalid={fieldState.invalid}
+										placeholder="State / Province"
+									/>
+									{fieldState.invalid && (
+										<FieldError errors={[fieldState.error]} />
+									)}
+								</Field>
+							)}
+						/>
+						<Controller
+							control={form.control}
+							name="billingPhone"
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<FieldLabel htmlFor="billing-phone">Phone</FieldLabel>
+									<Input
+										{...field}
+										id="billing-phone"
+										aria-invalid={fieldState.invalid}
+										placeholder="Phone"
+									/>
+									{fieldState.invalid && (
+										<FieldError errors={[fieldState.error]} />
+									)}
+								</Field>
+							)}
+						/>
+					</div>
+				</>
+			)}
 
-				<Button type="submit">Continue to delivery</Button>
-			</form>
-		</>
+			<Button type="submit">Continue to delivery</Button>
+		</form>
 	);
 };
 

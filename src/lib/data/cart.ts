@@ -259,7 +259,7 @@ export async function setAddresses(addressData: AddressData) {
 				phone: addressData.phone,
 			},
 			email: addressData.email,
-		} as any;
+		} as Record<string, unknown>;
 
 		const sameAsBilling = addressData.checkForSameAddress;
 		if (sameAsBilling) data.billing_address = data.shipping_address;
@@ -279,8 +279,8 @@ export async function setAddresses(addressData: AddressData) {
 			};
 		const res = await updateCart(data);
 		return res;
-	} catch (e: any) {
-		return e.message;
+	} catch (e) {
+		return (e as Error).message;
 	}
 
 	//   redirect(
@@ -316,7 +316,7 @@ export async function placeOrder(cartId?: string) {
 	}
 }
 
-export async function updateRegion(countryCode: string, currentPath: string) {
+export async function updateRegion(countryCode: string, _currentPath: string) {
 	const cartId = await getCartId();
 	const region = await getRegion(countryCode);
 

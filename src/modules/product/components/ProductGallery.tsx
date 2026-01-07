@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-	FreeMode,
-	Mousewheel,
-	Navigation,
-	Pagination,
-	Thumbs,
-} from "swiper/modules";
+import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper/types";
 

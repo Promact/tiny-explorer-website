@@ -4,8 +4,24 @@ import { medusa } from "../../lib/medusa";
 // import { getCart } from '../../lib/cart';
 import { Button } from "../common/Button";
 
+interface CartItem {
+	id: string;
+	thumbnail: string;
+	title: string;
+	description: string;
+	quantity: number;
+	unit_price: number;
+}
+
+interface Cart {
+	id: string;
+	items: CartItem[];
+	subtotal: number;
+	total: number;
+}
+
 export const CheckoutFlow = () => {
-	const [cart, setCart] = useState<any>(null);
+	const [cart, _setCart] = useState<Cart | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [submitting, setSubmitting] = useState(false);
 	const [formData, setFormData] = useState({
@@ -61,7 +77,7 @@ export const CheckoutFlow = () => {
 				localStorage.removeItem("medusa_cart_id");
 				window.location.href = "/"; // Redirect home
 			} else {
-				alert("Order incompletion type: " + response.type);
+				alert(`Order incompletion type: ${response.type}`);
 			}
 		} catch (err) {
 			console.error("Checkout Error", err);
@@ -91,10 +107,14 @@ export const CheckoutFlow = () => {
 				<h2 className="text-2xl font-bold mb-6">Shipping Details</h2>
 				<form onSubmit={handlePlaceOrder} className="space-y-4">
 					<div>
-						<label className="block text-sm font-medium text-gray-700">
+						<label
+							htmlFor="email"
+							className="block text-sm font-medium text-gray-700"
+						>
 							Email
 						</label>
 						<input
+							id="email"
 							type="email"
 							name="email"
 							required
@@ -105,10 +125,14 @@ export const CheckoutFlow = () => {
 					</div>
 					<div className="grid grid-cols-2 gap-4">
 						<div>
-							<label className="block text-sm font-medium text-gray-700">
+							<label
+								htmlFor="first_name"
+								className="block text-sm font-medium text-gray-700"
+							>
 								First Name
 							</label>
 							<input
+								id="first_name"
 								type="text"
 								name="first_name"
 								required
@@ -118,10 +142,14 @@ export const CheckoutFlow = () => {
 							/>
 						</div>
 						<div>
-							<label className="block text-sm font-medium text-gray-700">
+							<label
+								htmlFor="last_name"
+								className="block text-sm font-medium text-gray-700"
+							>
 								Last Name
 							</label>
 							<input
+								id="last_name"
 								type="text"
 								name="last_name"
 								required
@@ -132,10 +160,14 @@ export const CheckoutFlow = () => {
 						</div>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700">
+						<label
+							htmlFor="address_1"
+							className="block text-sm font-medium text-gray-700"
+						>
 							Address
 						</label>
 						<input
+							id="address_1"
 							type="text"
 							name="address_1"
 							required
@@ -146,10 +178,14 @@ export const CheckoutFlow = () => {
 					</div>
 					<div className="grid grid-cols-2 gap-4">
 						<div>
-							<label className="block text-sm font-medium text-gray-700">
+							<label
+								htmlFor="city"
+								className="block text-sm font-medium text-gray-700"
+							>
 								City
 							</label>
 							<input
+								id="city"
 								type="text"
 								name="city"
 								required
@@ -159,10 +195,14 @@ export const CheckoutFlow = () => {
 							/>
 						</div>
 						<div>
-							<label className="block text-sm font-medium text-gray-700">
+							<label
+								htmlFor="postal_code"
+								className="block text-sm font-medium text-gray-700"
+							>
 								Postal Code
 							</label>
 							<input
+								id="postal_code"
 								type="text"
 								name="postal_code"
 								required
@@ -185,7 +225,7 @@ export const CheckoutFlow = () => {
 			<div className="bg-gray-50 p-6 rounded-2xl h-fit">
 				<h2 className="text-2xl font-bold mb-6">Order Summary</h2>
 				<div className="space-y-4 mb-6">
-					{cart.items.map((item: any) => (
+					{cart.items.map((item: CartItem) => (
 						<div key={item.id} className="flex gap-4">
 							<div className="w-16 h-16 bg-gray-200 rounded-md overflow-hidden">
 								<img

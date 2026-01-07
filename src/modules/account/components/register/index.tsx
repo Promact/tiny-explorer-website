@@ -6,7 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { signinSchema, signup, signupSchema } from "@/lib/data/customer";
+import { signup, signupSchema } from "@/lib/data/customer";
 
 const RegisterForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +24,7 @@ const RegisterForm = () => {
 
 	const onSubmit = async (data: z.infer<typeof signupSchema>) => {
 		try {
-			const res = await signup(data);
+			const _res = await signup(data);
 		} catch (error) {
 			console.log({ error });
 		}

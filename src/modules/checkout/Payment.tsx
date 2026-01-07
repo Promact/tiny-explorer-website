@@ -31,7 +31,7 @@ const Payment = ({
 	const isDevelopment = import.meta.env.DEV;
 
 	const activeSession = cart.payment_collection?.payment_sessions?.find(
-		(paymentSession: any) => paymentSession.status === "pending",
+		(paymentSession) => paymentSession.status === "pending",
 	);
 
 	const [isLoading, setIsLoading] = useState(false);
@@ -46,7 +46,7 @@ const Payment = ({
 		setSelectedPaymentMethod(method);
 	};
 
-	const paymentReady =
+	const _paymentReady =
 		activeSession &&
 		cart &&
 		cart?.shipping_methods &&
@@ -77,82 +77,74 @@ const Payment = ({
 
 	useEffect(() => {
 		setError(null);
-	}, [currentStep]);
+	}, []);
 
 	return (
-		<>
-			<div className="bg-white">
-				<div className="flex flex-row items-center justify-between mb-6">
-					<div className="flex flex-row items-baseline gap-x-2">
-						<h2>Payment</h2>
-						{currentStep > 3 && <CircleCheck size="14px" />}
-					</div>
-					{currentStep > 3 && (
-						<Button variant="ghost" onClick={handleEdit}>
-							Edit
-						</Button>
-					)}
+		<div className="bg-white">
+			<div className="flex flex-row items-center justify-between mb-6">
+				<div className="flex flex-row items-baseline gap-x-2">
+					<h2>Payment</h2>
+					{currentStep > 3 && <CircleCheck size="14px" />}
 				</div>
-
-				{currentStep == 3 && (
-					<div>
-						<div className="pb-8 md:pt-0 pt-2">
-							<RadioGroup
-								value={selectedPaymentMethod}
-								onValueChange={(v) => setPaymentMethod(v)}
-							>
-								{availablePaymentMethods?.map((item) => (
-									<FieldLabel
-										key={item.id}
-										htmlFor={item.id}
-										className="cursor-pointer"
-									>
-										<Field orientation="horizontal">
-											<RadioGroupItem
-												value={item.id}
-												data-testid="delivery-option-radio"
-												id={item.id}
-											/>
-											<div className="flex w-full justify-between items-center gap-2">
-												<FieldContent>
-													<FieldTitle>
-														{paymentInfoMap[item?.id]?.title}
-													</FieldTitle>
-													{isManual(item?.id) && isDevelopment && (
-														<FieldDescription>
-															<span className="font-semibold">Attention:</span>{" "}
-															For testing purposes only.
-														</FieldDescription>
-													)}
-												</FieldContent>
-
-												<div>{paymentInfoMap[item?.id]?.icon}</div>
-											</div>
-										</Field>
-									</FieldLabel>
-								))}
-							</RadioGroup>
-						</div>
-
-						<div>
-							{error && (
-								<div className="pt-2 text-destructive text-sm">{error}</div>
-							)}
-
-							<Button onClick={handleSubmit}>
-								{isLoading ? (
-									<>
-										<Spinner />
-									</>
-								) : (
-									<>Continue to review</>
-								)}
-							</Button>
-						</div>
-					</div>
+				{currentStep > 3 && (
+					<Button variant="ghost" onClick={handleEdit}>
+						Edit
+					</Button>
 				)}
 			</div>
-		</>
+
+			{currentStep === 3 && (
+				<div>
+					<div className="pb-8 md:pt-0 pt-2">
+						<RadioGroup
+							value={selectedPaymentMethod}
+							onValueChange={(v) => setPaymentMethod(v)}
+						>
+							{availablePaymentMethods?.map((item) => (
+								<FieldLabel
+									key={item.id}
+									htmlFor={item.id}
+									className="cursor-pointer"
+								>
+									<Field orientation="horizontal">
+										<RadioGroupItem
+											value={item.id}
+											data-testid="delivery-option-radio"
+											id={item.id}
+										/>
+										<div className="flex w-full justify-between items-center gap-2">
+											<FieldContent>
+												<FieldTitle>
+													{paymentInfoMap[item?.id]?.title}
+												</FieldTitle>
+												{isManual(item?.id) && isDevelopment && (
+													<FieldDescription>
+														<span className="font-semibold">Attention:</span>{" "}
+														For testing purposes only.
+													</FieldDescription>
+												)}
+											</FieldContent>
+
+											<div>{paymentInfoMap[item?.id]?.icon}</div>
+										</div>
+									</Field>
+								</FieldLabel>
+							))}
+						</RadioGroup>
+					</div>
+
+					<div>
+						{error && (
+							<div className="pt-2 text-destructive text-sm">{error}</div>
+						)}
+
+						<Button onClick={handleSubmit}>
+							{isLoading ? <Spinner /> : <>Continue to review</>}
+						</Button>
+					</div>
+				</div>
+			)}
+		</div>
 	);
 };
 

@@ -32,7 +32,7 @@ try {
 		"Content-Type": "application/json",
 	};
 	if (strapiToken) {
-		headers["Authorization"] = `Bearer ${strapiToken}`;
+		headers.Authorization = `Bearer ${strapiToken}`;
 	}
 
 	const res = await fetch(`${strapiUrl}/api/product-page?populate=*`, {
@@ -48,11 +48,11 @@ try {
 ---
 
 <Layout title={`${product.title} - Tiny Explorer`}>
-  <div class="py-12 bg-white">
-    <ProductShell
-      client:load
-      product={product}
-      staticContent={productPageData}
-    />
-  </div>
+	<div class="py-12 bg-white">
+		<ProductShell
+			client:load
+			product={product}
+			staticContent={productPageData}
+		/>
+	</div>
 </Layout>

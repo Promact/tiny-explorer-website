@@ -39,6 +39,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 								stroke="currentColor"
 								className="w-12 h-12"
 							>
+								<title>Product Placeholder</title>
 								<path
 									strokeLinecap="round"
 									strokeLinejoin="round"

@@ -3,9 +3,6 @@ import type { Dispatch, SetStateAction } from "react";
 import {
 	Table,
 	TableBody,
-	TableCaption,
-	TableCell,
-	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
@@ -20,31 +17,27 @@ const Items = ({
 	setCart: Dispatch<SetStateAction<StoreCart | null>>;
 }) => {
 	return (
-		<>
-			<Table>
-				<TableHeader>
-					<TableRow className="w-full">
-						<TableHead className="pl-0 p-4 w-24">Item</TableHead>
-						<TableHead></TableHead>
-						<TableHead>Quantity</TableHead>
-						<TableHead>Price</TableHead>
-						<TableHead>Total</TableHead>
-					</TableRow>
-				</TableHeader>
-				<TableBody>
-					{cart?.items?.map((i) => (
-						<>
-							<Item
-								item={i}
-								currencyCode={cart?.currency_code}
-								key={i?.id}
-								setCart={setCart}
-							/>
-						</>
-					))}
-				</TableBody>
-			</Table>
-		</>
+		<Table>
+			<TableHeader>
+				<TableRow className="w-full">
+					<TableHead className="pl-0 p-4 w-24">Item</TableHead>
+					<TableHead></TableHead>
+					<TableHead>Quantity</TableHead>
+					<TableHead>Price</TableHead>
+					<TableHead>Total</TableHead>
+				</TableRow>
+			</TableHeader>
+			<TableBody>
+				{cart?.items?.map((i) => (
+					<Item
+						item={i}
+						currencyCode={cart?.currency_code}
+						key={i?.id}
+						setCart={setCart}
+					/>
+				))}
+			</TableBody>
+		</Table>
 	);
 };
 

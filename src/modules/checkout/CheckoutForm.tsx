@@ -47,39 +47,37 @@ const CheckoutForm = ({
 	}, [fetchData]);
 
 	return (
-		<>
-			<div className="w-full grid grid-cols-1 gap-y-8">
-				<Addresses
-					cart={cart}
-					setCart={setCart}
-					currentStep={currentStep}
-					setCurrentStep={setCurrentStep}
-				/>
+		<div className="w-full grid grid-cols-1 gap-y-8">
+			<Addresses
+				cart={cart}
+				setCart={setCart}
+				currentStep={currentStep}
+				setCurrentStep={setCurrentStep}
+			/>
 
-				<Shipping
-					cart={cart}
-					setCart={setCart}
-					currentStep={currentStep}
-					setCurrentStep={setCurrentStep}
-					availableShippingMethods={shippingMethods}
-				/>
+			<Shipping
+				cart={cart}
+				setCart={setCart}
+				currentStep={currentStep}
+				setCurrentStep={setCurrentStep}
+				availableShippingMethods={shippingMethods}
+			/>
 
-				<Payment
-					cart={cart}
-					setCart={setCart}
-					currentStep={currentStep}
-					setCurrentStep={setCurrentStep}
-					availablePaymentMethods={paymentMethods}
-				/>
+			<Payment
+				cart={cart}
+				setCart={setCart}
+				currentStep={currentStep}
+				setCurrentStep={setCurrentStep}
+				availablePaymentMethods={paymentMethods}
+			/>
 
-				<Review
-					cart={cart}
-					setCart={setCart}
-					currentStep={currentStep}
-					setCurrentStep={setCurrentStep}
-				/>
-			</div>
-		</>
+			<Review
+				cart={cart}
+				setCart={setCart}
+				currentStep={currentStep}
+				setCurrentStep={setCurrentStep}
+			/>
+		</div>
 	);
 };
 

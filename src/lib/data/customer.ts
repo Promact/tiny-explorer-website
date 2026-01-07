@@ -1,4 +1,3 @@
-import type { FetchError } from "@medusajs/js-sdk";
 import { z } from "astro/zod";
 import { medusa } from "../medusa";
 import { setAuthToken } from "./cookies";
@@ -34,37 +33,29 @@ export async function signup(data: z.infer<typeof signupSchema>) {
 		phone: data.phone as string,
 	};
 
-	try {
-		const token = await medusa.auth.register("customer", "emailpass", {
-			email: customerForm.email,
-			password: password,
-		});
+	const token = await medusa.auth.register("customer", "emailpass", {
+		email: customerForm.email,
+		password: password,
+	});
 
-		console.log({ token });
+	console.log({ token });
 
-		const { customer } = await medusa.store.customer.create({
-			first_name: data.firstName,
-			last_name: data.lastName,
-			email: data.email,
-		});
+	const { customer } = await medusa.store.customer.create({
+		first_name: data.firstName,
+		last_name: data.lastName,
+		email: data.email,
+	});
 
-		console.log(customer);
-	} catch (error) {
-		throw error;
-	}
+	console.log(customer);
 }
 
 export async function login(data: z.infer<typeof signinSchema>) {
-	try {
-		const token = await medusa.auth.login("customer", "emailpass", {
-			email: data.email,
-			password: data.password,
-		});
+	const token = await medusa.auth.login("customer", "emailpass", {
+		email: data.email,
+		password: data.password,
+	});
 
-		if (typeof token === "string") {
-			await setAuthToken(token);
-		}
-	} catch (error) {
-		throw error;
+	if (typeof token === "string") {
+		await setAuthToken(token);
 	}
 }

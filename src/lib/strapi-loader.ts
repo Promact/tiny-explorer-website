@@ -27,7 +27,7 @@ export function strapiLoader({
 			};
 
 			if (strapiToken) {
-				headers["Authorization"] = `Bearer ${strapiToken}`;
+				headers.Authorization = `Bearer ${strapiToken}`;
 			}
 
 			context.logger.info(`Fetching ${contentType} from Strapi...`);
@@ -39,6 +39,7 @@ export function strapiLoader({
 			// Construct query string from params
 			// Construct query string manually to avoid URLSearchParams encoding brackets
 			const queryParts: string[] = [];
+			// biome-ignore lint/suspicious/noExplicitAny: recursive params
 			const appendParams = (params: any, prefix = "") => {
 				Object.entries(params).forEach(([key, value]) => {
 					const newKey = prefix ? `${prefix}[${key}]` : key;
@@ -117,6 +118,7 @@ export function strapiLoader({
 					`Loaded ${allEntries.length} entries for ${contentType}`,
 				);
 
+				// biome-ignore lint/suspicious/noExplicitAny: loose strapi type
 				allEntries.forEach((entry: any) => {
 					// Flatten attributes if they exist (Strapi v4)
 					// Strapi v5 might be different, but assuming standard v4 response structure for now:

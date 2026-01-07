@@ -29,6 +29,7 @@ export const paymentInfoMap: Record<
 				height="24"
 				viewBox="0 0 48 48"
 			>
+				<title>PhonePe</title>
 				<path
 					fill="#4527a0"
 					d="M42,37c0,2.762-2.238,5-5,5H11c-2.761,0-5-2.238-5-5V11c0-2.762,2.239-5,5-5h26c2.762,0,5,2.238,5,5	V37z"

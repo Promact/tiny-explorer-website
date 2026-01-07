@@ -4,11 +4,11 @@ export const getAuthHeaders = async (): Promise<
 	| {
 			authorization: string;
 	  }
-	| {}
+	| Record<string, unknown>
 > => {
 	const token = Cookie.get("_medusa_jwt");
 
-	if (token && token != undefined) {
+	if (token && token !== undefined) {
 		return { authorization: `Bearer ${token}` as string };
 	} else {
 		return {};
@@ -40,6 +40,6 @@ export const setAuthToken = async (token: string) => {
 	});
 };
 
-export const removeAuthToken = async (token: string) => {
+export const removeAuthToken = async (_token: string) => {
 	Cookie.remove("_medusa_jwt");
 };

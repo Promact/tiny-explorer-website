@@ -22,23 +22,21 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
 	const filteredOptions = (option.values ?? []).map((v) => v.value);
 
 	return (
-		<>
-			<div className="flex flex-col gap-y-3">
-				<span className="text-lg font-semibold">Select {title}:</span>
-				<div className="flex flex-wrap gap-2" data-testid={dataTestId}>
-					{filteredOptions?.map((v) => (
-						<Button
-							onClick={() => updateOption(option.id, v)}
-							key={v}
-							variant={current == v ? "default" : "outline"}
-							disabled={disabled}
-						>
-							{v}
-						</Button>
-					))}
-				</div>
+		<div className="flex flex-col gap-y-3">
+			<span className="text-lg font-semibold">Select {title}:</span>
+			<div className="flex flex-wrap gap-2" data-testid={dataTestId}>
+				{filteredOptions?.map((v) => (
+					<Button
+						onClick={() => updateOption(option.id, v)}
+						key={v}
+						variant={current === v ? "default" : "outline"}
+						disabled={disabled}
+					>
+						{v}
+					</Button>
+				))}
 			</div>
-		</>
+		</div>
 	);
 };
 
