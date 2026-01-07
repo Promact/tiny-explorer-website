@@ -2,6 +2,7 @@ import type { HttpTypes } from "@medusajs/types";
 import { medusa } from "../medusa";
 import { getAuthHeaders } from "./cookies";
 import medusaError from "../util/medusa-error";
+import type { AstroCookies } from "astro";
 
 export const retrieveOrder = async (id: string) => {
   const headers = {
@@ -24,10 +25,11 @@ export const retrieveOrder = async (id: string) => {
 export const listOrders = async (
   limit: number = 10,
   offset: number = 0,
-  filters?: Record<string, any>
+  filters?: Record<string, any>,
+  astroCookie?: AstroCookies
 ) => {
   const headers = {
-    ...(await getAuthHeaders()),
+    ...(await getAuthHeaders(astroCookie)),
   };
 
   return medusa.client

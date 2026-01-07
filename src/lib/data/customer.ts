@@ -76,7 +76,9 @@ export async function retrieveCustomer(astroCookie?: AstroCookies) {
   };
 
   return await medusa.client
-    .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
+    .fetch<{
+      customer: HttpTypes.StoreCustomer & { orders?: HttpTypes.StoreOrder[] };
+    }>(`/store/customers/me`, {
       method: "GET",
       query: {
         fields: "*orders",

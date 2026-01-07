@@ -3,10 +3,154 @@ export const prerender = false;
 
 import { Container } from "@/components/common/Container";
 import AccountLayout from "@/layouts/AccountLayout.astro";
+import { retrieveCustomer } from "@/lib/data/customer";
+import { listOrders } from "@/lib/data/order";
+import { convertToLocale } from "@/lib/util/money";
+import type { HttpTypes, StoreCustomer } from "@medusajs/types";
+
+const cookies = Astro.cookies;
+
+let userInfo;
+let orders;
+let errorMsg = null;
+let orderErrorMsg = null;
+
+const getUserInfo = async () => {
+  try {
+    const res = await retrieveCustomer(cookies);
+    return res;
+  } catch (error) {
+    if (error instanceof Error) {
+      errorMsg = error?.message || "Something went wrong";
+    } else {
+      errorMsg = "Something went wrong";
+    }
+  }
+};
+
+const getUserOrders = async () => {
+  try {
+    const res = await listOrders(5, 0, {}, cookies);
+    return res;
+  } catch (error) {
+    if (error instanceof Error) {
+      orderErrorMsg = error?.message || "Something went wrong";
+    } else {
+      orderErrorMsg = "Something went wrong";
+    }
+  }
+};
+
+const getProfileCompletion = (customer: HttpTypes.StoreCustomer | null) => {
+  let count = 0;
+
+  if (!customer) {
+    return 0;
+  }
+
+  if (customer.email) {
+    count++;
+  }
+
+  if (customer.first_name && customer.last_name) {
+    count++;
+  }
+
+  if (customer.phone) {
+    count++;
+  }
+
+  const billingAddress = customer.addresses?.find(
+    (addr) => addr.is_default_billing
+  );
+
+  if (billingAddress) {
+    count++;
+  }
+
+  return (count / 4) * 100;
+};
+
+userInfo = await getUserInfo();
+orders = await getUserOrders();
+
+console.log(userInfo);
 ---
 
 <AccountLayout title="Account">
-  <!-- <Container> -->
-  <div class="text-3xl">Coming soon</div>
-  <!-- </Container> -->
+  <div class="hidden sm:block">
+    <div class="text-xl flex justify-between items-center mb-4">
+      <span>
+        Hello {userInfo?.first_name}
+      </span>
+      <span class="text-sm">
+        Signed in as:
+        <span class="font-bold">
+          {userInfo?.email}
+        </span>
+      </span>
+    </div>
+    <div class="flex flex-col py-8 border-t border-gray-200 gap-y-4">
+      <!-- Profile and address blocks -->
+      <div class="flex items-start gap-x-16 mb-6">
+        <div class="flex flex-col gap-y-4">
+          <h3 class="text-lg">Profile</h3>
+          <div class="flex items-end gap-x-2">
+            <span class="text-3xl leading-none font-semibold">
+              {userInfo && getProfileCompletion(userInfo)}%
+            </span>
+            <span class="uppercase text-base"> Completed </span>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-y-4">
+          <h3 class="text-lg">Addresses</h3>
+          <div class="flex items-end gap-x-2">
+            <span class="text-3xl leading-none font-semibold">
+              {userInfo?.addresses?.length || 0}
+            </span>
+            <span class="uppercase text-base"> Saved </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div class="flex flex-col gap-y-4">
+        <div class="flex items-center gap-x-2">
+          <h3 class="text-large">Recent orders</h3>
+        </div>
+        <ul class="flex flex-col gap-y-4">
+          {
+            orders && orders?.length > 0 ? (
+              <div>
+                {orders?.map((order) => (
+                  <li>
+                    <div class="flex justify-between items-center p-4">
+                      <div class="grid grid-cols-3 grid-rows-2 text-sm gap-x-4 flex-1">
+                        <span class="font-semibold">Date placed</span>
+                        <span class="font-semibold">Order number</span>
+                        <span class="font-semibold">Total amount</span>
+                        <span>{new Date(order.created_at).toDateString()}</span>
+                        <span>#{order.display_id}</span>
+                        <span>
+                          {convertToLocale({
+                            amount: order.total,
+                            currency_code: order.currency_code,
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </div>
+            ) : (
+              <div>
+                <span>No recent orders</span>
+              </div>
+            )
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
 </AccountLayout>
