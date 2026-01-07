@@ -1,32 +1,32 @@
 ---
-import { Container } from "../common/Container";
-import { Home, School, Tent, Smile, Building, PartyPopper } from "lucide-react";
+import { Building, Home, PartyPopper, School, Smile, Tent } from "lucide-react";
 import { Button } from "../common/Button";
+import { Container } from "../common/Container";
 
 interface AudienceItem {
-  icon?: string | null;
-  label: string;
+	icon?: string | null;
+	label: string;
 }
 
 interface Props {
-  title: string;
-  subtitle?: string | null;
-  audiences: AudienceItem[] | null;
+	title: string;
+	subtitle?: string | null;
+	audiences: AudienceItem[] | null;
 }
 
 const { title, subtitle, audiences } = Astro.props;
 
 const getIcon = (iconName: string | null | undefined, label: string) => {
-  const key = (iconName || label).toLowerCase();
+	const key = (iconName || label).toLowerCase();
 
-  if (key.includes("home")) return Home;
-  if (key.includes("school") || key.includes("daycare")) return School;
-  if (key.includes("tent") || key.includes("zone")) return Tent;
-  if (key.includes("party") || key.includes("event")) return PartyPopper;
-  if (key.includes("smile") || key.includes("therapy")) return Smile;
-  if (key.includes("building") || key.includes("work")) return Building;
+	if (key.includes("home")) return Home;
+	if (key.includes("school") || key.includes("daycare")) return School;
+	if (key.includes("tent") || key.includes("zone")) return Tent;
+	if (key.includes("party") || key.includes("event")) return PartyPopper;
+	if (key.includes("smile") || key.includes("therapy")) return Smile;
+	if (key.includes("building") || key.includes("work")) return Building;
 
-  return Smile; // Default
+	return Smile; // Default
 };
 ---
 

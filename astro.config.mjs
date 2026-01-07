@@ -1,25 +1,22 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
 
-import tailwindcss from '@tailwindcss/vite';
+import netlify from "@astrojs/netlify";
+import partytown from "@astrojs/partytown";
 
-import react from '@astrojs/react';
-
-import partytown from '@astrojs/partytown';
-
-import sitemap from '@astrojs/sitemap';
-
-import netlify from '@astrojs/netlify';
+import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-  vite: {
-    plugins: [tailwindcss()],
-    ssr: {
-      noExternal: ["@medusajs/js-sdk"],
-    },
-  },
+	vite: {
+		plugins: [tailwindcss()],
+		ssr: {
+			noExternal: ["@medusajs/js-sdk"],
+		},
+	},
 
-  integrations: [react(), partytown(), sitemap()],
-  adapter: netlify()
+	integrations: [react(), partytown(), sitemap()],
+	adapter: netlify(),
 });

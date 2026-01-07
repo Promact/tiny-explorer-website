@@ -1,18 +1,18 @@
 ---
-import { Container } from "../common/Container";
 import { Button } from "../common/Button";
+import { Container } from "../common/Container";
 
 interface CTAButton {
-    label: string;
-    href: string;
-    variant?: string | null;
-    isExternal?: boolean | null;
+	label: string;
+	href: string;
+	variant?: string | null;
+	isExternal?: boolean | null;
 }
 
 interface Props {
-    title: string;
-    subtitle?: string | null;
-    buttons?: CTAButton[] | null;
+	title: string;
+	subtitle?: string | null;
+	buttons?: CTAButton[] | null;
 }
 
 const { title, subtitle, buttons } = Astro.props;

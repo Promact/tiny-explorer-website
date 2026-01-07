@@ -1,40 +1,40 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { placeOrder } from "@/lib/data/cart";
 import { cartStore } from "@/nanostores/cartStore";
-import { useState } from "react";
 
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
-  const [submitting, setSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const [submitting, setSubmitting] = useState(false);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const onPaymentCompleted = async () => {
-    await placeOrder()
-      .catch((err) => {
-        setErrorMessage(err.message);
-      })
-      .finally(() => {
-        setSubmitting(false);
-      });
-  };
+	const onPaymentCompleted = async () => {
+		await placeOrder()
+			.catch((err) => {
+				setErrorMessage(err.message);
+			})
+			.finally(() => {
+				setSubmitting(false);
+			});
+	};
 
-  const handlePayment = async () => {
-    setSubmitting(true);
+	const handlePayment = async () => {
+		setSubmitting(true);
 
-    await onPaymentCompleted();
-  };
+		await onPaymentCompleted();
+	};
 
-  return (
-    <>
-      <Button disabled={notReady} onClick={handlePayment}>
-        {submitting ? <Spinner /> : <>Place order</>}
-      </Button>
+	return (
+		<>
+			<Button disabled={notReady} onClick={handlePayment}>
+				{submitting ? <Spinner /> : <>Place order</>}
+			</Button>
 
-      {errorMessage && (
-        <div className="pt-2 text-destructive text-sm">{errorMessage}</div>
-      )}
-    </>
-  );
+			{errorMessage && (
+				<div className="pt-2 text-destructive text-sm">{errorMessage}</div>
+			)}
+		</>
+	);
 };
 
 export default ManualTestPaymentButton;

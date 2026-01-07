@@ -5,19 +5,19 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-import { Toaster } from "@/components/ui/sonner";
 import { Container } from "@/components/common/Container";
+import { Toaster } from "@/components/ui/sonner";
 
 // import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
-  title: string;
-  description?: string;
+	title: string;
+	description?: string;
 }
 
 const {
-  title,
-  description = "Tiny Explorer - Premium Kids Furniture & Open Ended Toys",
+	title,
+	description = "Tiny Explorer - Premium Kids Furniture & Open Ended Toys",
 } = Astro.props;
 ---
 

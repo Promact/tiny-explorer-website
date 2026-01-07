@@ -1,56 +1,83 @@
-import type { StoreProduct, StoreProductVariant } from "@medusajs/types";
+import type { StoreProduct } from "@medusajs/types";
 import { Container } from "../../../components/common/Container";
-import { useState } from "react";
+import { useProductLogic } from "../hooks/useProductLogic";
+import BuyBox from "./BuyBox";
 import ProductGallery from "./ProductGallery";
-import ProductAction from "./ProductAction";
+import ProductInfo from "./ProductInfo";
 
-const ProductShell = ({ product }: { product: StoreProduct }) => {
-  const [selectedVariant, setSelectedVariant] = useState<StoreProductVariant>();
+export interface ProductPageContent {
+	shippingInfo: any;
+	returnPolicy: any;
+	secureTransactionText: string;
+	trustBadges: any[];
+	sidebarPromoTitle: string;
+	sidebarPromoText: string;
+}
 
-  return (
-    <>
-      <Container>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
-          <div className="space-y-4">
-            <div className="aspect-square bg-gray-100 rounded-2xl overflow-hidden relative border border-gray-100">
-              {Array.isArray(selectedVariant?.metadata?.images) &&
-              selectedVariant?.metadata?.images?.length > 0 ? (
-                <ProductGallery
-                  imgUrls={selectedVariant?.metadata?.images?.map(
-                    (item) => item?.url
-                  )}
-                />
-              ) : (
-                <>
-                  {Array.isArray(product?.images) &&
-                  product?.images?.length > 0 ? (
-                    <ProductGallery
-                      imgUrls={product?.images?.map((item) => item?.url)}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                </>
-              )}
-            </div>
-          </div>
-          <div>
-            <div className="mb-2">{product?.collection?.title || "Shop"}</div>
-            <h1 className="text-4xl md:text-5xl font-bold font-heading text-text-main mb-6">
-              {product.title}
-            </h1>
-            <div className="prose prose-lg text-text-muted mb-8">
-              <p>{product.description}</p>
-            </div>
-            <ProductAction
-              productId={product?.id}
-              setSelectedVariant={setSelectedVariant}
-            />
-          </div>
-        </div>
-      </Container>
-    </>
-  );
+const ProductShell = ({
+	product,
+	staticContent,
+}: {
+	product: StoreProduct;
+	staticContent?: ProductPageContent;
+}) => {
+	const {
+		product: fetchedProduct,
+		options,
+		setOptionValue,
+		selectedVariant,
+		isValidVariant,
+		inStock,
+		qty,
+		handleQtyChange,
+		addToCartAction,
+		isAdding,
+	} = useProductLogic(product);
+
+	const images =
+		Array.isArray(selectedVariant?.metadata?.images) &&
+		selectedVariant?.metadata?.images?.length > 0
+			? selectedVariant?.metadata?.images?.map((item: any) => item?.url)
+			: product?.images?.map((item) => item?.url);
+
+	return (
+		<Container>
+			<div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-6">
+				{/* Left Column: Gallery */}
+				<div className="lg:col-span-5">
+					<div className="sticky top-24">
+						{images && images.length > 0 && <ProductGallery imgUrls={images} />}
+					</div>
+				</div>
+
+				{/* Middle Column: Product Details */}
+				<div className="lg:col-span-4">
+					<ProductInfo
+						product={fetchedProduct || product}
+						options={options}
+						setOptionValue={setOptionValue}
+						isAdding={isAdding}
+						selectedVariant={selectedVariant}
+					/>
+				</div>
+
+				{/* Right Column: Buy Box */}
+				<div className="lg:col-span-3">
+					<BuyBox
+						product={fetchedProduct || product}
+						selectedVariant={selectedVariant}
+						isValidVariant={isValidVariant}
+						inStock={inStock}
+						qty={qty}
+						handleQtyChange={handleQtyChange}
+						addToCartAction={addToCartAction}
+						isAdding={isAdding}
+						staticContent={staticContent}
+					/>
+				</div>
+			</div>
+		</Container>
+	);
 };
 
 export default ProductShell;

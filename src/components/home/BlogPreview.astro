@@ -1,35 +1,35 @@
 ---
-import { Container } from "../common/Container";
 import { Button } from "../common/Button";
+import { Container } from "../common/Container";
 
 interface Props {
-    title: string;
-    subtitle?: string | null;
-    limit?: number | null;
+	title: string;
+	subtitle?: string | null;
+	limit?: number | null;
 }
 
 const { title, subtitle, limit = 3 } = Astro.props;
 
 // Mock blog data for now, eventually this should also fetch from Strapi if `populate: 'blog_posts'` was set up
 const mockPosts = [
-    {
-        title: "10 Ways to Build a Fort",
-        excerpt: "Get instant inspiration with these creative build ideas.",
-        date: "Dec 12, 2025",
-        category: "Play Ideas",
-    },
-    {
-        title: "Why Open-Ended Play Matters",
-        excerpt: "Discover the developmental benefits of unstructured play.",
-        date: "Nov 28, 2025",
-        category: "Parenting",
-    },
-    {
-        title: "Care Guide: Keeping Your Sofa Fresh",
-        excerpt: "Simple tips to clean spills and keep covers looking new.",
-        date: "Nov 15, 2025",
-        category: "Guides",
-    },
+	{
+		title: "10 Ways to Build a Fort",
+		excerpt: "Get instant inspiration with these creative build ideas.",
+		date: "Dec 12, 2025",
+		category: "Play Ideas",
+	},
+	{
+		title: "Why Open-Ended Play Matters",
+		excerpt: "Discover the developmental benefits of unstructured play.",
+		date: "Nov 28, 2025",
+		category: "Parenting",
+	},
+	{
+		title: "Care Guide: Keeping Your Sofa Fresh",
+		excerpt: "Simple tips to clean spills and keep covers looking new.",
+		date: "Nov 15, 2025",
+		category: "Guides",
+	},
 ];
 ---
 

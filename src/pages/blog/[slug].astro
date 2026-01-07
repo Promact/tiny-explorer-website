@@ -1,20 +1,20 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { Container } from "../../components/common/Container";
 import { getCollection } from "astro:content";
 import BlockRenderer from "../../components/common/BlockRenderer.astro";
+import { Container } from "../../components/common/Container";
+import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
-    const posts = await getCollection("blog");
-    return posts.map((post) => ({
-        params: { slug: post.data.slug },
-        props: { post },
-    }));
+	const posts = await getCollection("blog");
+	return posts.map((post) => ({
+		params: { slug: post.data.slug },
+		props: { post },
+	}));
 }
 
 const { post } = Astro.props;
 const { title, description, cover, author, category, publishedAt, blocks } =
-    post.data;
+	post.data;
 ---
 
 <Layout title={`${title} - Tiny Explorer Blog`} description={description}>

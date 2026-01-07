@@ -1,32 +1,58 @@
 ---
+import type { StoreProduct } from "@medusajs/types";
 import Layout from "../../../layouts/Layout.astro";
 import { medusa } from "../../../lib/medusa";
-import type { StoreProduct } from "@medusajs/types";
 import ProductShell from "../../../modules/product/components/ProductShell";
 
 export async function getStaticPaths() {
-  let products: StoreProduct[] = [];
-  try {
-    const res = await medusa.store.product.list({
-      fields:
-        "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,+product_description.*",
-    });
-    products = res.products;
-  } catch (e) {
-    console.error("Failed to fetch products for paths", e);
-  }
+	let products: StoreProduct[] = [];
+	try {
+		const res = await medusa.store.product.list({
+			fields:
+				"*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,+product_description.*",
+		});
+		products = res.products;
+	} catch (e) {
+		console.error("Failed to fetch products for paths", e);
+	}
 
-  return products.map((product) => ({
-    params: { slug: product.handle },
-    props: { product },
-  }));
+	return products.map((product) => ({
+		params: { slug: product.handle },
+		props: { product },
+	}));
 }
 
 const { product } = Astro.props;
+
+let productPageData = null;
+try {
+	const strapiUrl = import.meta.env.STRAPI_URL || "http://localhost:1337";
+	const strapiToken = import.meta.env.STRAPI_TOKEN;
+	const headers: HeadersInit = {
+		"Content-Type": "application/json",
+	};
+	if (strapiToken) {
+		headers["Authorization"] = `Bearer ${strapiToken}`;
+	}
+
+	const res = await fetch(`${strapiUrl}/api/product-page?populate=*`, {
+		headers,
+	});
+	const data = await res.json();
+	if (data?.data) {
+		productPageData = data.data.attributes || data.data; // Handle v4/v5 structure
+	}
+} catch (e) {
+	console.error("Failed to fetch product-page content", e);
+}
 ---
 
 <Layout title={`${product.title} - Tiny Explorer`}>
   <div class="py-12 bg-white">
-    <ProductShell client:load product={product} />
+    <ProductShell
+      client:load
+      product={product}
+      staticContent={productPageData}
+    />
   </div>
 </Layout>

@@ -1,47 +1,47 @@
 ---
 import { Image } from "astro:assets";
-import { Container } from "../common/Container";
-import { Button } from "../common/Button";
+import { ArrowRight, BookOpen, Castle, Rocket, Ticket } from "lucide-react";
 import fortImage from "../../assets/fort-build.png";
-import { ArrowRight, Castle, Ticket, BookOpen, Rocket } from "lucide-react";
+import { Button } from "../common/Button";
+import { Container } from "../common/Container";
 
 interface ActivityItem {
-  icon?: string | null;
-  label: string;
+	icon?: string | null;
+	label: string;
 }
 
 interface FeatureImage {
-  url: string;
-  alternativeText?: string | null;
+	url: string;
+	alternativeText?: string | null;
 }
 
 interface Props {
-  title: string;
-  subtitle?: string | null;
-  activities: ActivityItem[] | null;
-  ctaText?: string | null;
-  ctaLink?: string | null;
-  image?: FeatureImage | null;
+	title: string;
+	subtitle?: string | null;
+	activities: ActivityItem[] | null;
+	ctaText?: string | null;
+	ctaLink?: string | null;
+	image?: FeatureImage | null;
 }
 
 const {
-  title,
-  subtitle,
-  activities,
-  ctaText = "Explore More Combinations",
-  ctaLink = "/tinyverse",
-  image,
+	title,
+	subtitle,
+	activities,
+	ctaText = "Explore More Combinations",
+	ctaLink = "/tinyverse",
+	image,
 } = Astro.props;
 
 const getIcon = (iconName: string | null | undefined, label: string) => {
-  const key = (iconName || label).toLowerCase();
+	const key = (iconName || label).toLowerCase();
 
-  if (key.includes("castle") || key.includes("fort")) return Castle;
-  if (key.includes("rocket") || key.includes("launch")) return Rocket;
-  if (key.includes("book") || key.includes("reading")) return BookOpen;
-  if (key.includes("ticket") || key.includes("obstacle")) return Ticket;
+	if (key.includes("castle") || key.includes("fort")) return Castle;
+	if (key.includes("rocket") || key.includes("launch")) return Rocket;
+	if (key.includes("book") || key.includes("reading")) return BookOpen;
+	if (key.includes("ticket") || key.includes("obstacle")) return Ticket;
 
-  return Castle; // Default
+	return Castle; // Default
 };
 ---
 

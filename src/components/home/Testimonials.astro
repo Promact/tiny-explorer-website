@@ -1,17 +1,17 @@
 ---
-import { Container } from "../common/Container";
 import { Star } from "lucide-react";
+import { Container } from "../common/Container";
 
 interface Testimonial {
-    author: string;
-    text: string;
-    rating?: number | null;
-    avatar?: any;
+	author: string;
+	text: string;
+	rating?: number | null;
+	avatar?: any;
 }
 
 interface Props {
-    title: string;
-    testimonials?: Testimonial[] | null;
+	title: string;
+	testimonials?: Testimonial[] | null;
 }
 
 const { title, testimonials } = Astro.props;

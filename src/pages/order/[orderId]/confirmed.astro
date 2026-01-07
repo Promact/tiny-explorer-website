@@ -1,6 +1,7 @@
 ---
 export const prerender = false;
 
+import type { StoreOrder } from "@medusajs/types";
 import { Container } from "@/components/common/Container";
 import { Table, TableBody } from "@/components/ui/table";
 import Layout from "@/layouts/Layout.astro";
@@ -9,15 +10,14 @@ import { retrieveOrder } from "@/lib/data/order";
 import { convertToLocale } from "@/lib/util/money";
 import CartTotals from "@/modules/cart/CartTotal";
 import Item from "@/modules/cart/Item";
-import type { StoreOrder } from "@medusajs/types";
 
 const { orderId } = Astro.params;
 
 let order;
 
 try {
-  const res = await retrieveOrder(orderId as string);
-  order = res;
+	const res = await retrieveOrder(orderId as string);
+	order = res;
 } catch {}
 ---
 

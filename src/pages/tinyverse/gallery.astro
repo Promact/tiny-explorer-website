@@ -1,28 +1,28 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import { type CollectionEntry, getCollection } from "astro:content";
 import { Container } from "../../components/common/Container";
-import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
 
 const builds = await getCollection("tinyVerse");
 
 interface BuildItem {
-  title: string;
-  category: string;
-  image?: { url: string; alternativeText?: string | null } | null;
+	title: string;
+	category: string;
+	image?: { url: string; alternativeText?: string | null } | null;
 }
 
 // Fallback if no builds found (though seeding should ensure they exist)
 const displayBuilds: BuildItem[] =
-  builds.length > 0
-    ? builds.map((b: CollectionEntry<"tinyVerse">) => b.data)
-    : [
-        { title: "The Castle", category: "Fort" },
-        { title: "The Mountain", category: "Climb" },
-        { title: "The Lounger", category: "Chill" },
-        { title: "The Tunnel", category: "Active" },
-        { title: "The Stage", category: "Creative" },
-        { title: "The Rocket", category: "Imaginative" },
-      ];
+	builds.length > 0
+		? builds.map((b: CollectionEntry<"tinyVerse">) => b.data)
+		: [
+				{ title: "The Castle", category: "Fort" },
+				{ title: "The Mountain", category: "Climb" },
+				{ title: "The Lounger", category: "Chill" },
+				{ title: "The Tunnel", category: "Active" },
+				{ title: "The Stage", category: "Creative" },
+				{ title: "The Rocket", category: "Imaginative" },
+			];
 ---
 
 <Layout title="Gallery - TinyVerse">

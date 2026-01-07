@@ -1,17 +1,17 @@
 ---
-import { Container } from "../common/Container";
 import { MoveRight } from "lucide-react";
+import { Container } from "../common/Container";
 
 interface CardLink {
-    title: string;
-    description?: string | null;
-    link: string;
-    image?: any;
+	title: string;
+	description?: string | null;
+	link: string;
+	image?: any;
 }
 
 interface Props {
-    title: string;
-    cards?: CardLink[] | null;
+	title: string;
+	cards?: CardLink[] | null;
 }
 
 const { title, cards } = Astro.props;

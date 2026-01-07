@@ -1,17 +1,17 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
-import Layout from "../layouts/Layout.astro";
+import { type CollectionEntry, getCollection } from "astro:content";
 import { Container } from "../components/common/Container";
+import Layout from "../layouts/Layout.astro";
 
 // Fetch posts from the 'blog' collection (Strapi)
 let posts: CollectionEntry<"blog">[] = [];
 let error = null;
 
 try {
-    posts = await getCollection("blog");
+	posts = await getCollection("blog");
 } catch (e) {
-    console.error("Failed to fetch blog posts from Strapi", e);
-    error = e;
+	console.error("Failed to fetch blog posts from Strapi", e);
+	error = e;
 }
 ---
 

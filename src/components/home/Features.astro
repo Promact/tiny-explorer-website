@@ -1,47 +1,47 @@
 ---
+import { Heart, Layers, ShieldCheck, Sparkles } from "lucide-react";
 import { Container } from "../common/Container";
-import { Layers, ShieldCheck, Sparkles, Heart } from "lucide-react";
 
 interface FeatureItem {
-  icon?: string | null;
-  title: string;
-  description?: string | null;
+	icon?: string | null;
+	title: string;
+	description?: string | null;
 }
 
 interface Props {
-  title: string;
-  subtitle?: string | null;
-  features: FeatureItem[] | null;
+	title: string;
+	subtitle?: string | null;
+	features: FeatureItem[] | null;
 }
 
 const { title, subtitle, features } = Astro.props;
 
 // Map Strapi icon names or titles to Lucide icons
 const getIcon = (iconName: string | null | undefined, featureTitle: string) => {
-  // Basic mapping based on keywords or exact matches
-  const key = (iconName || featureTitle).toLowerCase();
+	// Basic mapping based on keywords or exact matches
+	const key = (iconName || featureTitle).toLowerCase();
 
-  if (key.includes("module") || key.includes("layer") || key.includes("🧩"))
-    return Layers;
-  if (key.includes("safe") || key.includes("shield") || key.includes("durable"))
-    return ShieldCheck;
-  if (key.includes("clean") || key.includes("sparkle") || key.includes("☁️"))
-    return Sparkles;
-  if (key.includes("soft") || key.includes("comfort") || key.includes("heart"))
-    return Heart;
+	if (key.includes("module") || key.includes("layer") || key.includes("🧩"))
+		return Layers;
+	if (key.includes("safe") || key.includes("shield") || key.includes("durable"))
+		return ShieldCheck;
+	if (key.includes("clean") || key.includes("sparkle") || key.includes("☁️"))
+		return Sparkles;
+	if (key.includes("soft") || key.includes("comfort") || key.includes("heart"))
+		return Heart;
 
-  return Sparkles; // Default
+	return Sparkles; // Default
 };
 
 // Map colors based on index or random for visual variety
 const getColorStyles = (index: number) => {
-  const styles = [
-    { color: "text-blue-500", bgColor: "bg-blue-50" },
-    { color: "text-green-500", bgColor: "bg-green-50" },
-    { color: "text-orange-500", bgColor: "bg-orange-50" },
-    { color: "text-red-500", bgColor: "bg-red-50" },
-  ];
-  return styles[index % styles.length];
+	const styles = [
+		{ color: "text-blue-500", bgColor: "bg-blue-50" },
+		{ color: "text-green-500", bgColor: "bg-green-50" },
+		{ color: "text-orange-500", bgColor: "bg-orange-50" },
+		{ color: "text-red-500", bgColor: "bg-red-50" },
+	];
+	return styles[index % styles.length];
 };
 ---
 

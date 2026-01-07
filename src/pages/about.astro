@@ -1,23 +1,23 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import { Container } from "../components/common/Container";
 import { getCollection } from "astro:content";
 import BlockRenderer from "../components/common/BlockRenderer.astro";
+import { Container } from "../components/common/Container";
+import Layout from "../layouts/Layout.astro";
 
 // Fetch About Page content from Strapi
 const aboutPages = await getCollection("about");
 
 if (!aboutPages || aboutPages.length === 0) {
-  throw new Error("About Page collection is empty");
+	throw new Error("About Page collection is empty");
 }
 
 const lastAboutPage = aboutPages[aboutPages.length - 1];
 const aboutPage = lastAboutPage?.data;
 
 if (!aboutPage) {
-  throw new Error(
-    "About Page content not found. Please ensure Strapi is running and seeded.",
-  );
+	throw new Error(
+		"About Page content not found. Please ensure Strapi is running and seeded.",
+	);
 }
 ---
 
