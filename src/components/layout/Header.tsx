@@ -32,7 +32,7 @@ export const Header: React.FC = () => {
 					<nav className="hidden md:flex gap-8 items-center">
 						{/* Shop Mega Menu */}
 						<ShopMegaMenu />
-						
+
 						{navLinks.map((link) => (
 							<a
 								key={link.name}
@@ -129,7 +129,7 @@ export const Header: React.FC = () => {
 									</a>
 								</div>
 							</div>
-							
+
 							{/* Other Nav Links */}
 							{navLinks.map((link) => (
 								<a

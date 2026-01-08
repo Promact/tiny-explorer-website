@@ -1,5 +1,5 @@
 import type React from "react";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 
 interface CategoryItem {
 	name: string;

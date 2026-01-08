@@ -1,6 +1,7 @@
 import type { StoreProduct } from "@medusajs/types";
 import { Container } from "../../../components/common/Container";
 import { useProductLogic } from "../hooks/useProductLogic";
+import APlusSection from "./aplus/APlusSection";
 import BuyBox from "./BuyBox";
 import ProductGallery from "./ProductGallery";
 import ProductInfo from "./ProductInfo";
@@ -15,6 +16,9 @@ export interface ProductPageContent {
 	trustBadges: any[];
 	sidebarPromoTitle: string;
 	sidebarPromoText: string;
+	// biome-ignore lint/suspicious/noExplicitAny: Dynamic zone from Strapi
+	aplusContent?: any[];
+	strapiUrl?: string;
 }
 
 const ProductShell = ({
@@ -80,6 +84,14 @@ const ProductShell = ({
 					/>
 				</div>
 			</div>
+
+			{/* A+ Content Section */}
+			{staticContent?.aplusContent && staticContent.aplusContent.length > 0 && (
+				<APlusSection
+					modules={staticContent.aplusContent}
+					strapiUrl={staticContent.strapiUrl}
+				/>
+			)}
 		</Container>
 	);
 };

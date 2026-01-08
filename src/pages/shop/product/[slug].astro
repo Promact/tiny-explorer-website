@@ -35,12 +35,48 @@ try {
 		headers.Authorization = `Bearer ${strapiToken}`;
 	}
 
-	const res = await fetch(`${strapiUrl}/api/product-page?populate=*`, {
-		headers,
-	});
+	// Use deep populate for dynamic zones (aplusContent)
+	const populateQuery = encodeURIComponent(
+		JSON.stringify({
+			trustBadges: { populate: "*" },
+			aplusContent: {
+				on: {
+					"aplus.a-plus-hero": { populate: "*" },
+					"aplus.a-plus-feature-grid": {
+						populate: { features: { populate: "*" } },
+					},
+					"aplus.a-plus-comparison-chart": {
+						populate: {
+							products: { populate: "*" },
+							features: { populate: "*" },
+						},
+					},
+					"aplus.a-plus-image-text": { populate: "*" },
+					"aplus.a-plus-video": { populate: "*" },
+					"aplus.a-plus-brand-story": {
+						populate: {
+							logo: { populate: "*" },
+							slides: { populate: "*" },
+						},
+					},
+				},
+			},
+		}),
+	);
+
+	const res = await fetch(
+		`${strapiUrl}/api/product-page?populate=${populateQuery}`,
+		{
+			headers,
+		},
+	);
 	const data = await res.json();
 	if (data?.data) {
-		productPageData = data.data.attributes || data.data; // Handle v4/v5 structure
+		const attrs = data.data.attributes || data.data; // Handle v4/v5 structure
+		productPageData = {
+			...attrs,
+			strapiUrl, // Pass strapiUrl to components for image resolution
+		};
 	}
 } catch (e) {
 	console.error("Failed to fetch product-page content", e);
