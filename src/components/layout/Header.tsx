@@ -3,12 +3,12 @@ import { useState } from "react";
 import { CartCounter } from "../cart/CartCounter";
 import { Container } from "../common/Container";
 import { Button } from "../ui/button";
+import { ShopMegaMenu } from "./ShopMegaMenu";
 
 export const Header: React.FC = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const navLinks = [
-		{ name: "Shop", href: "/shop" },
 		{ name: "About Us", href: "/about" },
 		{ name: "TinyVerse", href: "/tinyverse" },
 		{ name: "Blog", href: "/blog" },
@@ -30,6 +30,9 @@ export const Header: React.FC = () => {
 
 					{/* Desktop Navigation */}
 					<nav className="hidden md:flex gap-8 items-center">
+						{/* Shop Mega Menu */}
+						<ShopMegaMenu />
+						
 						{navLinks.map((link) => (
 							<a
 								key={link.name}
@@ -85,7 +88,49 @@ export const Header: React.FC = () => {
 				{/* Mobile Navigation */}
 				{isMenuOpen && (
 					<nav className="md:hidden py-4 border-t border-gray-100 absolute left-0 right-0 bg-background shadow-lg">
-						<div className="flex flex-col gap-4 px-4">
+						<div className="flex flex-col gap-2 px-4">
+							{/* Shop Section with Categories */}
+							<div className="py-2">
+								<a
+									href="/shop"
+									className="text-text-main font-semibold text-lg block mb-2"
+									onClick={() => setIsMenuOpen(false)}
+								>
+									Shop
+								</a>
+								<div className="pl-4 flex flex-col gap-1 border-l-2 border-primary/20">
+									<a
+										href="/shop/play-sofa"
+										className="text-text-muted hover:text-primary text-sm py-1"
+										onClick={() => setIsMenuOpen(false)}
+									>
+										Play Sofa
+									</a>
+									<a
+										href="/shop/covers"
+										className="text-text-muted hover:text-primary text-sm py-1"
+										onClick={() => setIsMenuOpen(false)}
+									>
+										Covers
+									</a>
+									<a
+										href="/shop/waterproof-liners"
+										className="text-text-muted hover:text-primary text-sm py-1"
+										onClick={() => setIsMenuOpen(false)}
+									>
+										Waterproof Liners
+									</a>
+									<a
+										href="/shop/decor-toys"
+										className="text-text-muted hover:text-primary text-sm py-1"
+										onClick={() => setIsMenuOpen(false)}
+									>
+										Decor & Toys
+									</a>
+								</div>
+							</div>
+							
+							{/* Other Nav Links */}
 							{navLinks.map((link) => (
 								<a
 									key={link.name}
