@@ -4,8 +4,6 @@ export const prerender = false;
 import { Container } from "@/components/common/Container";
 import { Button } from "@/components/ui/button";
 import Layout from "@/layouts/Layout.astro";
-
-import DashboardProfile from "@/modules/account/components/dashboard";
 ---
 
 <Layout title="Dashboard">
@@ -15,10 +13,6 @@ import DashboardProfile from "@/modules/account/components/dashboard";
     </div>
 
     <Button id="logout" variant="destructive">Logout</Button>
-
-    <div>
-      <DashboardProfile client:only="react" />
-    </div>
   </Container>
 </Layout>
 
