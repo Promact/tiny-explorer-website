@@ -107,6 +107,13 @@ const currentPath = Astro.url.pathname;
             >
           </li>
           <li>
+            <a
+              href="/account/orders"
+              class:list={{ "font-bold": currentPath === "/account/orders" }}
+              >Orders</a
+            >
+          </li>
+          <li>
             <div class="cursor-pointer" id="logout-desktop">Logout</div>
           </li>
         </ul>

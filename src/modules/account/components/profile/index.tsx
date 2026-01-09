@@ -1,6 +1,8 @@
 import { retrieveCustomer } from "@/lib/data/customer";
 import type { StoreCustomer } from "@medusajs/types";
 import { useEffect, useState } from "react";
+import ProfileName from "./ProfileName";
+import Phone from "./Phone";
 
 const DashboardProfile = () => {
   const [customer, setCustomer] = useState<StoreCustomer | null>(null);
@@ -28,7 +30,18 @@ const DashboardProfile = () => {
           </p>
         </div>
 
-        <div className="flex flex-col gap-y-8 w-full"></div>
+        <div className="flex flex-col gap-y-8 w-full">
+          {customer ? (
+            <>
+              <ProfileName customer={customer} setCustomer={setCustomer} />
+              <div className="w-full h-px bg-gray-200" />
+              <Phone customer={customer} setCustomer={setCustomer} />
+              <div className="w-full h-px bg-gray-200" />
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
     </>
   );
